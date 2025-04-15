@@ -1,0 +1,29 @@
+services:
+  postgres:
+    container_name: postgres-psicho-hub
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=psicho-hub
+    volumes:
+      - ./data:/data/postgres
+    ports:
+      - "5432:5432"
+
+  app:
+    build: .
+    container_name: app-psicho-hub-api
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/usr/app
+    links:
+      - postgres
+    depends_on:
+      - postgres
+
+volumes:
+  data:
+    driver: local
