@@ -1,5 +1,7 @@
 import TeacherRepository from "../repositories/teacherRepository";
+import { RegisterTeacherService } from "../services/registerTeacherService";
 import { Request, Response } from "express";
+import { UUID } from "crypto";
 
 class TeacherController {
     private teacherRepository: TeacherRepository;
@@ -13,11 +15,13 @@ class TeacherController {
             const teachers = await this.teacherRepository.getAllTeachers();
             res.status(200).json(teachers);
         } catch (error) {
-            res.status(500).json({ message: "Error retrieving teachers" });
+            
+            console.error("Error retrieving teachers:", error);
+            res.status(500).json({ message: "Error retrieving teachers", });
         }
     }
     async getTeacherById(req: Request, res: Response) {
-        const teacherId = Number(req.params.id);
+        const teacherId = req.params.id as UUID;
         try {
             const teacher = await this.teacherRepository.getTeacherById(teacherId);
             if (teacher) {
@@ -31,16 +35,22 @@ class TeacherController {
     }
 
     async createTeacher(req: Request, res: Response) {
+        const registerTeacherService = new RegisterTeacherService(this.teacherRepository);
         const teacherData = req.body;
         try {
-            const newTeacher = await this.teacherRepository.createTeacher(teacherData);
+            const newTeacher = await registerTeacherService.registerTeacher(
+                teacherData.name,
+                teacherData.password,
+                teacherData.email,
+                teacherData.schoolId
+            );
             res.status(201).json(newTeacher);
         } catch (error) {
             res.status(500).json({ message: "Error creating teacher" });
         }
     }
     async updateTeacher(req: Request, res: Response) {
-        const teacherId = Number(req.params.id);
+        const teacherId = req.params.id as UUID;
         const teacherData = req.body;
         try {
             const updatedTeacher = await this.teacherRepository.updateTeacher(teacherId, teacherData);
@@ -55,7 +65,7 @@ class TeacherController {
     }
 
     async deleteTeacher(req: Request, res: Response) {
-        const teacherId = Number(req.params.id);
+        const teacherId = req.params.id as UUID;
         try {
             const deleted = await this.teacherRepository.deleteTeacher(teacherId);
             if (deleted) {
@@ -69,3 +79,5 @@ class TeacherController {
     }
 
 }
+
+export default TeacherController;
