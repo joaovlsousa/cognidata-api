@@ -1,5 +1,6 @@
 import { UUID } from "crypto";
-import { prisma } from "./../lib/prisma";
+import { prisma } from "../lib/prisma";
+
 class TeacherRepository {
 
   async getAllTeachers() {

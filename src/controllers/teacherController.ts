@@ -8,6 +8,11 @@ class TeacherController {
 
     constructor() {
         this.teacherRepository = new TeacherRepository();
+        this.getAllTeachers = this.getAllTeachers.bind(this);
+        this.getTeacherById = this.getTeacherById.bind(this);
+        this.createTeacher = this.createTeacher.bind(this);
+        this.updateTeacher = this.updateTeacher.bind(this);
+        this.deleteTeacher = this.deleteTeacher.bind(this);
     }
 
     async getAllTeachers(req: Request, res: Response) {
