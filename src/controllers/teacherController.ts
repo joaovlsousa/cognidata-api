@@ -51,6 +51,9 @@ class TeacherController {
             );
             res.status(201).json(newTeacher);
         } catch (error) {
+            if (error instanceof Error && error.message === "Email already registered") {
+                return res.status(400).json({ message: error.message });
+            }
             res.status(500).json({ message: "Error creating teacher" });
         }
     }
