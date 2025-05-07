@@ -1,42 +1,11 @@
-import { UUID } from "crypto";
-import { prisma } from "../lib/prisma";
+import type { Teacher, Prisma } from "@prisma/client";
+import type { UUID } from "node:crypto";
 
-class TeacherRepository {
-
-  async getAllTeachers() {
-    return await prisma.teacher.findMany();
-  }
-
-  async getTeacherById(id: UUID) {
-    return await prisma.teacher.findUnique({
-      where: { id },
-    });
-  }
-
-  async getTeacherByEmail(email: string) {
-    return await prisma.teacher.findUnique({
-      where: { email },
-    });
-  }
-
-  async createTeacher(data: any) {
-    return await prisma.teacher.create({
-      data,
-    });
-  }
-
-  async updateTeacher(id: UUID, data: any) {
-    return await prisma.teacher.update({
-      where: { id },
-      data,
-    });
-  }
-
-  async deleteTeacher(id: UUID) {
-    return await prisma.teacher.delete({
-      where: { id },
-    });
-  }
+export interface TeacherRepository {
+    getAllTeachers(): Promise<Teacher[]>;
+    getTeacherById(id: UUID): Promise<Teacher | null>;
+    getTeacherByEmail(email: string): Promise<Teacher | null>;
+    createTeacher(data: Prisma.TeacherCreateInput): Promise<Teacher>;
+    updateTeacher(id: UUID, data: Prisma.TeacherUpdateInput): Promise<Teacher>;
+    deleteTeacher(id: UUID): Promise<Teacher>;
 }
-
-export default TeacherRepository;
