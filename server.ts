@@ -10,7 +10,7 @@ const startServer = async () => {
     try {
         await prisma.$connect();
         app.listen(PORT, () => {
-            console.log(`Server is running on http://localhost:${PORT}`);
+            console.log(`Server is running on http://localhost:${PORT}.`);
         });
         app.use(express.json());
     } catch (error) {
