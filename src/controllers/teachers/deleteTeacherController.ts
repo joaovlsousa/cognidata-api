@@ -18,4 +18,5 @@ export async function deleteTeacherController(req: Request, res: Response) {
         }
         return res.status(500).json({ message: "Internal server error" });
     }
+    return res.status(200).json({ message: "User deleted successfully" });
 }
