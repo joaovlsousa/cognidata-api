@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { NextFunction, Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 
 const teacherUpdateSchema = z.object({
     name: z.string().min(1).optional().refine((val) => val?.trim() !== "", {

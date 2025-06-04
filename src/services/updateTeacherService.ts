@@ -1,7 +1,7 @@
 import { hash } from "bcryptjs";
-import { Teacher } from "@prisma/client";
-import TeacherRepository from "../repositories/prisma/prismaTeacherRepository";
-import { UUID } from "node:crypto";
+import type { Teacher } from "@prisma/client";
+import type TeacherRepository from "../repositories/prisma/prismaTeacherRepository";
+import type { UUID } from "node:crypto";
 import { TeacherAlreadyExistsError } from "./errors/teacherAlreadyExistsError";
 import { TeacherNotFoundError } from "./errors/teacherNotFoundError";
 

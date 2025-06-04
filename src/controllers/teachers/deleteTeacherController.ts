@@ -1,5 +1,5 @@
-import { Request, Response } from "express";
-import { UUID } from "node:crypto";
+import type { Request, Response } from "express";
+import type { UUID } from "node:crypto";
 import PrismaTeacherRepository from "../../repositories/prisma/prismaTeacherRepository";
 import { DeleteTeacherService } from "../../services/deleteTeacherService";
 import { TeacherNotFoundError } from "../../services/errors/teacherNotFoundError";

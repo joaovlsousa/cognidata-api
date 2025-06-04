@@ -1,11 +1,8 @@
 import { hash } from "bcryptjs";
-import { Teacher } from "@prisma/client";
-import TeacherRepository from "../repositories/prisma/prismaTeacherRepository";
+import type { Teacher } from "@prisma/client";
+import type TeacherRepository from "../repositories/prisma/prismaTeacherRepository";
 import { TeacherNotFoundError } from "../services/errors/teacherNotFoundError";
 
-interface GetAllTeacherServiceRequest {
-
-};
 
 interface GetAllTeacherServiceResponse {
     teacher: Teacher[];
