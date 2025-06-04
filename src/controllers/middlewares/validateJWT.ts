@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { env } from "../../env";
-import { UUID } from "node:crypto";
+import type { UUID } from "node:crypto";
 
 export const validateJWT = () => {
     return (req: Request, res: Response, next: NextFunction) => {

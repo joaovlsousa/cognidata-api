@@ -1,8 +1,8 @@
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import { UpdateTeacherService } from "../../services/updateTeacherService";
 import PrismaTeacherRepository from "../../repositories/prisma/prismaTeacherRepository";
 import { TeacherNotFoundError } from "../../services/errors/teacherNotFoundError";
-import { UUID } from "node:crypto";
+import type { UUID } from "node:crypto";
 import { TeacherAlreadyExistsError } from "../../services/errors/teacherAlreadyExistsError";
 
 export async function updateTeacherController(req: Request, res: Response) {

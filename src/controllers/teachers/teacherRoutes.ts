@@ -8,6 +8,7 @@ import { validateTeacherUpdate } from "../middlewares/validateTeacherUpdate";
 import { validateTeacherAuthenticate } from "../middlewares/validateTeacherAuthenticate";
 import { authenticateController } from "./authenticateController";
 import { validateJWT } from "../middlewares/validateJWT";
+import { getTeacherByIdController } from "./getTeacherByIdController";
 
 const teacherRouter = Router();
 
@@ -15,9 +16,11 @@ const teacherRouter = Router();
 teacherRouter.post("/teachers", validateTeacher, registerTeacherController);
 teacherRouter.post("/teachers/login", validateTeacherAuthenticate, authenticateController);
 
+
 //Routes for authenticated users
 teacherRouter.get("/teachers", validateJWT(), getAllTeacherController);
 teacherRouter.put("/teachers/:id", validateJWT(), validateTeacherUpdate, updateTeacherController);
 teacherRouter.delete("/teachers/:id", validateJWT(), deleteTeacherController);
+teacherRouter.get("/teachers/:id", validateJWT(), getTeacherByIdController);
 
 export default teacherRouter;

@@ -1,7 +1,7 @@
-import { UUID } from "crypto";
+import type { UUID } from "node:crypto";
 import { prisma } from "../../lib/prisma";
 import type { TeacherRepository } from "../teacherRepository";
-import { Prisma } from "@prisma/client";
+import type { Prisma } from "@prisma/client";
 
 class PrismaTeacherRepository implements TeacherRepository {
 
