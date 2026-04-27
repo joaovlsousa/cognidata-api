@@ -1,7 +1,7 @@
 {
   "name": "psicho-hub-api",
-  "version": "0.0.1",
-  "description": "Uma API para gerenciamento e análise de dados de pacientes psicológicos.",
+  "version": "1.0.0",
+  "description": "API para gerenciamento e análise de dados de pacientes psicológicos.",
   "main": "src/http/server.ts",
   "scripts": {
     "dev": "tsx watch --env-file=.env src/http/server.ts",
@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "@fastify/cors": "^11.2.0",
+    "@fastify/jwt": "^10.0.0",
     "@fastify/swagger": "^9.7.0",
     "@paralleldrive/cuid2": "^3.3.0",
     "@scalar/fastify-api-reference": "^1.53.0",
