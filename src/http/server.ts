@@ -25,6 +25,7 @@ server.register(fastifyCors, {
   origin: env.CLIENT_APP_URL,
   methods: ['GET', 'PUT', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
 })
+
 server.register(fastifySwagger, {
   openapi: {
     info: {
@@ -39,6 +40,7 @@ server.register(fastifySwagger, {
 server.register(ScalarApiReference, {
   routePrefix: '/docs',
 })
+
 server
   .listen({
     port: env.PORT,
