@@ -1,34 +1,14 @@
 services:
   postgres:
-    container_name: postgres-psicho-hub
-    image: postgres
-    restart: always
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=1234
-      - POSTGRES_DB=psicho-hub
-    volumes:
-      - ./data:/data/postgres
+    image: bitnami/postgresql:latest
     ports:
-      - "5432:5432"
-
-  app:
-    build: .
-    command: npm run start:dev
-    container_name: psicho-hub-api
-    ports:
-      - "3000:3000"
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
+      - '5432:5432'
     environment:
-      - CHOKIDAR_USEPOLLING=true
-      - DATABASE_URL=postgres://postgres:1234@postgres:5432/psicho-hub
-    links:
-      - postgres
-    depends_on:
-      - postgres
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=docker
+      - POSTGRES_DB=psichohub
+    volumes:
+      - psichohub_pg_data:/bitnami/postgresql
 
 volumes:
-  data:
-    driver: local
+  psichohub_pg_data:
