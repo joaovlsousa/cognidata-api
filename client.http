@@ -1,3 +1,13 @@
 # Variables
 @baseUrl = http://localhost:3333
 @token = 
+
+POST {{baseUrl}}/users/master
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "",
+  "email": "",
+  "password": ""
+}

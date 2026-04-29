@@ -11,6 +11,7 @@ import {
 } from 'fastify-type-provider-zod'
 import { env } from '@/config/env'
 import { errorHandler } from './error-handler'
+import { createMasterUserRoute } from './routes/create-master-user-route'
 
 const server = fastify().withTypeProvider<ZodTypeProvider>()
 
@@ -40,6 +41,8 @@ server.register(fastifySwagger, {
 server.register(ScalarApiReference, {
   routePrefix: '/docs',
 })
+
+server.register(createMasterUserRoute)
 
 server
   .listen({

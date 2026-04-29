@@ -10,7 +10,8 @@
     "start": "node dist/http/server.js",
     "db:migrate": "drizzle-kit migrate",
     "db:generate": "drizzle-kit generate",
-    "db:studio": "drizzle-kit studio"
+    "db:studio": "drizzle-kit studio",
+    "db:seed": "tsx --env-file=.env src/database/drizzle/seed.ts"
   },
   "keywords": [],
   "author": "",
@@ -30,6 +31,7 @@
     "@fastify/swagger": "^9.7.0",
     "@paralleldrive/cuid2": "^3.3.0",
     "@scalar/fastify-api-reference": "^1.53.0",
+    "bcryptjs": "^3.0.3",
     "drizzle-orm": "^0.45.2",
     "drizzle-zod": "^0.8.3",
     "fastify": "^5.8.5",

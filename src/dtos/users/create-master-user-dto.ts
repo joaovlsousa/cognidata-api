@@ -1,10 +1,15 @@
 import { createInsertSchema } from 'drizzle-zod'
+import { z } from 'zod'
 import { usersTable } from '@/database/drizzle/schema'
 
 export const createMasterUserDto = createInsertSchema(usersTable, {
-  id: (schema) => schema.optional(),
-  cpf: (schema) => schema.optional(),
-  contactPhone: (schema) => schema.optional(),
-  institution: (schema) => schema.optional(),
-  academicBackground: (schema) => schema.optional(),
+  name: z.string().min(1),
+  email: z.email(),
+  password: z.string().min(6),
+}).pick({
+  name: true,
+  email: true,
+  password: true,
 })
+
+export type CreateMasterUserDto = z.infer<typeof createMasterUserDto>
