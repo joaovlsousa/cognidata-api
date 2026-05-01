@@ -7,8 +7,8 @@ POST {{baseUrl}}/auth
 Content-Type: application/json
 
 {
-  "email": "user.master@email.com",
-  "password": "master.password"
+  "email": "user.admin@servidor.uepb.edu.br",
+  "password": "123456"
 }
 
 ###
@@ -20,6 +20,22 @@ Content-Type: application/json
 
 {
   "name": "Master User",
-  "email": "user.master@email.",
-  "password": "12345"
+  "email": "user.master@email.com",
+  "password": "123456"
+}
+
+###
+
+# @name createAdminUser
+POST {{baseUrl}}/users/admin
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Admin User",
+  "email": "user.admin@servidor.uepb.edu.br",
+  "password": "123456",
+  "cpf": "12345678900",
+  "contactPhone": "83912345678",
+  "institution": "Universidade Estadual da Paraíba"
 }

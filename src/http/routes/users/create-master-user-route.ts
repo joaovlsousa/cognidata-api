@@ -1,10 +1,11 @@
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
 import { z } from 'zod'
 import { httpErrorSchema } from '@/core/schemas/http-error-schema'
+import { DrizzleUsersRepository } from '@/database/drizzle/repositories/drizzle-users-repository'
 import { createMasterUserDto } from '@/dtos/users/create-master-user-dto'
+import { authMiddleware } from '@/http/middlewares/auth-middleware'
+import { authorizationMiddleware } from '@/http/middlewares/authorization-middleware'
 import { UsersService } from '@/services/users-service'
-import { authMiddleware } from '../middlewares/auth-middleware'
-import { authorizationMiddleware } from '../middlewares/authorization-middleware'
 
 export const createMasterUserRoute: FastifyPluginAsyncZod = async (app) => {
   app.post(
@@ -29,7 +30,7 @@ export const createMasterUserRoute: FastifyPluginAsyncZod = async (app) => {
       await request.isMasterCurrentUser()
       const userDto = request.body
 
-      const usersService = new UsersService()
+      const usersService = new UsersService(new DrizzleUsersRepository())
       await usersService.createMasterUser(userDto)
 
       return reply.status(201).send()

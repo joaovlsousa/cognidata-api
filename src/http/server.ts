@@ -12,7 +12,8 @@ import {
 import { env } from '@/config/env'
 import { errorHandler } from './error-handler'
 import { authenticateWithEmailAndPasswordRoute } from './routes/auth/authenticate-with-email-and-password-route'
-import { createMasterUserRoute } from './routes/create-master-user-route'
+import { createAdminUserRoute } from './routes/users/create-admin-user-route'
+import { createMasterUserRoute } from './routes/users/create-master-user-route'
 
 const server = fastify().withTypeProvider<ZodTypeProvider>()
 
@@ -48,6 +49,7 @@ server.register(authenticateWithEmailAndPasswordRoute)
 
 // User routes
 server.register(createMasterUserRoute)
+server.register(createAdminUserRoute)
 
 server
   .listen({
