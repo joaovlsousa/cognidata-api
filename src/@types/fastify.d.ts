@@ -9,5 +9,6 @@ declare module 'fastify' {
   export interface FastifyRequest {
     getCurrentUser: () => Promise<GetCurrentUserResponse>
     isMasterCurrentUser: () => Promise<void>
+    isAdminCurrentUser: () => Promise<void>
   }
 }
