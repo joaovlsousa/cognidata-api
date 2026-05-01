@@ -13,6 +13,7 @@ import { env } from '@/config/env'
 import { errorHandler } from './error-handler'
 import { authenticateWithEmailAndPasswordRoute } from './routes/auth/authenticate-with-email-and-password-route'
 import { createAdminUserRoute } from './routes/users/create-admin-user-route'
+import { createApplicatorUserRoute } from './routes/users/create-applicator-user-route'
 import { createMasterUserRoute } from './routes/users/create-master-user-route'
 
 const server = fastify().withTypeProvider<ZodTypeProvider>()
@@ -34,7 +35,7 @@ server.register(fastifySwagger, {
     info: {
       title: 'Psicho Hub API',
       description:
-        'API para gerenciamento e análise de dados de pacientes psicológicos.',
+        'API para gerenciamento e análise de dados psicológicos de pacientes e alunos.',
       version: '1.0.0',
     },
   },
@@ -50,6 +51,7 @@ server.register(authenticateWithEmailAndPasswordRoute)
 // User routes
 server.register(createMasterUserRoute)
 server.register(createAdminUserRoute)
+server.register(createApplicatorUserRoute)
 
 server
   .listen({

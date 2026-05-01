@@ -1,7 +1,11 @@
 import bcrypt from 'bcryptjs'
+import { getDomain } from 'tldts'
+import { BadRequestError } from '@/core/errors/bad-request-error'
 import { ConflictError } from '@/core/errors/conflict-error'
+import { ForbiddenError } from '@/core/errors/forbidden-error'
 import type { UsersRepository } from '@/database/repositories/users-repository'
 import type { CreateAdminUserDto } from '@/dtos/users/create-admin-user-dto'
+import type { CreateApplicatorUserDto } from '@/dtos/users/create-applicator-user-dto'
 import type { CreateMasterUserDto } from '@/dtos/users/create-master-user-dto'
 
 export class UsersService {
@@ -41,6 +45,53 @@ export class UsersService {
       contactPhone: userDto.contactPhone,
       institution: userDto.institution,
       role: 'admin',
+    })
+  }
+
+  public async createApplicatorUser(
+    adminId: string,
+    applicatorDto: CreateApplicatorUserDto
+  ): Promise<void> {
+    const admin = await this.usersRepository.getById(adminId)
+
+    if (!admin) {
+      throw new ForbiddenError(
+        'Você não tem permissão para realizar essa ação.'
+      )
+    }
+
+    const isSameUser = await this.usersRepository.getByEmail(
+      applicatorDto.email
+    )
+
+    if (isSameUser) {
+      throw new ConflictError('Este usuário já existe')
+    }
+
+    const adminMailDomain = getDomain(admin.email)
+    const applicatorMailDomain = getDomain(applicatorDto.email)
+
+    if (
+      !adminMailDomain ||
+      !applicatorMailDomain ||
+      adminMailDomain !== applicatorMailDomain
+    ) {
+      throw new BadRequestError(
+        'O E-mail do aplicador não pertence a sua instituição'
+      )
+    }
+
+    const passwordHash = await bcrypt.hash(applicatorDto.password, 10)
+
+    await this.usersRepository.save({
+      name: applicatorDto.name,
+      email: applicatorDto.email,
+      password: passwordHash,
+      cpf: applicatorDto.cpf,
+      contactPhone: applicatorDto.contactPhone,
+      academicBackground: applicatorDto.academicBackground,
+      institution: admin.institution,
+      role: 'applicator',
     })
   }
 }
