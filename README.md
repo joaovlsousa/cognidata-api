@@ -6,9 +6,8 @@ API backend para gerenciamento de usuários e controle de acesso em um sistema d
 
 - Autenticação JWT com `email` e `password`
 - Criação de usuário `master`
-- Criação de usuário `admin` (somente `master`)
-- Criação de usuário `applicator` (somente `admin`)
-- Verificação de domínio de e-mail para aplicadores
+- Criação de usuário `admin`
+- Criação de usuário `applicator`
 - Documentação de API disponível em `/docs`
 
 ---
@@ -50,8 +49,8 @@ Essa organização se aproxima de um padrão de arquitetura em camadas / clean a
 ## Pré-requisitos
 
 - Node.js compatível com `typescript` e `tsx` (recomendado Node 20+)
-- PostgreSQL
-- `DATABASE_URL` configurada para conexão com o banco
+- Docker
+- Docker Compose
 
 ---
 
@@ -68,9 +67,25 @@ Essa organização se aproxima de um padrão de arquitetura em camadas / clean a
    HOST=0.0.0.0
    JWT_SECRET=my-jwt-secret
    CLIENT_APP_URL=http://localhost:3000
-   DATABASE_URL=postgresql://user:password@localhost:5432/dbname
+   DATABASE_URL=postgresql://docker:docker@localhost:5432/psichohub
    ```
-4. Execute a aplicação em modo de desenvolvimento:
+4. Suba um container com o Banco de Dados:
+   ```bash
+   docker compose up -d
+
+   # ou
+
+   docker compose start
+   ```
+5. Rode as migrations no Banco de Dados
+   ```bash
+   pnpm db:migrate
+   ```
+6. Execute o seed para criar um usuário `master`
+   ```bash
+   pnpm db:seed
+   ```
+7. Execute a aplicação em modo de desenvolvimento:
    ```bash
    pnpm dev
    ```
