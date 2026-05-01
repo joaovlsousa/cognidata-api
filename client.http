@@ -1,0 +1,25 @@
+# Variables
+@baseUrl = http://localhost:3333
+@token = {{auth.response.body.$.token}}
+
+# @name auth
+POST {{baseUrl}}/auth
+Content-Type: application/json
+
+{
+  "email": "user.master@email.com",
+  "password": "master.password"
+}
+
+###
+
+# @name createMasterUser
+POST {{baseUrl}}/users/master
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Master User",
+  "email": "user.master@email.",
+  "password": "12345"
+}
