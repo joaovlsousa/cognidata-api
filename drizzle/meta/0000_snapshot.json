@@ -1,5 +1,5 @@
 {
-  "id": "85151fb6-6995-4a08-a021-0ab170a7db90",
+  "id": "63720bd2-2030-4896-9478-28a9c9d12ca2",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -19,7 +19,8 @@
           "name": "role",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "default": "'applicator'"
         },
         "name": {
           "name": "name",
@@ -62,6 +63,13 @@
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
         }
       },
       "indexes": {},

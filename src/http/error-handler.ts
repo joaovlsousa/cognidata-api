@@ -1,11 +1,12 @@
 import type { FastifyInstance } from 'fastify'
+import { hasZodFastifySchemaValidationErrors } from 'fastify-type-provider-zod'
 import { ZodError } from 'zod'
 import { HttpError } from '@/core/errors/http-error'
 
 type FastifyErrorHandler = FastifyInstance['errorHandler']
 
 export const errorHandler: FastifyErrorHandler = (error, _, reply) => {
-  if (error instanceof ZodError) {
+  if (hasZodFastifySchemaValidationErrors(error) || error instanceof ZodError) {
     return reply.status(400).send({
       message: error.message,
     })

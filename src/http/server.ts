@@ -11,6 +11,7 @@ import {
 } from 'fastify-type-provider-zod'
 import { env } from '@/config/env'
 import { errorHandler } from './error-handler'
+import { authenticateWithEmailAndPasswordRoute } from './routes/auth/authenticate-with-email-and-password-route'
 import { createMasterUserRoute } from './routes/create-master-user-route'
 
 const server = fastify().withTypeProvider<ZodTypeProvider>()
@@ -42,6 +43,10 @@ server.register(ScalarApiReference, {
   routePrefix: '/docs',
 })
 
+// Auth routes
+server.register(authenticateWithEmailAndPasswordRoute)
+
+// User routes
 server.register(createMasterUserRoute)
 
 server
