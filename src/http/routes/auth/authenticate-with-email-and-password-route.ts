@@ -12,7 +12,9 @@ export const authenticateWithEmailAndPasswordRoute: FastifyPluginAsyncZod =
       '/auth',
       {
         schema: {
-          summary: 'Authenticate with e-mail and password',
+          summary: 'Authenticate with email and password',
+          description:
+            'Authenticate the user using email and password to generate a JWT token.',
           tags: ['Auth'],
           body: authRequestDto,
           response: {

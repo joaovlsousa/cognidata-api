@@ -13,6 +13,7 @@ export const createMasterUserRoute: FastifyPluginAsyncZod = async (app) => {
     {
       schema: {
         summary: 'Create Master User',
+        description: 'Create a master user with high-level permissions.',
         tags: ['Users'],
         body: createMasterUserDto,
         response: {

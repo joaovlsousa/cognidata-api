@@ -13,6 +13,8 @@ export const createApplicatorUserRoute: FastifyPluginAsyncZod = async (app) => {
     {
       schema: {
         summary: 'Create Applicator User',
+        description:
+          'Create an applicator user associated with an administrator.',
         tags: ['Users'],
         body: createApplicatorUserDto,
         response: {

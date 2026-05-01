@@ -13,6 +13,7 @@ export const createAdminUserRoute: FastifyPluginAsyncZod = async (app) => {
     {
       schema: {
         summary: 'Create Admin User',
+        description: 'Create an administrator user in the system.',
         tags: ['Users'],
         body: createAdminUserDto,
         response: {
