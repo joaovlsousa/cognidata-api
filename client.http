@@ -55,3 +55,16 @@ Content-Type: application/json
   "contactPhone": "83912345678",
   "academicBackground": "Bacharel em Ciência da Computação"
 }
+
+###
+
+# @name createContact
+POST {{baseUrl}}/contacts
+Content-Type: application/json
+
+{
+  "name": "Ghost User",
+  "email": "ghost.user@email.com",
+  "subject": "Criar um usuário administrador para minha instituição",
+  "message": "Quero criar um usuário administrador para realizar testes com os alunos da minha instituição"
+}
