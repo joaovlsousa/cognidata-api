@@ -11,7 +11,7 @@ export const createContactRoute: FastifyPluginAsyncZod = async (app) => {
     {
       schema: {
         summary: 'Create Contact',
-        description: '',
+        description: 'Create a new contact entry.',
         tags: ['Contacts'],
         body: createContactDto,
         response: {
