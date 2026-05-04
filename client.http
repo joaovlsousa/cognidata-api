@@ -7,8 +7,8 @@ POST {{baseUrl}}/auth
 Content-Type: application/json
 
 {
-  "email": "user.admin@servidor.uepb.edu.br",
-  "password": "123456"
+  "email": "user.master@email.com",
+  "password": "master.password"
 }
 
 ###
@@ -68,3 +68,9 @@ Content-Type: application/json
   "subject": "Criar um usuário administrador para minha instituição",
   "message": "Quero criar um usuário administrador para realizar testes com os alunos da minha instituição"
 }
+
+###
+
+# @name getContactById
+GET {{baseUrl}}/contacts/b75b24c6-eb52-4538-bceb-1be19ab41415
+Authorization: Bearer {{token}}

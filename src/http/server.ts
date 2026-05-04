@@ -13,6 +13,7 @@ import { env } from '@/config/env'
 import { errorHandler } from './error-handler'
 import { authenticateWithEmailAndPasswordRoute } from './routes/auth/authenticate-with-email-and-password-route'
 import { createContactRoute } from './routes/contacts/create-contact-route'
+import { getContactByIdRoute } from './routes/contacts/get-contact-by-id-route'
 import { createAdminUserRoute } from './routes/users/create-admin-user-route'
 import { createApplicatorUserRoute } from './routes/users/create-applicator-user-route'
 import { createMasterUserRoute } from './routes/users/create-master-user-route'
@@ -56,6 +57,7 @@ server.register(createApplicatorUserRoute)
 
 // Contact routes
 server.register(createContactRoute)
+server.register(getContactByIdRoute)
 
 server
   .listen({
