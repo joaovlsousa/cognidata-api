@@ -19,6 +19,15 @@ export class DrizzleContactsRepository implements ContactsRepository {
     return contact ?? null
   }
 
+  public async closeById(contactId: string): Promise<void> {
+    await db
+      .update(contactsTable)
+      .set({
+        status: 'closed',
+      })
+      .where(eq(contactsTable.id, contactId))
+  }
+
   public async getAll(
     filters?: FiltersContactSchema
   ): Promise<SelectContactSchema[]> {

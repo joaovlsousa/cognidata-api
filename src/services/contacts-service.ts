@@ -19,6 +19,16 @@ export class ContactsService {
     })
   }
 
+  public async closeById(contactId: string): Promise<void> {
+    const contact = await this.contactsRepository.getById(contactId)
+
+    if (!contact) {
+      throw new NotFoundError('Contato não encontrado.')
+    }
+
+    await this.contactsRepository.closeById(contactId)
+  }
+
   public async getById(contactId: string): Promise<GetContactByIdDto> {
     const contact = await this.contactsRepository.getById(contactId)
 

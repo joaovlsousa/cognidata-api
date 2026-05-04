@@ -20,6 +20,7 @@ export type FiltersContactSchema = z.infer<typeof filtersContactsSchema>
 
 export interface ContactsRepository {
   save(contact: SaveContactSchema): Promise<SelectContactSchema>
+  closeById(contactId: string): Promise<void>
   getById(contactId: string): Promise<SelectContactSchema | null>
   getAll(filters?: FiltersContactSchema): Promise<SelectContactSchema[]>
 }

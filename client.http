@@ -71,6 +71,12 @@ Content-Type: application/json
 
 ###
 
+# @name closeContactById
+PATCH {{baseUrl}}/contacts/b75b24c6-eb52-4538-bceb-1be19ab41415/close
+Authorization: Bearer {{token}}
+
+###
+
 # @name getContacts
 GET {{baseUrl}}/contacts
 Authorization: Bearer {{token}}
