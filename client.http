@@ -65,9 +65,15 @@ Content-Type: application/json
 {
   "name": "Ghost User",
   "email": "ghost.user@email.com",
-  "subject": "Criar um usuário administrador para minha instituição",
-  "message": "Quero criar um usuário administrador para realizar testes com os alunos da minha instituição"
+  "subject": "Inserir minha instituição no sistema",
+  "message": "Quero utilizar o sistema na minha instituição"
 }
+
+###
+
+# @name getContacts
+GET {{baseUrl}}/contacts
+Authorization: Bearer {{token}}
 
 ###
 

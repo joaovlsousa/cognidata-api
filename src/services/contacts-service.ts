@@ -1,7 +1,11 @@
 import { NotFoundError } from '@/core/errors/not-found-error'
-import type { ContactsRepository } from '@/database/repositories/contacts-repository'
+import type {
+  ContactsRepository,
+  FiltersContactSchema,
+} from '@/database/repositories/contacts-repository'
 import type { CreateContactDto } from '@/dtos/contacts/create-contact-dto'
 import type { GetContactByIdDto } from '@/dtos/contacts/get-contact-by-id-dto'
+import type { GetContactsDto } from '@/dtos/contacts/get-contacts-dto'
 
 export class ContactsService {
   constructor(private readonly contactsRepository: ContactsRepository) {}
@@ -24,6 +28,14 @@ export class ContactsService {
 
     return {
       contact,
+    }
+  }
+
+  public async getAll(filters?: FiltersContactSchema): Promise<GetContactsDto> {
+    const contacts = await this.contactsRepository.getAll(filters)
+
+    return {
+      contacts,
     }
   }
 }
