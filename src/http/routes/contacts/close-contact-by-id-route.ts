@@ -12,7 +12,7 @@ export const closeContactByIdRoute: FastifyPluginAsyncZod = async (app) => {
     {
       schema: {
         summary: 'Close Contact By Id',
-        description: '',
+        description: 'Close a contact by ID, marking it as resolved.',
         tags: ['Contacts'],
         params: z.object({
           id: z.uuid(),
