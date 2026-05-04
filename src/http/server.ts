@@ -19,6 +19,7 @@ import { getContactsRoute } from './routes/contacts/get-contacts-route'
 import { createAdminUserRoute } from './routes/users/create-admin-user-route'
 import { createApplicatorUserRoute } from './routes/users/create-applicator-user-route'
 import { createMasterUserRoute } from './routes/users/create-master-user-route'
+import { getProfileRoute } from './routes/users/get-profile-route'
 
 const server = fastify().withTypeProvider<ZodTypeProvider>()
 
@@ -53,6 +54,7 @@ server.register(ScalarApiReference, {
 server.register(authenticateWithEmailAndPasswordRoute)
 
 // User routes
+server.register(getProfileRoute)
 server.register(createMasterUserRoute)
 server.register(createAdminUserRoute)
 server.register(createApplicatorUserRoute)

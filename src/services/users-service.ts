@@ -3,13 +3,27 @@ import { getDomain } from 'tldts'
 import { BadRequestError } from '@/core/errors/bad-request-error'
 import { ConflictError } from '@/core/errors/conflict-error'
 import { ForbiddenError } from '@/core/errors/forbidden-error'
+import { UnauthorizedError } from '@/core/errors/unauthorized-error'
 import type { UsersRepository } from '@/database/repositories/users-repository'
 import type { CreateAdminUserDto } from '@/dtos/users/create-admin-user-dto'
 import type { CreateApplicatorUserDto } from '@/dtos/users/create-applicator-user-dto'
 import type { CreateMasterUserDto } from '@/dtos/users/create-master-user-dto'
+import type { GetUserDto } from '@/dtos/users/get-user-dto'
 
 export class UsersService {
   constructor(private readonly usersRepository: UsersRepository) {}
+
+  public async getProfile(userId: string): Promise<GetUserDto> {
+    const user = await this.usersRepository.getById(userId)
+
+    if (!user) {
+      throw new UnauthorizedError()
+    }
+
+    return {
+      user,
+    }
+  }
 
   public async createMasterUser(userDto: CreateMasterUserDto): Promise<void> {
     const isSameUser = await this.usersRepository.getByEmail(userDto.email)
