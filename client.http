@@ -7,8 +7,8 @@ POST {{baseUrl}}/auth
 Content-Type: application/json
 
 {
-  "email": "user.admin@servidor.uepb.edu.br",
-  "password": "123456"
+  "email": "user.master@email.com",
+  "password": "master.password"
 }
 
 ###
@@ -55,3 +55,34 @@ Content-Type: application/json
   "contactPhone": "83912345678",
   "academicBackground": "Bacharel em Ciência da Computação"
 }
+
+###
+
+# @name createContact
+POST {{baseUrl}}/contacts
+Content-Type: application/json
+
+{
+  "name": "Ghost User",
+  "email": "ghost.user@email.com",
+  "subject": "Inserir minha instituição no sistema",
+  "message": "Quero utilizar o sistema na minha instituição"
+}
+
+###
+
+# @name closeContactById
+PATCH {{baseUrl}}/contacts/b75b24c6-eb52-4538-bceb-1be19ab41415/close
+Authorization: Bearer {{token}}
+
+###
+
+# @name getContacts
+GET {{baseUrl}}/contacts
+Authorization: Bearer {{token}}
+
+###
+
+# @name getContactById
+GET {{baseUrl}}/contacts/b75b24c6-eb52-4538-bceb-1be19ab41415
+Authorization: Bearer {{token}}

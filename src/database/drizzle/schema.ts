@@ -1,4 +1,4 @@
-import { pgTable, timestamp, uuid, varchar } from 'drizzle-orm/pg-core'
+import { pgTable, text, timestamp, uuid, varchar } from 'drizzle-orm/pg-core'
 
 export const usersTable = pgTable('users', {
   id: uuid().primaryKey().defaultRandom(),
@@ -12,5 +12,17 @@ export const usersTable = pgTable('users', {
   institution: varchar({ length: 255 }),
   contactPhone: varchar({ length: 11 }),
   academicBackground: varchar({ length: 255 }),
+  createdAt: timestamp().defaultNow(),
+})
+
+export const contactsTable = pgTable('contacts', {
+  id: uuid().primaryKey().defaultRandom(),
+  name: varchar({ length: 200 }).notNull(),
+  email: varchar({ length: 255 }).notNull(),
+  subject: varchar({ length: 255 }).notNull(),
+  message: text().notNull(),
+  status: varchar({ enum: ['peending', 'closed'] })
+    .notNull()
+    .default('peending'),
   createdAt: timestamp().defaultNow(),
 })
