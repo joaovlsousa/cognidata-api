@@ -3,12 +3,14 @@ import { getDomain } from 'tldts'
 import { BadRequestError } from '@/core/errors/bad-request-error'
 import { ConflictError } from '@/core/errors/conflict-error'
 import { ForbiddenError } from '@/core/errors/forbidden-error'
+import { NotFoundError } from '@/core/errors/not-found-error'
 import { UnauthorizedError } from '@/core/errors/unauthorized-error'
 import type { UsersRepository } from '@/database/repositories/users-repository'
 import type { CreateAdminUserDto } from '@/dtos/users/create-admin-user-dto'
 import type { CreateApplicatorUserDto } from '@/dtos/users/create-applicator-user-dto'
 import type { CreateMasterUserDto } from '@/dtos/users/create-master-user-dto'
 import type { GetUserDto } from '@/dtos/users/get-user-dto'
+import type { UpdateApplicatorUserDto } from '@/dtos/users/update-applicator-user-dto'
 
 export class UsersService {
   constructor(private readonly usersRepository: UsersRepository) {}
@@ -107,5 +109,22 @@ export class UsersService {
       institution: admin.institution,
       role: 'applicator',
     })
+  }
+
+  public async updateApplicatorUser(
+    userId: string,
+    applicatorDto: UpdateApplicatorUserDto
+  ): Promise<void> {
+    const user = await this.usersRepository.getById(userId)
+
+    if (!user) {
+      throw new NotFoundError('Usuário não encontrado')
+    }
+
+    user.name = applicatorDto.name
+    user.contactPhone = applicatorDto.contactPhone
+    user.academicBackground = applicatorDto.academicBackground
+
+    await this.usersRepository.save(user)
   }
 }

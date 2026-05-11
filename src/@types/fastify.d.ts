@@ -10,5 +10,6 @@ declare module 'fastify' {
     getCurrentUser: () => Promise<GetCurrentUserResponse>
     isMasterCurrentUser: () => Promise<void>
     isAdminCurrentUser: () => Promise<void>
+    isApplicatorCurrentUser: () => Promise<void>
   }
 }

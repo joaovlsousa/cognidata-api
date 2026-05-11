@@ -64,6 +64,19 @@ Content-Type: application/json
 
 ###
 
+# @name updateApplicatorUser
+PATCH {{baseUrl}}/users/applicator
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Applicator User Updated",
+  "contactPhone": "83912345678",
+  "academicBackground": "Bacharel em Ciência da Computação"
+}
+
+###
+
 # @name createContact
 POST {{baseUrl}}/contacts
 Content-Type: application/json

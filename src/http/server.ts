@@ -20,6 +20,7 @@ import { createAdminUserRoute } from './routes/users/create-admin-user-route'
 import { createApplicatorUserRoute } from './routes/users/create-applicator-user-route'
 import { createMasterUserRoute } from './routes/users/create-master-user-route'
 import { getProfileRoute } from './routes/users/get-profile-route'
+import { updateApplicatorUserRoute } from './routes/users/update-applicator-user-route'
 
 const server = fastify().withTypeProvider<ZodTypeProvider>()
 
@@ -58,6 +59,7 @@ server.register(getProfileRoute)
 server.register(createMasterUserRoute)
 server.register(createAdminUserRoute)
 server.register(createApplicatorUserRoute)
+server.register(updateApplicatorUserRoute)
 
 // Contact routes
 server.register(createContactRoute)
