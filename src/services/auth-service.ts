@@ -22,6 +22,8 @@ export class AuthService {
       throw new BadRequestError('E-mail ou senha inválidos')
     }
 
-    return user
+    return {
+      user,
+    }
   }
 }

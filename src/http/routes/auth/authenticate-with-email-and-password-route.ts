@@ -29,13 +29,13 @@ export const authenticateWithEmailAndPasswordRoute: FastifyPluginAsyncZod =
 
         const authService = new AuthService(new DrizzleUsersRepository())
 
-        const { id, role } =
+        const { user } =
           await authService.authenticateWithEmailAndPassword(authDto)
 
-        const payload = tokenSchema.parse({ sub: id, role })
+        const payload = tokenSchema.parse({ sub: user.id, role: user.role })
         const token = await reply.jwtSign(payload, {
           sign: {
-            sub: id,
+            sub: user.id,
             expiresIn: '7d',
           },
         })

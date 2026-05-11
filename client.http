@@ -7,9 +7,15 @@ POST {{baseUrl}}/auth
 Content-Type: application/json
 
 {
-  "email": "user.master@email.com",
-  "password": "master.password"
+  "email": "user.applicator@servidor.uepb.edu.br",
+  "password": "123456"
 }
+
+###
+
+# @name getProfile
+GET {{baseUrl}}/users/profile
+Authorization: Bearer {{token}}
 
 ###
 
@@ -52,6 +58,19 @@ Content-Type: application/json
   "email": "user.applicator@servidor.uepb.edu.br",
   "password": "123456",
   "cpf": "12345678900",
+  "contactPhone": "83912345678",
+  "academicBackground": "Bacharel em Ciência da Computação"
+}
+
+###
+
+# @name updateApplicatorUser
+PATCH {{baseUrl}}/users/applicator
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Applicator User Updated",
   "contactPhone": "83912345678",
   "academicBackground": "Bacharel em Ciência da Computação"
 }

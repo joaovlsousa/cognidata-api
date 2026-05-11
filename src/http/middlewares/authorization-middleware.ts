@@ -21,4 +21,14 @@ export async function authorizationMiddleware(request: FastifyRequest) {
       )
     }
   }
+
+  request.isApplicatorCurrentUser = async () => {
+    const { role } = await request.getCurrentUser()
+
+    if (role !== 'applicator') {
+      throw new ForbiddenError(
+        'Você não tem permissão para realizar essa ação.'
+      )
+    }
+  }
 }
