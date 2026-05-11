@@ -13,7 +13,7 @@ export const updateApplicatorUserRoute: FastifyPluginAsyncZod = async (app) => {
     {
       schema: {
         summary: 'Update Applicator User',
-        description: '',
+        description: 'Update the current applicator user information.',
         tags: ['Users'],
         body: updateApplicatorUserDto,
         response: {
