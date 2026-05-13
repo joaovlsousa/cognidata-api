@@ -22,6 +22,21 @@ export const usersTable = pgTable('users', {
   createdAt: timestamp().defaultNow(),
 })
 
+export const studentsTable = pgTable('students', {
+  id: uuid().primaryKey().defaultRandom(),
+  applicatorId: uuid()
+    .notNull()
+    .references(() => usersTable.id, {
+      onDelete: 'cascade',
+    }),
+  name: varchar({ length: 200 }).notNull(),
+  gender: varchar({ enum: ['male', 'female'] }).notNull(),
+  bithDate: timestamp().notNull(),
+  institution: varchar({ length: 255 }).notNull(),
+  grade: varchar({ length: 255 }).notNull(),
+  createdAt: timestamp().defaultNow(),
+})
+
 export const contactsTable = pgTable('contacts', {
   id: uuid().primaryKey().defaultRandom(),
   name: varchar({ length: 200 }).notNull(),

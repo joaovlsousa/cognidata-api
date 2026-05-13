@@ -29,6 +29,13 @@
       "when": 1778700651783,
       "tag": "0003_medical_wallow",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1778707863629,
+      "tag": "0004_faulty_human_robot",
+      "breakpoints": true
     }
   ]
 }
