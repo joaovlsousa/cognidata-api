@@ -1,0 +1,1 @@
+ALTER TABLE "codes" RENAME TO "otp_codes";

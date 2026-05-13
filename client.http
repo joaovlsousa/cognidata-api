@@ -2,6 +2,8 @@
 @baseUrl = http://localhost:3333
 @token = {{auth.response.body.$.token}}
 
+# ----- Auth routes -----
+
 # @name auth
 POST {{baseUrl}}/auth
 Content-Type: application/json
@@ -9,6 +11,16 @@ Content-Type: application/json
 {
   "email": "user.applicator@servidor.uepb.edu.br",
   "password": "123456"
+}
+
+###
+
+# @name generateOtpCode
+POST {{baseUrl}}/auth/otp-code/generate
+Content-Type: application/json
+
+{
+  "email": "user.applicator@servidor.uepb.edu.br"
 }
 
 ###
@@ -31,6 +43,9 @@ Content-Type: application/json
 }
 
 ###
+# ----- Auth routes -----
+
+# ----- Users routes -----
 
 # @name createAdminUser
 POST {{baseUrl}}/users/admin
@@ -76,6 +91,8 @@ Content-Type: application/json
 }
 
 ###
+
+# ----- Contacts routes -----
 
 # @name createContact
 POST {{baseUrl}}/contacts

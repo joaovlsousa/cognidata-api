@@ -34,7 +34,7 @@ export const contactsTable = pgTable('contacts', {
   createdAt: timestamp().defaultNow(),
 })
 
-export const codesTable = pgTable('codes', {
+export const otpCodesTable = pgTable('otp_codes', {
   email: varchar({ length: 255 }).notNull().primaryKey(),
   code: varchar({ length: 255 }).notNull(),
   validUntil: timestamp().notNull(),

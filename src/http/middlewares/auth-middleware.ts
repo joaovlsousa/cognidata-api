@@ -1,6 +1,6 @@
 import type { FastifyRequest } from 'fastify'
-import { tokenSchema } from '@/core/auth/token-schema'
 import { UnauthorizedError } from '@/core/errors/unauthorized-error'
+import { tokenSchema } from '@/core/schemas/token-schema'
 
 export async function authMiddleware(request: FastifyRequest) {
   request.getCurrentUser = async () => {
