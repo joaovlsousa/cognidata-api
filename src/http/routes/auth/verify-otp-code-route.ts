@@ -11,8 +11,8 @@ export const verifyOtpCodeRoute: FastifyPluginAsyncZod = async (app) => {
     '/auth/otp-code/verify',
     {
       schema: {
-        summary: '',
-        description: '',
+        summary: 'Verify OTP Code',
+        description: 'Verify a one-time password code for user authentication.',
         tags: ['Auth'],
         body: verifyOtpCodeDto,
         response: {
