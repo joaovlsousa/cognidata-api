@@ -8,6 +8,7 @@ import type { OtpCodesRepository } from '@/database/repositories/opt-codes-repos
 import type { UsersRepository } from '@/database/repositories/users-repository'
 import type { AuthRequestDto } from '@/dtos/auth/auth-request-dto'
 import type { GenerateOtpCodeDto } from '@/dtos/auth/generate-otp-code-dto'
+import type { ResetPasswordDto } from '@/dtos/auth/reset-password-dto'
 import type { VerifyOtpCodeDto } from '@/dtos/auth/verify-otp-code-dto'
 import type { GetUserDto } from '@/dtos/users/get-user-dto'
 
@@ -48,12 +49,10 @@ export class AuthService {
       )
     }
 
-    const isCodeAlreadyExists = await this.otpCodesRepository.getByEmail(
-      data.email
-    )
+    const otpCode = await this.otpCodesRepository.getByEmail(data.email)
 
-    if (isCodeAlreadyExists) {
-      await this.otpCodesRepository.deleteByEmail(data.email)
+    if (otpCode) {
+      await this.otpCodesRepository.deleteById(otpCode.id)
     }
 
     const code = generateOtpCode()
@@ -99,5 +98,25 @@ export class AuthService {
     otpCode.verified = true
 
     await this.otpCodesRepository.save(otpCode)
+  }
+
+  public async resetPassword(data: ResetPasswordDto): Promise<void> {
+    const otpCode = await this.otpCodesRepository.getByEmail(data.email)
+
+    if (!otpCode?.verified || isAfter(new Date(), otpCode.validUntil)) {
+      throw new BadRequestError('Tempo expirado')
+    }
+
+    const user = await this.usersRepository.getByEmail(data.email)
+
+    if (!user) {
+      throw new BadRequestError('Tempo expirado')
+    }
+
+    const passwordHash = await bcrypt.hash(data.password, 10)
+    user.password = passwordHash
+
+    await this.usersRepository.save(user)
+    await this.otpCodesRepository.deleteById(otpCode.id)
   }
 }

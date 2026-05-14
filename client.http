@@ -9,8 +9,8 @@ POST {{baseUrl}}/auth
 Content-Type: application/json
 
 {
-  "email": "user.admin@servidor.uepb.edu.br",
-  "password": "123456"
+  "email": "joao.lima.sousa@aluno.uepb.edu.br",
+  "password": "654321"
 }
 
 ###
@@ -31,7 +31,18 @@ Content-Type: application/json
 
 {
   "email": "joao.lima.sousa@aluno.uepb.edu.br",
-  "code": "947621"
+  "code": "991125"
+}
+
+###
+
+# @name resetPassword
+POST {{baseUrl}}/auth/reset-password
+Content-Type: application/json
+
+{
+  "email": "joao.lima.sousa@aluno.uepb.edu.br",
+  "password": "654321"
 }
 
 ###

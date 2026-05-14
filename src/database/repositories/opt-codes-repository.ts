@@ -12,5 +12,5 @@ export type SelectOtpCodeSchema = z.infer<typeof selectOtpCodeSchema>
 export interface OtpCodesRepository {
   save(otpCode: SaveOtpCodeSchema): Promise<SelectOtpCodeSchema>
   getByEmail(email: string): Promise<SelectOtpCodeSchema | null>
-  deleteByEmail(email: string): Promise<void>
+  deleteById(otpCodeId: string): Promise<void>
 }

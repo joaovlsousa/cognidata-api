@@ -13,6 +13,7 @@ import { env } from '@/config/env'
 import { errorHandler } from './error-handler'
 import { authenticateWithEmailAndPasswordRoute } from './routes/auth/authenticate-with-email-and-password-route'
 import { generateOtpCodeRoute } from './routes/auth/generate-otp-code-route'
+import { resetPasswordRoute } from './routes/auth/reset-password-route'
 import { verifyOtpCodeRoute } from './routes/auth/verify-otp-code-route'
 import { closeContactByIdRoute } from './routes/contacts/close-contact-by-id-route'
 import { createContactRoute } from './routes/contacts/create-contact-route'
@@ -57,6 +58,7 @@ server.register(ScalarApiReference, {
 server.register(authenticateWithEmailAndPasswordRoute)
 server.register(generateOtpCodeRoute)
 server.register(verifyOtpCodeRoute)
+server.register(resetPasswordRoute)
 
 // User routes
 server.register(getProfileRoute)

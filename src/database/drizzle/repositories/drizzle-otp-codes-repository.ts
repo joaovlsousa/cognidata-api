@@ -18,8 +18,8 @@ export class DrizzleOtpCodesRepository implements OtpCodesRepository {
     return otpcode ?? null
   }
 
-  public async deleteByEmail(email: string): Promise<void> {
-    await db.delete(otpCodesTable).where(eq(otpCodesTable.email, email))
+  public async deleteById(otpCodeId: string): Promise<void> {
+    await db.delete(otpCodesTable).where(eq(otpCodesTable.id, otpCodeId))
   }
 
   public async save(otpCode: SaveOtpCodeSchema): Promise<SelectOtpCodeSchema> {
