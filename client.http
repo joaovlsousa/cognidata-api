@@ -9,7 +9,7 @@ POST {{baseUrl}}/auth
 Content-Type: application/json
 
 {
-  "email": "user.applicator@servidor.uepb.edu.br",
+  "email": "user.admin@servidor.uepb.edu.br",
   "password": "123456"
 }
 
@@ -20,7 +20,7 @@ POST {{baseUrl}}/auth/otp-code/generate
 Content-Type: application/json
 
 {
-  "email": "user.applicator@servidor.uepb.edu.br"
+  "email": "joao.lima.sousa@aluno.uepb.edu.br"
 }
 
 ###
@@ -43,7 +43,6 @@ Content-Type: application/json
 }
 
 ###
-# ----- Auth routes -----
 
 # ----- Users routes -----
 
@@ -69,8 +68,8 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "name": "Applicator User",
-  "email": "user.applicator@servidor.uepb.edu.br",
+  "name": "João Vitor de Lima Sousa",
+  "email": "joao.lima.sousa@aluno.uepb.edu.br",
   "password": "123456",
   "cpf": "12345678900",
   "contactPhone": "83912345678",

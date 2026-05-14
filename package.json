@@ -38,6 +38,7 @@
     "fastify": "^5.8.5",
     "fastify-type-provider-zod": "^6.1.0",
     "pg": "^8.20.0",
+    "resend": "^6.12.3",
     "tldts": "^7.0.29",
     "zod": "^4.3.6"
   }

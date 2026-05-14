@@ -6,6 +6,8 @@ const envSchema = z.object({
   JWT_SECRET: z.string().min(1),
   CLIENT_APP_URL: z.url(),
   DATABASE_URL: z.url(),
+  RESEND_API_KEY: z.string(),
+  MAIL_DOMAIN: z.string(),
 })
 
 export const env = envSchema.parse(process.env)
