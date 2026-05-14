@@ -25,6 +25,17 @@ Content-Type: application/json
 
 ###
 
+# @name verifyOtpCode
+POST {{baseUrl}}/auth/otp-code/verify
+Content-Type: application/json
+
+{
+  "email": "joao.lima.sousa@aluno.uepb.edu.br",
+  "code": "947621"
+}
+
+###
+
 # @name getProfile
 GET {{baseUrl}}/users/profile
 Authorization: Bearer {{token}}

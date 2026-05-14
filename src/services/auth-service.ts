@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs'
-import { addMinutes } from 'date-fns'
+import { addMinutes, isAfter } from 'date-fns'
 import { BadGatewayError } from '@/core/errors/bad-gateway-error'
 import { BadRequestError } from '@/core/errors/bad-request-error'
 import { generateOtpCode } from '@/core/functions/generate-otp-code'
@@ -8,6 +8,7 @@ import type { OtpCodesRepository } from '@/database/repositories/opt-codes-repos
 import type { UsersRepository } from '@/database/repositories/users-repository'
 import type { AuthRequestDto } from '@/dtos/auth/auth-request-dto'
 import type { GenerateOtpCodeDto } from '@/dtos/auth/generate-otp-code-dto'
+import type { VerifyOtpCodeDto } from '@/dtos/auth/verify-otp-code-dto'
 import type { GetUserDto } from '@/dtos/users/get-user-dto'
 
 export class AuthService {
@@ -76,5 +77,27 @@ export class AuthService {
       code: codeHash,
       validUntil,
     })
+  }
+
+  public async verifyOtpCode(data: VerifyOtpCodeDto): Promise<void> {
+    const otpCode = await this.otpCodesRepository.getByEmail(data.email)
+
+    if (
+      !otpCode ||
+      otpCode.verified ||
+      isAfter(new Date(), otpCode.validUntil)
+    ) {
+      throw new BadRequestError('Código inválido ou expirado')
+    }
+
+    const isOtpCodeMatch = await bcrypt.compare(data.code, otpCode.code)
+
+    if (!isOtpCodeMatch) {
+      throw new BadRequestError('Código inválido ou expirado')
+    }
+
+    otpCode.verified = true
+
+    await this.otpCodesRepository.save(otpCode)
   }
 }

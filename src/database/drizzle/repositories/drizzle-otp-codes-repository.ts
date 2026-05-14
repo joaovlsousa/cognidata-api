@@ -22,8 +22,18 @@ export class DrizzleOtpCodesRepository implements OtpCodesRepository {
     await db.delete(otpCodesTable).where(eq(otpCodesTable.email, email))
   }
 
-  public async save(otpcode: SaveOtpCodeSchema): Promise<SelectOtpCodeSchema> {
-    const [raw] = await db.insert(otpCodesTable).values(otpcode).returning()
+  public async save(otpCode: SaveOtpCodeSchema): Promise<SelectOtpCodeSchema> {
+    if (otpCode.id) {
+      const [raw] = await db
+        .update(otpCodesTable)
+        .set(otpCode)
+        .where(eq(otpCodesTable.id, otpCode.id))
+        .returning()
+
+      return raw
+    }
+
+    const [raw] = await db.insert(otpCodesTable).values(otpCode).returning()
 
     return raw
   }

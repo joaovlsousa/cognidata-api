@@ -11,7 +11,7 @@ interface Params {
 }
 
 export async function sendOtpCodeByEmail(params: Params) {
-  const formatValidUntil = format(params.validUntil, 'dd/MM/yy HH:MM')
+  const formatValidUntil = format(params.validUntil, 'dd/MM/yy HH:mm')
 
   const response = await resend.emails.send({
     from: `Psicho Hub <noreply@${env.MAIL_DOMAIN}>`,

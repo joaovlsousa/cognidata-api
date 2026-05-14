@@ -3,23 +3,22 @@ import z from 'zod'
 import { httpErrorSchema } from '@/core/schemas/http-error-schema'
 import { DrizzleOtpCodesRepository } from '@/database/drizzle/repositories/drizzle-otp-codes-repository'
 import { DrizzleUsersRepository } from '@/database/drizzle/repositories/drizzle-users-repository'
-import { generateOtpCodeDto } from '@/dtos/auth/generate-otp-code-dto'
+import { verifyOtpCodeDto } from '@/dtos/auth/verify-otp-code-dto'
 import { AuthService } from '@/services/auth-service'
 
-export const generateOtpCodeRoute: FastifyPluginAsyncZod = async (app) => {
+export const verifyOtpCodeRoute: FastifyPluginAsyncZod = async (app) => {
   app.post(
-    '/auth/otp-code/generate',
+    '/auth/otp-code/verify',
     {
       schema: {
         summary: '',
         description: '',
         tags: ['Auth'],
-        body: generateOtpCodeDto,
+        body: verifyOtpCodeDto,
         response: {
-          201: z.void(),
+          204: z.void(),
           400: httpErrorSchema,
           500: httpErrorSchema,
-          502: httpErrorSchema,
         },
       },
     },
@@ -31,9 +30,9 @@ export const generateOtpCodeRoute: FastifyPluginAsyncZod = async (app) => {
         new DrizzleOtpCodesRepository()
       )
 
-      await authService.generateOtpCode(authDto)
+      await authService.verifyOtpCode(authDto)
 
-      return reply.status(201).send()
+      return reply.status(204).send()
     }
   )
 }

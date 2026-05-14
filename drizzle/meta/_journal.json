@@ -19,15 +19,8 @@
     {
       "idx": 2,
       "version": "7",
-      "when": 1778697665033,
-      "tag": "0002_fancy_rumiko_fujikawa",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1778700651783,
-      "tag": "0003_medical_wallow",
+      "when": 1778793687137,
+      "tag": "0002_melodic_falcon",
       "breakpoints": true
     }
   ]

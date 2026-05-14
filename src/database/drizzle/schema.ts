@@ -35,7 +35,8 @@ export const contactsTable = pgTable('contacts', {
 })
 
 export const otpCodesTable = pgTable('otp_codes', {
-  email: varchar({ length: 255 }).notNull().primaryKey(),
+  id: uuid().primaryKey().defaultRandom(),
+  email: varchar({ length: 255 }).notNull().unique(),
   code: varchar({ length: 255 }).notNull(),
   validUntil: timestamp().notNull(),
   verified: boolean().default(false),
