@@ -1,6 +1,7 @@
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
-import { tokenSchema } from '@/core/auth/token-schema'
 import { httpErrorSchema } from '@/core/schemas/http-error-schema'
+import { tokenSchema } from '@/core/schemas/token-schema'
+import { DrizzleOtpCodesRepository } from '@/database/drizzle/repositories/drizzle-otp-codes-repository'
 import { DrizzleUsersRepository } from '@/database/drizzle/repositories/drizzle-users-repository'
 import { authRequestDto } from '@/dtos/auth/auth-request-dto'
 import { authResponseDto } from '@/dtos/auth/auth-response-dto'
@@ -27,7 +28,10 @@ export const authenticateWithEmailAndPasswordRoute: FastifyPluginAsyncZod =
       async (request, reply) => {
         const authDto = request.body
 
-        const authService = new AuthService(new DrizzleUsersRepository())
+        const authService = new AuthService(
+          new DrizzleUsersRepository(),
+          new DrizzleOtpCodesRepository()
+        )
 
         const { user } =
           await authService.authenticateWithEmailAndPassword(authDto)

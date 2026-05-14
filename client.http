@@ -2,13 +2,47 @@
 @baseUrl = http://localhost:3333
 @token = {{auth.response.body.$.token}}
 
+# ----- Auth routes -----
+
 # @name auth
 POST {{baseUrl}}/auth
 Content-Type: application/json
 
 {
-  "email": "user.applicator@servidor.uepb.edu.br",
-  "password": "123456"
+  "email": "joao.lima.sousa@aluno.uepb.edu.br",
+  "password": "654321"
+}
+
+###
+
+# @name generateOtpCode
+POST {{baseUrl}}/auth/otp-code/generate
+Content-Type: application/json
+
+{
+  "email": "joao.lima.sousa@aluno.uepb.edu.br"
+}
+
+###
+
+# @name verifyOtpCode
+POST {{baseUrl}}/auth/otp-code/verify
+Content-Type: application/json
+
+{
+  "email": "joao.lima.sousa@aluno.uepb.edu.br",
+  "code": "991125"
+}
+
+###
+
+# @name resetPassword
+POST {{baseUrl}}/auth/reset-password
+Content-Type: application/json
+
+{
+  "email": "joao.lima.sousa@aluno.uepb.edu.br",
+  "password": "654321"
 }
 
 ###
@@ -32,6 +66,8 @@ Content-Type: application/json
 
 ###
 
+# ----- Users routes -----
+
 # @name createAdminUser
 POST {{baseUrl}}/users/admin
 Authorization: Bearer {{token}}
@@ -54,8 +90,8 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "name": "Applicator User",
-  "email": "user.applicator@servidor.uepb.edu.br",
+  "name": "João Vitor de Lima Sousa",
+  "email": "joao.lima.sousa@aluno.uepb.edu.br",
   "password": "123456",
   "cpf": "12345678900",
   "contactPhone": "83912345678",
@@ -76,6 +112,8 @@ Content-Type: application/json
 }
 
 ###
+
+# ----- Contacts routes -----
 
 # @name createContact
 POST {{baseUrl}}/contacts
