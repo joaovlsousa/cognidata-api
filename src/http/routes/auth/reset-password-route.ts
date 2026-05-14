@@ -11,8 +11,8 @@ export const resetPasswordRoute: FastifyPluginAsyncZod = async (app) => {
     '/auth/reset-password',
     {
       schema: {
-        summary: '',
-        description: '',
+        summary: 'Reset Password',
+        description: 'Reset the user password using a valid OTP code.',
         tags: ['Auth'],
         body: resetPasswordDto,
         response: {
