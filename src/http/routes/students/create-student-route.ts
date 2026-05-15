@@ -13,8 +13,8 @@ export const createStudentRoute: FastifyPluginAsyncZod = async (app) => {
     '/students',
     {
       schema: {
-        summary: '',
-        description: '',
+        summary: 'Create Student',
+        description: 'Create a new student associated with the current applicator.',
         tags: ['Students'],
         body: createStudentDto,
         response: {
