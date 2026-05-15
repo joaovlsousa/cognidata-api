@@ -43,7 +43,6 @@ Content-Type: application/json
 }
 
 ###
-# ----- Auth routes -----
 
 # ----- Users routes -----
 
@@ -88,6 +87,22 @@ Content-Type: application/json
   "name": "Applicator User Updated",
   "contactPhone": "83912345678",
   "academicBackground": "Bacharel em Ciência da Computação"
+}
+
+###
+
+# Students routes
+
+# @name createStudent
+POST {{baseUrl}}/students
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Student 1",
+  "birthDate": "2025-10-10",
+  "gender": "male",
+  "grade": "Portugês"
 }
 
 ###

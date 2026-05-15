@@ -1,5 +1,6 @@
 import {
   boolean,
+  date,
   pgTable,
   text,
   timestamp,
@@ -31,7 +32,7 @@ export const studentsTable = pgTable('students', {
     }),
   name: varchar({ length: 200 }).notNull(),
   gender: varchar({ enum: ['male', 'female'] }).notNull(),
-  bithDate: timestamp().notNull(),
+  birthDate: date().notNull(),
   institution: varchar({ length: 255 }).notNull(),
   grade: varchar({ length: 255 }).notNull(),
   createdAt: timestamp().defaultNow(),
