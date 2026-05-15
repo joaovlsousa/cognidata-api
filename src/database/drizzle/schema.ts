@@ -1,5 +1,6 @@
 import {
   boolean,
+  date,
   pgTable,
   text,
   timestamp,
@@ -19,6 +20,21 @@ export const usersTable = pgTable('users', {
   institution: varchar({ length: 255 }),
   contactPhone: varchar({ length: 11 }),
   academicBackground: varchar({ length: 255 }),
+  createdAt: timestamp().defaultNow(),
+})
+
+export const studentsTable = pgTable('students', {
+  id: uuid().primaryKey().defaultRandom(),
+  applicatorId: uuid()
+    .notNull()
+    .references(() => usersTable.id, {
+      onDelete: 'cascade',
+    }),
+  name: varchar({ length: 200 }).notNull(),
+  gender: varchar({ enum: ['male', 'female'] }).notNull(),
+  birthDate: date().notNull(),
+  institution: varchar({ length: 255 }).notNull(),
+  grade: varchar({ length: 255 }).notNull(),
   createdAt: timestamp().defaultNow(),
 })
 

@@ -22,6 +22,27 @@
       "when": 1778793687137,
       "tag": "0002_melodic_falcon",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1778707863629,
+      "tag": "0004_faulty_human_robot",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1778877223306,
+      "tag": "0005_outgoing_captain_universe",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1778877641822,
+      "tag": "0006_boring_sinister_six",
+      "breakpoints": true
     }
   ]
 }

@@ -113,6 +113,22 @@ Content-Type: application/json
 
 ###
 
+# Students routes
+
+# @name createStudent
+POST {{baseUrl}}/students
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Student 1",
+  "birthDate": "2025-10-10",
+  "gender": "male",
+  "grade": "Portugês"
+}
+
+###
+
 # ----- Contacts routes -----
 
 # @name createContact

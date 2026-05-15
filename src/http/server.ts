@@ -19,6 +19,7 @@ import { closeContactByIdRoute } from './routes/contacts/close-contact-by-id-rou
 import { createContactRoute } from './routes/contacts/create-contact-route'
 import { getContactByIdRoute } from './routes/contacts/get-contact-by-id-route'
 import { getContactsRoute } from './routes/contacts/get-contacts-route'
+import { createStudentRoute } from './routes/students/create-student-route'
 import { createAdminUserRoute } from './routes/users/create-admin-user-route'
 import { createApplicatorUserRoute } from './routes/users/create-applicator-user-route'
 import { createMasterUserRoute } from './routes/users/create-master-user-route'
@@ -66,6 +67,9 @@ server.register(createMasterUserRoute)
 server.register(createAdminUserRoute)
 server.register(createApplicatorUserRoute)
 server.register(updateApplicatorUserRoute)
+
+// Student routes
+server.register(createStudentRoute)
 
 // Contact routes
 server.register(createContactRoute)
