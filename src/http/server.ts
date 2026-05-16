@@ -19,6 +19,7 @@ import { closeContactByIdRoute } from './routes/contacts/close-contact-by-id-rou
 import { createContactRoute } from './routes/contacts/create-contact-route'
 import { getContactByIdRoute } from './routes/contacts/get-contact-by-id-route'
 import { getContactsRoute } from './routes/contacts/get-contacts-route'
+import { healthCheckRoute } from './routes/public/health-check-route'
 import { createStudentRoute } from './routes/students/create-student-route'
 import { createAdminUserRoute } from './routes/users/create-admin-user-route'
 import { createApplicatorUserRoute } from './routes/users/create-applicator-user-route'
@@ -36,7 +37,7 @@ server.register(fastifyJwt, {
   secret: env.JWT_SECRET,
 })
 server.register(fastifyCors, {
-  origin: env.CLIENT_APP_URL,
+  origin: '*',
   methods: ['GET', 'PUT', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
 })
 
@@ -54,6 +55,9 @@ server.register(fastifySwagger, {
 server.register(ScalarApiReference, {
   routePrefix: '/docs',
 })
+
+// Public routes
+server.register(healthCheckRoute)
 
 // Auth routes
 server.register(authenticateWithEmailAndPasswordRoute)

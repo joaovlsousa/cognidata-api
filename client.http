@@ -31,7 +31,7 @@ Content-Type: application/json
 
 {
   "email": "joao.lima.sousa@aluno.uepb.edu.br",
-  "code": "991125"
+  "code": "797217"
 }
 
 ###
@@ -121,7 +121,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "name": "Student 1",
+  "name": "Student 2",
   "birthDate": "2025-10-10",
   "gender": "male",
   "grade": "Portugês"
