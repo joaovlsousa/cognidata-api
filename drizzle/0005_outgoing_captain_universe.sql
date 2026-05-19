@@ -1,1 +1,0 @@
-ALTER TABLE "students" RENAME COLUMN "bith_date" TO "birth_date";

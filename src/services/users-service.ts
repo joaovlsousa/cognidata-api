@@ -8,7 +8,6 @@ import { UnauthorizedError } from '@/core/errors/unauthorized-error'
 import type { UsersRepository } from '@/database/repositories/users-repository'
 import type { CreateAdminUserDto } from '@/dtos/users/create-admin-user-dto'
 import type { CreateApplicatorUserDto } from '@/dtos/users/create-applicator-user-dto'
-import type { CreateMasterUserDto } from '@/dtos/users/create-master-user-dto'
 import type { GetUserDto } from '@/dtos/users/get-user-dto'
 import type { UpdateApplicatorUserDto } from '@/dtos/users/update-applicator-user-dto'
 
@@ -25,23 +24,6 @@ export class UsersService {
     return {
       user,
     }
-  }
-
-  public async createMasterUser(userDto: CreateMasterUserDto): Promise<void> {
-    const isSameUser = await this.usersRepository.getByEmail(userDto.email)
-
-    if (isSameUser) {
-      throw new ConflictError('Este usuário já existe')
-    }
-
-    const passwordHash = await bcrypt.hash(userDto.password, 10)
-
-    await this.usersRepository.save({
-      name: userDto.name,
-      email: userDto.email,
-      password: passwordHash,
-      role: 'master',
-    })
   }
 
   public async createAdminUser(userDto: CreateAdminUserDto): Promise<void> {

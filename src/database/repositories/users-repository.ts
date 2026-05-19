@@ -4,9 +4,6 @@ import { usersTable } from '../drizzle/schema'
 
 const saveUserSchema = createInsertSchema(usersTable, {
   id: (schema) => schema.optional(),
-  cpf: (schema) => schema.optional(),
-  contactPhone: (schema) => schema.optional(),
-  institution: (schema) => schema.optional(),
   academicBackground: (schema) => schema.optional(),
   createdAt: (schema) => schema.optional(),
 })

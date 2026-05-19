@@ -28,7 +28,6 @@ export const createAdminUserRoute: FastifyPluginAsyncZod = async (app) => {
       preHandler: [authMiddleware, authorizationMiddleware],
     },
     async (request, reply) => {
-      await request.isMasterCurrentUser()
       const userDto = request.body
 
       const usersService = new UsersService(new DrizzleUsersRepository())
