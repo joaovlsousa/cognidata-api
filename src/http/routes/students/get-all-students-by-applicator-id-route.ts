@@ -14,8 +14,9 @@ export const getAllStudentsByApplicatorIdRoute: FastifyPluginAsyncZod = async (
     '/students',
     {
       schema: {
-        summary: '',
-        description: '',
+        summary: 'Get All Students by Applicator ID',
+        description:
+          'Retrieve all students associated with the current applicator user.',
         tags: ['Students'],
         response: {
           200: getAllStudentsByApplicatorIdDto,
