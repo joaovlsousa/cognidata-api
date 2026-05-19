@@ -9,8 +9,8 @@ POST {{baseUrl}}/auth
 Content-Type: application/json
 
 {
-  "email": "joao.lima.sousa@aluno.uepb.edu.br",
-  "password": "654321"
+  "email": "user.admin@servidor.uepb.edu.br",
+  "password": "123456"
 }
 
 ###
@@ -50,19 +50,6 @@ Content-Type: application/json
 # @name getProfile
 GET {{baseUrl}}/users/profile
 Authorization: Bearer {{token}}
-
-###
-
-# @name createMasterUser
-POST {{baseUrl}}/users/master
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "name": "Master User",
-  "email": "user.master@email.com",
-  "password": "123456"
-}
 
 ###
 
