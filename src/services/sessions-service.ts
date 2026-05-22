@@ -6,10 +6,11 @@ export class SessionsService {
   constructor(private readonly sessionsRepository: SessionsRepository) {}
 
   public async create(
+    applicatorId: string,
     sessionDto: CreateSessionRequestDto
   ): Promise<CreateSessionResponseDto> {
     const session = await this.sessionsRepository.save({
-      applicatorId: sessionDto.applicatorId,
+      applicatorId,
       studentId: sessionDto.studentId,
       startTime: sessionDto.startTime,
       endTime: sessionDto.endTime,
