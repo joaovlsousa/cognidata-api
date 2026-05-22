@@ -1,6 +1,8 @@
 import {
   boolean,
   date,
+  doublePrecision,
+  integer,
   pgTable,
   text,
   timestamp,
@@ -35,6 +37,29 @@ export const studentsTable = pgTable('students', {
   birthDate: date().notNull(),
   institution: varchar({ length: 255 }).notNull(),
   grade: varchar({ length: 255 }).notNull(),
+  createdAt: timestamp().defaultNow(),
+})
+
+export const sessionsTable = pgTable('sessions', {
+  id: uuid().primaryKey().defaultRandom(),
+  applicatorId: uuid()
+    .notNull()
+    .references(() => usersTable.id, {
+      onDelete: 'cascade',
+    }),
+  studentId: uuid()
+    .notNull()
+    .references(() => studentsTable.id, {
+      onDelete: 'cascade',
+    }),
+  durationInSeconds: doublePrecision().notNull(),
+  countQuestion: integer().notNull(),
+  score: integer().notNull(),
+  percentage: integer().notNull(),
+  thetaFinal: doublePrecision().notNull(),
+  thetaError: doublePrecision().notNull(),
+  startTime: timestamp().notNull(),
+  endTime: timestamp().notNull(),
   createdAt: timestamp().defaultNow(),
 })
 
