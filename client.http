@@ -100,7 +100,7 @@ Content-Type: application/json
 
 ###
 
-# Students routes
+# ----- Students routes -----
 
 # @name createStudent
 POST {{baseUrl}}/students
@@ -122,7 +122,27 @@ Authorization: Bearer {{token}}
 
 ###
 
+# ----- Sessions routes -----
+
+POST {{baseUrl}}/sessions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "studentId": "267ed68f-2915-4d7a-92d6-1be956965c5b",
+  "durationInSeconds": 120,
+  "countQuestion": 5,
+  "score": 4,
+  "percentage": 80,
+  "thetaFinal": 3,
+  "thetaError": 2,
+  "startTime": "2025-05-22 15:00:00",
+  "endTime": "2025-05-22 15:02:00"
+}
+
 # ----- Contacts routes -----
+
+###
 
 # @name createContact
 POST {{baseUrl}}/contacts

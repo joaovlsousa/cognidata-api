@@ -20,6 +20,7 @@ import { createContactRoute } from './routes/contacts/create-contact-route'
 import { getContactByIdRoute } from './routes/contacts/get-contact-by-id-route'
 import { getContactsRoute } from './routes/contacts/get-contacts-route'
 import { healthCheckRoute } from './routes/public/health-check-route'
+import { createSessionRoute } from './routes/sessions/create-session-route'
 import { createStudentRoute } from './routes/students/create-student-route'
 import { getAllStudentsByApplicatorIdRoute } from './routes/students/get-all-students-by-applicator-id-route'
 import { createAdminUserRoute } from './routes/users/create-admin-user-route'
@@ -74,6 +75,9 @@ server.register(updateApplicatorUserRoute)
 // Student routes
 server.register(createStudentRoute)
 server.register(getAllStudentsByApplicatorIdRoute)
+
+// Session routes
+server.register(createSessionRoute)
 
 // Contact routes
 server.register(createContactRoute)
