@@ -1,0 +1,45 @@
+import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
+import { z } from 'zod'
+import { httpErrorSchema } from '@/core/schemas/http-error-schema'
+import { DrizzleSessionItemsRepository } from '@/database/drizzle/repositories/drizzle-session-items-repository'
+import { createSessionItemsDto } from '@/dtos/session-items/create-session-items-dto'
+import { authMiddleware } from '@/http/middlewares/auth-middleware'
+import { authorizationMiddleware } from '@/http/middlewares/authorization-middleware'
+import { SessionItemsService } from '@/services/session-items-service'
+
+export const createSessionItemRoute: FastifyPluginAsyncZod = async (app) => {
+  app.post(
+    '/sessions/:sessionId/items',
+    {
+      schema: {
+        summary: 'Create Session Item',
+        description: 'Save the items of game session',
+        tags: ['Sessions'],
+        body: createSessionItemsDto,
+        params: z.object({
+          sessionId: z.uuid(),
+        }),
+        response: {
+          201: z.void(),
+          400: httpErrorSchema,
+          401: httpErrorSchema,
+          403: httpErrorSchema,
+          500: httpErrorSchema,
+        },
+      },
+      preHandler: [authMiddleware, authorizationMiddleware],
+    },
+    async (request, reply) => {
+      await request.isApplicatorCurrentUser()
+      const sessionDto = request.body
+      const { sessionId } = request.params
+
+      const sessionsService = new SessionItemsService(
+        new DrizzleSessionItemsRepository()
+      )
+      await sessionsService.create(sessionId, sessionDto)
+
+      return reply.status(201).send()
+    }
+  )
+}

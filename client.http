@@ -1,6 +1,7 @@
 # Variables
 @baseUrl = http://localhost:3333
 @token = {{auth.response.body.$.token}}
+@sessionId = {{createSession.response.body.$.sessionId}}
 
 # ----- Auth routes -----
 
@@ -124,6 +125,7 @@ Authorization: Bearer {{token}}
 
 # ----- Sessions routes -----
 
+# @name createSession
 POST {{baseUrl}}/sessions
 Authorization: Bearer {{token}}
 Content-Type: application/json
@@ -138,6 +140,30 @@ Content-Type: application/json
   "thetaError": 2,
   "startTime": "2025-05-22 15:00:00",
   "endTime": "2025-05-22 15:02:00"
+}
+
+###
+
+# @name createSessionItem
+POST {{baseUrl}}/sessions/{{sessionId}}/items
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "correctAnswer": "A",
+  "difficulty": 9,
+  "discrimination": 3,
+  "guessing": 2,
+  "information": 2,
+  "isCorrect": true,
+  "itemIndex": 1,
+  "playerAnswer": "A",
+  "probability": 4,
+  "questionNumber": 2,
+  "stimulusName": "stimulus",
+  "thetaAfter": 3,
+  "thetaBefore": 7,
+  "thetaError": 2
 }
 
 # ----- Contacts routes -----

@@ -15,6 +15,13 @@
       "when": 1779470509408,
       "tag": "0001_strange_synch",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1779731255152,
+      "tag": "0002_robust_wrecker",
+      "breakpoints": true
     }
   ]
 }
