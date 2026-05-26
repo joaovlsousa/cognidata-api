@@ -1,8 +1,5 @@
 import bcrypt from 'bcryptjs'
-import { getDomain } from 'tldts'
-import { BadRequestError } from '@/core/errors/bad-request-error'
 import { ConflictError } from '@/core/errors/conflict-error'
-import { ForbiddenError } from '@/core/errors/forbidden-error'
 import { NotFoundError } from '@/core/errors/not-found-error'
 import { UnauthorizedError } from '@/core/errors/unauthorized-error'
 import type { UsersRepository } from '@/database/repositories/users-repository'
@@ -56,36 +53,14 @@ export class UsersService {
   }
 
   public async createApplicatorUser(
-    adminId: string,
     applicatorDto: CreateApplicatorUserDto
   ): Promise<void> {
-    const admin = await this.usersRepository.getById(adminId)
-
-    if (!admin) {
-      throw new ForbiddenError(
-        'Você não tem permissão para realizar essa ação.'
-      )
-    }
-
     const isSameUser = await this.usersRepository.getByEmail(
       applicatorDto.email
     )
 
     if (isSameUser) {
       throw new ConflictError('Este usuário já existe')
-    }
-
-    const adminMailDomain = getDomain(admin.email)
-    const applicatorMailDomain = getDomain(applicatorDto.email)
-
-    if (
-      !adminMailDomain ||
-      !applicatorMailDomain ||
-      adminMailDomain !== applicatorMailDomain
-    ) {
-      throw new BadRequestError(
-        'O E-mail do aplicador não pertence a sua instituição'
-      )
     }
 
     const passwordHash = await bcrypt.hash(applicatorDto.password, 10)
@@ -96,8 +71,7 @@ export class UsersService {
       password: passwordHash,
       cpf: applicatorDto.cpf,
       contactPhone: applicatorDto.contactPhone,
-      academicBackground: applicatorDto.academicBackground,
-      institution: admin.institution,
+      institution: applicatorDto.institution,
       role: 'applicator',
     })
   }
@@ -114,7 +88,7 @@ export class UsersService {
 
     user.name = applicatorDto.name
     user.contactPhone = applicatorDto.contactPhone
-    user.academicBackground = applicatorDto.academicBackground
+    user.institution = applicatorDto.institution
 
     await this.usersRepository.save(user)
   }

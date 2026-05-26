@@ -22,7 +22,6 @@ export const usersTable = pgTable('users', {
   institution: varchar({ length: 255 }).notNull(),
   contactPhone: varchar({ length: 11 }).notNull(),
   isActive: boolean().notNull().default(false),
-  academicBackground: varchar({ length: 255 }),
   createdAt: timestamp().defaultNow(),
 })
 
