@@ -17,4 +17,5 @@ export interface UsersRepository {
   save(user: SaveUserSchema): Promise<SelectUserSchema>
   getById(userId: string): Promise<SelectUserSchema | null>
   getByEmail(email: string): Promise<SelectUserSchema | null>
+  getAllInactive(): Promise<SelectUserSchema[]>
 }
