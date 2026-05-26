@@ -80,7 +80,6 @@ Content-Type: application/json
 
 # @name createApplicatorUser
 POST {{baseUrl}}/users/applicator
-Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -89,7 +88,7 @@ Content-Type: application/json
   "password": "123456",
   "cpf": "12345678900",
   "contactPhone": "83912345678",
-  "academicBackground": "Bacharel em Ciência da Computação"
+  "institution": "Universidade Estadual da Paraíba"
 }
 
 ###
@@ -102,7 +101,7 @@ Content-Type: application/json
 {
   "name": "Applicator User Updated",
   "contactPhone": "83912345678",
-  "academicBackground": "Bacharel em Ciência da Computação"
+  "institution": "Universidade Estadual da Paraíba"
 }
 
 ###
