@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs'
 import { addMinutes, isAfter } from 'date-fns'
 import { BadGatewayError } from '@/core/errors/bad-gateway-error'
 import { BadRequestError } from '@/core/errors/bad-request-error'
+import { ForbiddenError } from '@/core/errors/forbidden-error'
 import { generateOtpCode } from '@/core/functions/generate-otp-code'
 import { sendOtpCodeByEmail } from '@/core/functions/send-otp-code-by-email'
 import type { OtpCodesRepository } from '@/database/repositories/opt-codes-repository'
@@ -31,6 +32,10 @@ export class AuthService {
 
     if (!isPasswordMatch) {
       throw new BadRequestError('E-mail ou senha inválidos')
+    }
+
+    if (!user.isActive) {
+      throw new ForbiddenError('Conta aguardando aprovação do administrador')
     }
 
     return {
