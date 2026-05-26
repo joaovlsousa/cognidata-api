@@ -54,7 +54,15 @@ Authorization: Bearer {{token}}
 
 ###
 
+
+
 # ----- Users routes -----
+
+# @name getInactiveUsers
+GET {{baseUrl}}/users/inactive
+Authorization: Bearer {{token}}
+
+###
 
 # @name createAdminUser
 POST {{baseUrl}}/users/admin
@@ -101,7 +109,9 @@ Content-Type: application/json
 
 ###
 
-# ----- Students routes -----
+
+
+# Students routes
 
 # @name createStudent
 POST {{baseUrl}}/students
@@ -117,57 +127,7 @@ Content-Type: application/json
 
 ###
 
-# @name getAllStudentsByApplicatorId
-GET {{baseUrl}}/students
-Authorization: Bearer {{token}}
 
-###
-
-# ----- Sessions routes -----
-
-# @name createSession
-POST {{baseUrl}}/sessions
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "studentId": "267ed68f-2915-4d7a-92d6-1be956965c5b",
-  "durationInSeconds": 120,
-  "countQuestion": 5,
-  "score": 4,
-  "percentage": 80,
-  "skill": "Skill A",
-  "thetaFinal": 3,
-  "thetaError": 2,
-  "startTime": "2025-05-22 15:00:00",
-  "endTime": "2025-05-22 15:02:00"
-}
-
-###
-
-# @name createSessionItem
-POST {{baseUrl}}/sessions/{{sessionId}}/items
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "correctAnswer": "A",
-  "difficulty": 9,
-  "discrimination": 3,
-  "guessing": 2,
-  "information": 2,
-  "isCorrect": true,
-  "itemIndex": 1,
-  "playerAnswer": "A",
-  "probability": 4,
-  "questionNumber": 2,
-  "stimulusName": "stimulus",
-  "skill": "Skill A",
-  "responseTimeInSeconds": 30,
-  "thetaAfter": 3,
-  "thetaBefore": 7,
-  "thetaError": 2
-}
 
 # ----- Contacts routes -----
 

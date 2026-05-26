@@ -28,6 +28,15 @@ export class DrizzleUsersRepository implements UsersRepository {
     return user ?? null
   }
 
+  public async getAllInactive(): Promise<SelectUserSchema[]> {
+    const users = await db
+      .select()
+      .from(usersTable)
+      .where(eq(usersTable.isActive, false))
+
+    return users
+  }
+
   public async save(user: SaveUserSchema): Promise<SelectUserSchema> {
     if (user.id) {
       const [raw] = await db
