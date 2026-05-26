@@ -1,6 +1,8 @@
 import {
   boolean,
   date,
+  doublePrecision,
+  integer,
   pgTable,
   text,
   timestamp,
@@ -36,6 +38,56 @@ export const studentsTable = pgTable('students', {
   birthDate: date().notNull(),
   institution: varchar({ length: 255 }).notNull(),
   grade: varchar({ length: 255 }).notNull(),
+  createdAt: timestamp().defaultNow(),
+})
+
+export const sessionsTable = pgTable('sessions', {
+  id: uuid().primaryKey().defaultRandom(),
+  applicatorId: uuid()
+    .notNull()
+    .references(() => usersTable.id, {
+      onDelete: 'cascade',
+    }),
+  studentId: uuid()
+    .notNull()
+    .references(() => studentsTable.id, {
+      onDelete: 'cascade',
+    }),
+  durationInSeconds: doublePrecision().notNull(),
+  countQuestion: integer().notNull(),
+  skill: varchar({ length: 255 }).notNull(),
+  score: integer().notNull(),
+  percentage: integer().notNull(),
+  thetaFinal: doublePrecision().notNull(),
+  thetaError: doublePrecision().notNull(),
+  startTime: timestamp().notNull(),
+  endTime: timestamp().notNull(),
+  createdAt: timestamp().defaultNow(),
+})
+
+export const sessionItemsTable = pgTable('session_items', {
+  id: uuid().primaryKey().defaultRandom(),
+  sessionId: uuid()
+    .notNull()
+    .references(() => sessionsTable.id, {
+      onDelete: 'cascade',
+    }),
+  questionNumber: integer().notNull(),
+  itemIndex: integer().notNull(),
+  responseTimeInSeconds: integer().notNull(),
+  skill: varchar({ length: 255 }).notNull(),
+  stimulusName: varchar({ length: 255 }).notNull(),
+  correctAnswer: varchar({ length: 255 }).notNull(),
+  playerAnswer: varchar({ length: 255 }).notNull(),
+  isCorrect: boolean().notNull(),
+  difficulty: doublePrecision().notNull(),
+  discrimination: doublePrecision().notNull(),
+  guessing: doublePrecision().notNull(),
+  probability: doublePrecision().notNull(),
+  information: doublePrecision().notNull(),
+  thetaBefore: doublePrecision().notNull(),
+  thetaAfter: doublePrecision().notNull(),
+  thetaError: doublePrecision().notNull(),
   createdAt: timestamp().defaultNow(),
 })
 

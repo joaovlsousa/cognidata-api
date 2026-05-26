@@ -2,6 +2,7 @@ import { ForbiddenError } from '@/core/errors/forbidden-error'
 import type { StudentsRepository } from '@/database/repositories/students-repository'
 import type { UsersRepository } from '@/database/repositories/users-repository'
 import type { CreateStudentDto } from '@/dtos/students/create-student-dto'
+import type { GetAllStudentsByApplicatorIdDto } from '@/dtos/students/get-all-students-by-applicator-id-dto'
 
 export class StudentsService {
   constructor(
@@ -15,11 +16,7 @@ export class StudentsService {
   ): Promise<void> {
     const applicator = await this.usersRepository.getById(applicatorId)
 
-    if (
-      !applicator ||
-      applicator.role !== 'applicator' ||
-      !applicator.institution
-    ) {
+    if (!applicator || applicator.role !== 'applicator') {
       throw new ForbiddenError(
         'Você não tem permissão para realizar essa ação.'
       )
@@ -33,5 +30,16 @@ export class StudentsService {
       grade: data.grade,
       institution: applicator.institution,
     })
+  }
+
+  public async getAllByApplicatorId(
+    applicatorId: string
+  ): Promise<GetAllStudentsByApplicatorIdDto> {
+    const students =
+      await this.studentsRepository.getAllByApplicatorId(applicatorId)
+
+    return {
+      students,
+    }
   }
 }

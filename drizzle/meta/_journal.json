@@ -12,8 +12,22 @@
     {
       "idx": 1,
       "version": "7",
-      "when": 1779804292660,
-      "tag": "0001_perpetual_hellcat",
+      "when": 1779470509408,
+      "tag": "0001_strange_synch",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1779731255152,
+      "tag": "0002_robust_wrecker",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1779802661153,
+      "tag": "0003_milky_mimic",
       "breakpoints": true
     }
   ]

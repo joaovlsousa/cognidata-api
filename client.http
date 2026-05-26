@@ -1,6 +1,7 @@
 # Variables
 @baseUrl = http://localhost:3333
 @token = {{auth.response.body.$.token}}
+@sessionId = {{createSession.response.body.$.sessionId}}
 
 # ----- Auth routes -----
 
@@ -9,7 +10,7 @@ POST {{baseUrl}}/auth
 Content-Type: application/json
 
 {
-  "email": "user.admin@servidor.uepb.edu.br",
+  "email": "user.applicator@servidor.uepb.edu.br",
   "password": "123456"
 }
 
@@ -85,8 +86,8 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "name": "João Vitor de Lima Sousa",
-  "email": "joao.lima.sousa@aluno.uepb.edu.br",
+  "name": "Applicator User",
+  "email": "user.applicator@servidor.uepb.edu.br",
   "password": "123456",
   "cpf": "12345678900",
   "contactPhone": "83912345678",
@@ -118,7 +119,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "name": "Student 2",
+  "name": "Student 3",
   "birthDate": "2025-10-10",
   "gender": "male",
   "grade": "Portugês"
@@ -129,6 +130,8 @@ Content-Type: application/json
 
 
 # ----- Contacts routes -----
+
+###
 
 # @name createContact
 POST {{baseUrl}}/contacts
