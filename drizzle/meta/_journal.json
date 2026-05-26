@@ -5,29 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1779214809737,
-      "tag": "0000_cloudy_karen_page",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1779470509408,
-      "tag": "0001_strange_synch",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1779731255152,
-      "tag": "0002_robust_wrecker",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1779802661153,
-      "tag": "0003_milky_mimic",
+      "when": 1779826644518,
+      "tag": "0000_cloudy_war_machine",
       "breakpoints": true
     }
   ]
