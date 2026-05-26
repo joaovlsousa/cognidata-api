@@ -11,7 +11,7 @@ export const getProfileRoute: FastifyPluginAsyncZod = async (app) => {
     {
       schema: {
         summary: 'Get Profile Data',
-        description: '',
+        description: 'Retrieve the current user profile data.',
         tags: ['Users'],
         response: {
           200: getUserDto,

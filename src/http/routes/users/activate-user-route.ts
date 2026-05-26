@@ -11,8 +11,8 @@ export const activateUserRoute: FastifyPluginAsyncZod = async (app) => {
     '/users/:userId/activate',
     {
       schema: {
-        summary: '',
-        description: '',
+        summary: 'Activate User',
+        description: 'Activate a user by ID (admin only).',
         tags: ['Users'],
         params: z.object({
           userId: z.uuid(),

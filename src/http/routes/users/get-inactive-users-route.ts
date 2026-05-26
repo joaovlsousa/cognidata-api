@@ -11,8 +11,8 @@ export const getInactiveUsersRoute: FastifyPluginAsyncZod = async (app) => {
     '/users/inactive',
     {
       schema: {
-        summary: '',
-        description: '',
+        summary: 'Get Inactive Users',
+        description: 'Retrieve a list of inactive users (admin only).',
         tags: ['Users'],
         response: {
           200: getUsersDto,
