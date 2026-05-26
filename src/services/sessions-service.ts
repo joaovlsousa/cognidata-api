@@ -15,6 +15,7 @@ export class SessionsService {
       startTime: sessionDto.startTime,
       endTime: sessionDto.endTime,
       durationInSeconds: sessionDto.durationInSeconds,
+      skill: sessionDto.skill,
       countQuestion: sessionDto.countQuestion,
       score: sessionDto.score,
       percentage: sessionDto.percentage,
