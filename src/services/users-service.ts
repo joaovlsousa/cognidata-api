@@ -9,10 +9,19 @@ import type { UsersRepository } from '@/database/repositories/users-repository'
 import type { CreateAdminUserDto } from '@/dtos/users/create-admin-user-dto'
 import type { CreateApplicatorUserDto } from '@/dtos/users/create-applicator-user-dto'
 import type { GetUserDto } from '@/dtos/users/get-user-dto'
+import type { GetUsersDto } from '@/dtos/users/get-users-dto'
 import type { UpdateApplicatorUserDto } from '@/dtos/users/update-applicator-user-dto'
 
 export class UsersService {
   constructor(private readonly usersRepository: UsersRepository) {}
+
+  public async getInactiveUsers(): Promise<GetUsersDto> {
+    const users = await this.usersRepository.getAllInactive()
+
+    return {
+      users,
+    }
+  }
 
   public async getProfile(userId: string): Promise<GetUserDto> {
     const user = await this.usersRepository.getById(userId)

@@ -53,7 +53,15 @@ Authorization: Bearer {{token}}
 
 ###
 
+
+
 # ----- Users routes -----
+
+# @name getInactiveUsers
+GET {{baseUrl}}/users/inactive
+Authorization: Bearer {{token}}
+
+###
 
 # @name createAdminUser
 POST {{baseUrl}}/users/admin
@@ -100,6 +108,8 @@ Content-Type: application/json
 
 ###
 
+
+
 # Students routes
 
 # @name createStudent
@@ -115,6 +125,8 @@ Content-Type: application/json
 }
 
 ###
+
+
 
 # ----- Contacts routes -----
 

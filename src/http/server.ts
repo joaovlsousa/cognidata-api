@@ -23,6 +23,7 @@ import { healthCheckRoute } from './routes/public/health-check-route'
 import { createStudentRoute } from './routes/students/create-student-route'
 import { createAdminUserRoute } from './routes/users/create-admin-user-route'
 import { createApplicatorUserRoute } from './routes/users/create-applicator-user-route'
+import { getInactiveUsersRoute } from './routes/users/get-inactive-users-route'
 import { getProfileRoute } from './routes/users/get-profile-route'
 import { updateApplicatorUserRoute } from './routes/users/update-applicator-user-route'
 
@@ -66,6 +67,7 @@ server.register(resetPasswordRoute)
 
 // User routes
 server.register(getProfileRoute)
+server.register(getInactiveUsersRoute)
 server.register(createAdminUserRoute)
 server.register(createApplicatorUserRoute)
 server.register(updateApplicatorUserRoute)
