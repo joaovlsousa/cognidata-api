@@ -2,6 +2,7 @@
 @baseUrl = http://localhost:3333
 @token = {{auth.response.body.$.token}}
 @sessionId = {{createSession.response.body.$.sessionId}}
+@inactiveUserId = {{getInactiveUsers.response.body.$.users[0].id}}
 
 # ----- Auth routes -----
 
@@ -58,6 +59,12 @@ Authorization: Bearer {{token}}
 
 # @name getInactiveUsers
 GET {{baseUrl}}/users/inactive
+Authorization: Bearer {{token}}
+
+###
+
+# @name activateUser
+PATCH {{baseUrl}}/users/{{inactiveUserId}}/activate
 Authorization: Bearer {{token}}
 
 ###

@@ -32,6 +32,17 @@ export class UsersService {
     }
   }
 
+  public async activateUser(userId: string): Promise<void> {
+    const user = await this.usersRepository.getById(userId)
+
+    if (!user) {
+      throw new NotFoundError('Usuário não encontrado')
+    }
+
+    user.isActive = true
+    await this.usersRepository.save(user)
+  }
+
   public async createAdminUser(userDto: CreateAdminUserDto): Promise<void> {
     const isSameUser = await this.usersRepository.getByEmail(userDto.email)
 
@@ -42,13 +53,14 @@ export class UsersService {
     const passwordHash = await bcrypt.hash(userDto.password, 10)
 
     await this.usersRepository.save({
+      role: 'admin',
+      isActive: true,
       name: userDto.name,
       email: userDto.email,
       password: passwordHash,
       cpf: userDto.cpf,
       contactPhone: userDto.contactPhone,
       institution: userDto.institution,
-      role: 'admin',
     })
   }
 
