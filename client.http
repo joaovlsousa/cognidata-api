@@ -136,6 +136,7 @@ Content-Type: application/json
   "countQuestion": 5,
   "score": 4,
   "percentage": 80,
+  "skill": "Skill A",
   "thetaFinal": 3,
   "thetaError": 2,
   "startTime": "2025-05-22 15:00:00",
@@ -161,6 +162,8 @@ Content-Type: application/json
   "probability": 4,
   "questionNumber": 2,
   "stimulusName": "stimulus",
+  "skill": "Skill A",
+  "responseTimeInSeconds": 30,
   "thetaAfter": 3,
   "thetaBefore": 7,
   "thetaError": 2
