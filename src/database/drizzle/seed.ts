@@ -7,16 +7,20 @@ async function seed() {
   try {
     console.log('Seeding database...')
 
-    const email = 'user.master@email.com'
-    const password = await bcrypt.hash('master.password', 10)
+    const email = 'user.admin@servidor.uepb.edu.br'
+    const password = await bcrypt.hash('123456', 10)
 
     await db.delete(usersTable).where(eq(usersTable.email, email))
 
     await db.insert(usersTable).values({
-      name: 'Master User',
+      name: 'Admin User',
+      role: 'admin',
+      isActive: true,
       email,
       password,
-      role: 'master',
+      contactPhone: '83912345678',
+      cpf: '12345678900',
+      institution: 'Universidade Estadual da Paraíba',
     })
 
     console.log('Database seeded')
