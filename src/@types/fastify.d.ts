@@ -2,7 +2,7 @@ import 'fastify'
 
 interface GetCurrentUserResponse {
   sub: string
-  role: 'master' | 'admin' | 'applicator'
+  role: 'admin' | 'applicator'
 }
 
 declare module 'fastify' {

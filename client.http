@@ -11,7 +11,7 @@ POST {{baseUrl}}/auth
 Content-Type: application/json
 
 {
-  "email": "user.applicator@servidor.uepb.edu.br",
+  "email": "user.admin@servidor.uepb.edu.br",
   "password": "123456"
 }
 

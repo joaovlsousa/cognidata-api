@@ -1,3 +1,4 @@
+import { fastifyCookie } from '@fastify/cookie'
 import { fastifyCors } from '@fastify/cors'
 import { fastifyJwt } from '@fastify/jwt'
 import { fastifySwagger } from '@fastify/swagger'
@@ -39,19 +40,36 @@ server.setSerializerCompiler(serializerCompiler)
 
 server.register(fastifyJwt, {
   secret: env.JWT_SECRET,
+  cookie: {
+    cookieName: 'token',
+    signed: true,
+  },
 })
 server.register(fastifyCors, {
-  origin: '*',
-  methods: ['GET', 'PUT', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
+  origin: ['http://localhost:5173'],
+  credentials: true,
+  methods: ['GET', 'PUT', 'POST', 'PATCH', 'DELETE', 'OPTIONS', 'HEAD'],
+})
+server.register(fastifyCookie, {
+  secret: env.COOKIES_SECRET,
 })
 
 server.register(fastifySwagger, {
   openapi: {
     info: {
-      title: 'Psicho Hub API',
+      title: 'Psico Hub API',
       description:
         'API para gerenciamento e análise de dados psicológicos de pacientes e alunos.',
       version: '1.0.0',
+    },
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        },
+      },
     },
   },
   transform: jsonSchemaTransform,

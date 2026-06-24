@@ -36,17 +36,27 @@ export const authenticateWithEmailAndPasswordRoute: FastifyPluginAsyncZod =
         const { user } =
           await authService.authenticateWithEmailAndPassword(authDto)
 
+        const tokenMaxAge = 60 * 60 * 24 * 7 //7 days
         const payload = tokenSchema.parse({ sub: user.id, role: user.role })
         const token = await reply.jwtSign(payload, {
           sign: {
             sub: user.id,
-            expiresIn: '7d',
+            expiresIn: tokenMaxAge,
           },
         })
 
-        return reply.status(201).send({
-          token,
-        })
+        return reply
+          .setCookie('token', token, {
+            httpOnly: true,
+            maxAge: tokenMaxAge,
+            path: '/',
+            signed: true,
+          })
+          .status(201)
+          .send({
+            token,
+            userRole: user.role,
+          })
       }
     )
   }
