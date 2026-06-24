@@ -7,8 +7,9 @@ export const signOutRoute: FastifyPluginAsyncZod = async (app) => {
     '/auth/sign-out',
     {
       schema: {
-        summary: '',
-        description: '',
+        summary: 'Sign out current user',
+        description:
+          'Clears the authentication token cookie and signs out the current user.',
         tags: ['Auth'],
         response: {
           204: z.void(),
