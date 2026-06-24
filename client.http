@@ -55,6 +55,11 @@ Authorization: Bearer {{token}}
 
 ###
 
+# @name signOut
+DELETE {{baseUrl}}/auth/sign-out
+
+###
+
 # ----- Users routes -----
 
 # @name getInactiveUsers
