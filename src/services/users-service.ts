@@ -58,9 +58,6 @@ export class UsersService {
       name: userDto.name,
       email: userDto.email,
       password: passwordHash,
-      cpf: userDto.cpf,
-      contactPhone: userDto.contactPhone,
-      institution: userDto.institution,
     })
   }
 
@@ -81,9 +78,7 @@ export class UsersService {
       name: applicatorDto.name,
       email: applicatorDto.email,
       password: passwordHash,
-      cpf: applicatorDto.cpf,
-      contactPhone: applicatorDto.contactPhone,
-      institution: applicatorDto.institution,
+      crp: applicatorDto.crp,
       role: 'applicator',
     })
   }
@@ -99,8 +94,6 @@ export class UsersService {
     }
 
     user.name = applicatorDto.name
-    user.contactPhone = applicatorDto.contactPhone
-    user.institution = applicatorDto.institution
 
     await this.usersRepository.save(user)
   }

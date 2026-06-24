@@ -6,16 +6,12 @@ export const createApplicatorUserDto = createInsertSchema(usersTable, {
   name: z.string().min(1),
   email: z.email(),
   password: z.string().min(6),
-  cpf: z.string().length(11),
-  contactPhone: z.string().length(11),
-  institution: z.string().min(3),
+  crp: z.string().length(7),
 }).pick({
   name: true,
   email: true,
   password: true,
-  cpf: true,
-  contactPhone: true,
-  institution: true,
+  crp: true,
 })
 
 export type CreateApplicatorUserDto = z.infer<typeof createApplicatorUserDto>

@@ -18,9 +18,6 @@ async function seed() {
       isActive: true,
       email,
       password,
-      contactPhone: '83912345678',
-      cpf: '12345678900',
-      institution: 'Universidade Estadual da Paraíba',
     })
 
     console.log('Database seeded')

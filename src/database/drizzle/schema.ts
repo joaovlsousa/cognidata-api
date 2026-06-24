@@ -18,9 +18,7 @@ export const usersTable = pgTable('users', {
   name: varchar({ length: 200 }).notNull(),
   email: varchar({ length: 255 }).notNull().unique(),
   password: varchar({ length: 255 }).notNull(),
-  cpf: varchar({ length: 11 }).notNull(),
-  institution: varchar({ length: 255 }).notNull(),
-  contactPhone: varchar({ length: 11 }).notNull(),
+  crp: varchar({ length: 7 }),
   isActive: boolean().notNull().default(false),
   createdAt: timestamp().defaultNow(),
 })
