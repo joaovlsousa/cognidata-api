@@ -5,7 +5,6 @@ import { usersTable } from '@/database/drizzle/schema'
 export const getUserDto = z.object({
   user: createSelectSchema(usersTable).omit({
     password: true,
-    cpf: true,
   }),
 })
 
