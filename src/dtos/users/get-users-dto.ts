@@ -6,7 +6,6 @@ export const getUsersDto = z.object({
   users: z.array(
     createSelectSchema(usersTable).omit({
       password: true,
-      cpf: true,
     })
   ),
 })

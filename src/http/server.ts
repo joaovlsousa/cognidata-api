@@ -1,3 +1,4 @@
+import { fastifyCookie } from '@fastify/cookie'
 import { fastifyCors } from '@fastify/cors'
 import { fastifyJwt } from '@fastify/jwt'
 import { fastifySwagger } from '@fastify/swagger'
@@ -14,6 +15,7 @@ import { errorHandler } from './error-handler'
 import { authenticateWithEmailAndPasswordRoute } from './routes/auth/authenticate-with-email-and-password-route'
 import { generateOtpCodeRoute } from './routes/auth/generate-otp-code-route'
 import { resetPasswordRoute } from './routes/auth/reset-password-route'
+import { signOutRoute } from './routes/auth/sign-out-route'
 import { verifyOtpCodeRoute } from './routes/auth/verify-otp-code-route'
 import { closeContactByIdRoute } from './routes/contacts/close-contact-by-id-route'
 import { createContactRoute } from './routes/contacts/create-contact-route'
@@ -39,19 +41,36 @@ server.setSerializerCompiler(serializerCompiler)
 
 server.register(fastifyJwt, {
   secret: env.JWT_SECRET,
+  cookie: {
+    cookieName: 'token',
+    signed: true,
+  },
 })
 server.register(fastifyCors, {
-  origin: '*',
-  methods: ['GET', 'PUT', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
+  origin: ['http://localhost:5173'],
+  credentials: true,
+  methods: ['GET', 'PUT', 'POST', 'PATCH', 'DELETE', 'OPTIONS', 'HEAD'],
+})
+server.register(fastifyCookie, {
+  secret: env.COOKIES_SECRET,
 })
 
 server.register(fastifySwagger, {
   openapi: {
     info: {
-      title: 'Psicho Hub API',
+      title: 'Psico Hub API',
       description:
         'API para gerenciamento e análise de dados psicológicos de pacientes e alunos.',
       version: '1.0.0',
+    },
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        },
+      },
     },
   },
   transform: jsonSchemaTransform,
@@ -68,6 +87,7 @@ server.register(authenticateWithEmailAndPasswordRoute)
 server.register(generateOtpCodeRoute)
 server.register(verifyOtpCodeRoute)
 server.register(resetPasswordRoute)
+server.register(signOutRoute)
 
 // User routes
 server.register(getProfileRoute)

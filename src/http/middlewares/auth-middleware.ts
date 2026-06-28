@@ -5,7 +5,9 @@ import { tokenSchema } from '@/core/schemas/token-schema'
 export async function authMiddleware(request: FastifyRequest) {
   request.getCurrentUser = async () => {
     try {
-      await request.jwtVerify()
+      await request.jwtVerify({
+        onlyCookie: false,
+      })
 
       const { sub, role } = tokenSchema.parse(request.user)
 

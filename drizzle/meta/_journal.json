@@ -8,6 +8,13 @@
       "when": 1779826644518,
       "tag": "0000_cloudy_war_machine",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1782329391207,
+      "tag": "0001_daily_thing",
+      "breakpoints": true
     }
   ]
 }
