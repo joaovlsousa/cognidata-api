@@ -19,11 +19,11 @@ import { closeContactByIdRoute } from './routes/contacts/close-contact-by-id-rou
 import { createContactRoute } from './routes/contacts/create-contact-route'
 import { getContactByIdRoute } from './routes/contacts/get-contact-by-id-route'
 import { getContactsRoute } from './routes/contacts/get-contacts-route'
+import { createPatientRoute } from './routes/patients/create-patient-route'
+import { getAllPatientsByApplicatorIdRoute } from './routes/patients/get-all-patients-by-applicator-id-route'
 import { healthCheckRoute } from './routes/public/health-check-route'
 import { createSessionItemRoute } from './routes/session-items/create-session-item-route'
 import { createSessionRoute } from './routes/sessions/create-session-route'
-import { createStudentRoute } from './routes/students/create-student-route'
-import { getAllStudentsByApplicatorIdRoute } from './routes/students/get-all-students-by-applicator-id-route'
 import { activateUserRoute } from './routes/users/activate-user-route'
 import { createAdminUserRoute } from './routes/users/create-admin-user-route'
 import { createApplicatorUserRoute } from './routes/users/create-applicator-user-route'
@@ -87,9 +87,9 @@ server.register(createApplicatorUserRoute)
 server.register(activateUserRoute)
 server.register(updateApplicatorUserRoute)
 
-// Student routes
-server.register(createStudentRoute)
-server.register(getAllStudentsByApplicatorIdRoute)
+// Patient routes
+server.register(createPatientRoute)
+server.register(getAllPatientsByApplicatorIdRoute)
 
 // Session routes
 server.register(createSessionRoute)

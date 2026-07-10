@@ -15,6 +15,13 @@
       "when": 1782329391207,
       "tag": "0001_daily_thing",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1783710521149,
+      "tag": "0002_worthless_owl",
+      "breakpoints": true
     }
   ]
 }

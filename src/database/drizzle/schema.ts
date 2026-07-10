@@ -23,7 +23,7 @@ export const usersTable = pgTable('users', {
   createdAt: timestamp().defaultNow(),
 })
 
-export const studentsTable = pgTable('students', {
+export const patientsTable = pgTable('patients', {
   id: uuid().primaryKey().defaultRandom(),
   applicatorId: uuid()
     .notNull()
@@ -33,8 +33,19 @@ export const studentsTable = pgTable('students', {
   name: varchar({ length: 200 }).notNull(),
   gender: varchar({ enum: ['male', 'female'] }).notNull(),
   birthDate: date().notNull(),
-  institution: varchar({ length: 255 }).notNull(),
-  grade: varchar({ length: 255 }).notNull(),
+  patientResponsibleName: varchar({ length: 255 }).notNull(),
+  patientResponsibleKinship: varchar({
+    enum: ['father/mother', 'grandfather/grandmother', 'uncle/aunt'],
+  }).notNull(),
+  patientResponsiblePhone: varchar({ length: 11 }).notNull(),
+  patientResponsibleEmail: varchar({ length: 255 }).notNull(),
+  schoolName: varchar({ length: 255 }).notNull(),
+  schoolYear: integer().notNull(),
+  schoolSchedule: varchar({
+    enum: ['morning', 'afternoon', 'fullTime'],
+  }).notNull(),
+  medicalChiefComplaint: varchar({ length: 255 }).notNull(),
+  medicalObservations: text(),
   createdAt: timestamp().defaultNow(),
 })
 
@@ -45,9 +56,9 @@ export const sessionsTable = pgTable('sessions', {
     .references(() => usersTable.id, {
       onDelete: 'cascade',
     }),
-  studentId: uuid()
+  patientId: uuid()
     .notNull()
-    .references(() => studentsTable.id, {
+    .references(() => patientsTable.id, {
       onDelete: 'cascade',
     }),
   durationInSeconds: doublePrecision().notNull(),

@@ -11,7 +11,7 @@ export class SessionsService {
   ): Promise<CreateSessionResponseDto> {
     const session = await this.sessionsRepository.save({
       applicatorId,
-      studentId: sessionDto.studentId,
+      patientId: sessionDto.patientId,
       startTime: sessionDto.startTime,
       endTime: sessionDto.endTime,
       durationInSeconds: sessionDto.durationInSeconds,

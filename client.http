@@ -118,15 +118,15 @@ Content-Type: application/json
 
 ###
 
-# Students routes
+# Patients routes
 
-# @name createStudent
-POST {{baseUrl}}/students
+# @name createPatient
+POST {{baseUrl}}/patients
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "name": "Student 3",
+  "name": "Patient 3",
   "birthDate": "2025-10-10",
   "gender": "male",
   "grade": "Portugês"
@@ -142,7 +142,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "studentId": "267ed68f-2915-4d7a-92d6-1be956965c5b",
+  "patientId": "267ed68f-2915-4d7a-92d6-1be956965c5b",
   "durationInSeconds": 120,
   "countQuestion": 5,
   "score": 4,
