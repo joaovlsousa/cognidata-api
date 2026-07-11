@@ -32,7 +32,7 @@ export const patientsTable = pgTable('patients', {
     }),
   name: varchar({ length: 200 }).notNull(),
   gender: varchar({ enum: ['male', 'female'] }).notNull(),
-  birthDate: date().notNull(),
+  dateOfBirth: date().notNull(),
   patientResponsibleName: varchar({ length: 255 }).notNull(),
   patientResponsibleKinship: varchar({
     enum: ['father/mother', 'grandfather/grandmother', 'uncle/aunt'],

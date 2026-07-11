@@ -50,7 +50,7 @@ export class PatientsService {
     await this.patientsRepository.save({
       applicatorId,
       name: data.name,
-      birthDate: data.birthDate,
+      dateOfBirth: data.dateOfBirth,
       gender: data.gender,
       patientResponsibleName: data.patientResponsibleName,
       patientResponsibleEmail: data.patientResponsibleEmail,

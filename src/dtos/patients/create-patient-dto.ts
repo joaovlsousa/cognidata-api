@@ -4,20 +4,20 @@ import { patientsTable } from '@/database/drizzle/schema'
 
 export const createPatientDto = createInsertSchema(patientsTable, {
   name: z.string().min(1),
-  birthDate: z.coerce.date().transform((date) => date.toISOString()),
+  dateOfBirth: z.iso.date(),
   patientResponsibleName: z.string().min(1),
   patientResponsibleEmail: z.email(),
   patientResponsiblePhone: z
     .string()
     .length(11)
-    .refine((v) => v.replace(/(\D)/g, '').length !== 11),
+    .refine((v) => v.replace(/(\D)/g, '').length === 11),
   schoolName: z.string().min(1),
   schoolYear: z.int().min(1).max(6),
   medicalChiefComplaint: z.string().min(1),
   medicalObservations: z.string().optional(),
 }).pick({
   name: true,
-  birthDate: true,
+  dateOfBirth: true,
   gender: true,
   patientResponsibleName: true,
   patientResponsibleEmail: true,

@@ -127,7 +127,7 @@ Content-Type: application/json
 
 {
   "name": "Patient 3",
-  "birthDate": "2025-10-10",
+  "dateOfBirth": "2025-10-10",
   "gender": "male",
   "grade": "Portugês"
 }
