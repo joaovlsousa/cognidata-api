@@ -3,24 +3,23 @@ import { z } from 'zod'
 import { httpErrorSchema } from '@/core/schemas/http-error-schema'
 import { DrizzlePatientsRepository } from '@/database/drizzle/repositories/drizzle-patients-repository'
 import { DrizzleUsersRepository } from '@/database/drizzle/repositories/drizzle-users-repository'
-import { getPatientByIdDto } from '@/dtos/patients/get-patient-by-id-dto'
 import { authMiddleware } from '@/http/middlewares/auth-middleware'
 import { authorizationMiddleware } from '@/http/middlewares/authorization-middleware'
 import { PatientsService } from '@/services/patients-service'
 
-export const getPatientByIdRoute: FastifyPluginAsyncZod = async (app) => {
-  app.get(
+export const deletePatientByIdRoute: FastifyPluginAsyncZod = async (app) => {
+  app.delete(
     '/patients/:patientId',
     {
       schema: {
-        summary: 'Get patient by ID',
-        description: 'Retrieves a patient by the provided ID.',
+        summary: 'Delete patient by ID',
+        description: 'Delete a patient by the provided ID.',
         tags: ['Patients'],
         params: z.object({
           patientId: z.uuid(),
         }),
         response: {
-          200: getPatientByIdDto,
+          204: z.void(),
           401: httpErrorSchema,
           403: httpErrorSchema,
           404: httpErrorSchema,
@@ -37,9 +36,9 @@ export const getPatientByIdRoute: FastifyPluginAsyncZod = async (app) => {
         new DrizzleUsersRepository(),
         new DrizzlePatientsRepository()
       )
-      const patient = await patientsService.getById(patientId)
+      await patientsService.deleteById(patientId)
 
-      return reply.status(200).send(patient)
+      return reply.status(204).send()
     }
   )
 }

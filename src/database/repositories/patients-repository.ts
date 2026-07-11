@@ -13,4 +13,5 @@ export interface PatientsRepository {
   save(patient: SavePatientSchema): Promise<SelectPatientSchema>
   getById(patientId: string): Promise<SelectPatientSchema | null>
   getAllByApplicatorId(applicatorId: string): Promise<SelectPatientSchema[]>
+  deleteById(patientId: string): Promise<void>
 }

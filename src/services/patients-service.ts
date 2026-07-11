@@ -65,4 +65,14 @@ export class PatientsService {
       medicalObservations: data.medicalObservations,
     })
   }
+
+  public async deleteById(patientId: string): Promise<void> {
+    const patient = await this.patientsRepository.getById(patientId)
+
+    if (!patient) {
+      throw new NotFoundError('Paciente não encontrado')
+    }
+
+    await this.patientsRepository.deleteById(patientId)
+  }
 }
