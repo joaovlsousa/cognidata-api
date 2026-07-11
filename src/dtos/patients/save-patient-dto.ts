@@ -2,7 +2,7 @@ import { createInsertSchema } from 'drizzle-zod'
 import { z } from 'zod'
 import { patientsTable } from '@/database/drizzle/schema'
 
-export const createPatientDto = createInsertSchema(patientsTable, {
+export const savePatientDto = createInsertSchema(patientsTable, {
   name: z.string().min(1),
   dateOfBirth: z.iso.date(),
   patientResponsibleName: z.string().min(1),
@@ -30,4 +30,4 @@ export const createPatientDto = createInsertSchema(patientsTable, {
   medicalObservations: true,
 })
 
-export type CreatePatientDto = z.infer<typeof createPatientDto>
+export type SavePatientDto = z.infer<typeof savePatientDto>

@@ -2,9 +2,9 @@ import { ForbiddenError } from '@/core/errors/forbidden-error'
 import { NotFoundError } from '@/core/errors/not-found-error'
 import type { PatientsRepository } from '@/database/repositories/patients-repository'
 import type { UsersRepository } from '@/database/repositories/users-repository'
-import type { CreatePatientDto } from '@/dtos/patients/create-patient-dto'
 import type { GetAllPatientsByApplicatorIdDto } from '@/dtos/patients/get-all-patients-by-applicator-id-dto'
 import type { GetPatientByIdDto } from '@/dtos/patients/get-patient-by-id-dto'
+import type { SavePatientDto } from '@/dtos/patients/save-patient-dto'
 
 export class PatientsService {
   constructor(
@@ -35,9 +35,10 @@ export class PatientsService {
     }
   }
 
-  public async create(
-    data: CreatePatientDto,
-    applicatorId: string
+  public async save(
+    data: SavePatientDto,
+    applicatorId: string,
+    patientId?: string
   ): Promise<void> {
     const applicator = await this.usersRepository.getById(applicatorId)
 
@@ -48,6 +49,7 @@ export class PatientsService {
     }
 
     await this.patientsRepository.save({
+      id: patientId,
       applicatorId,
       name: data.name,
       dateOfBirth: data.dateOfBirth,

@@ -8,16 +8,18 @@ import { authMiddleware } from '@/http/middlewares/auth-middleware'
 import { authorizationMiddleware } from '@/http/middlewares/authorization-middleware'
 import { PatientsService } from '@/services/patients-service'
 
-export const createPatientRoute: FastifyPluginAsyncZod = async (app) => {
-  app.post(
-    '/patients',
+export const editPatientRoute: FastifyPluginAsyncZod = async (app) => {
+  app.put(
+    '/patients/:patientId',
     {
       schema: {
-        summary: 'Create Patient',
-        description:
-          'Create a new patient associated with the current applicator.',
+        summary: 'Edit Patient',
+        description: 'Edit a patient associated with the current applicator.',
         tags: ['Patients'],
         body: savePatientDto,
+        params: z.object({
+          patientId: z.uuid(),
+        }),
         response: {
           201: z.void(),
           400: httpErrorSchema,
@@ -32,12 +34,13 @@ export const createPatientRoute: FastifyPluginAsyncZod = async (app) => {
       await request.isApplicatorCurrentUser()
       const { sub: applicatorId } = await request.getCurrentUser()
       const patientDto = request.body
+      const { patientId } = request.params
 
       const patientsService = new PatientsService(
         new DrizzleUsersRepository(),
         new DrizzlePatientsRepository()
       )
-      await patientsService.save(patientDto, applicatorId)
+      await patientsService.save(patientDto, applicatorId, patientId)
 
       return reply.status(201).send()
     }
