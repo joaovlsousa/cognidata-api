@@ -1,25 +1,26 @@
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
+import { z } from 'zod'
 import { httpErrorSchema } from '@/core/schemas/http-error-schema'
-import { DrizzleStudentsRepository } from '@/database/drizzle/repositories/drizzle-students-repository'
+import { DrizzlePatientsRepository } from '@/database/drizzle/repositories/drizzle-patients-repository'
 import { DrizzleUsersRepository } from '@/database/drizzle/repositories/drizzle-users-repository'
-import { getAllStudentsByApplicatorIdDto } from '@/dtos/students/get-all-students-by-applicator-id-dto'
+import { savePatientDto } from '@/dtos/patients/save-patient-dto'
 import { authMiddleware } from '@/http/middlewares/auth-middleware'
 import { authorizationMiddleware } from '@/http/middlewares/authorization-middleware'
-import { StudentsService } from '@/services/students-service'
+import { PatientsService } from '@/services/patients-service'
 
-export const getAllStudentsByApplicatorIdRoute: FastifyPluginAsyncZod = async (
-  app
-) => {
-  app.get(
-    '/students',
+export const createPatientRoute: FastifyPluginAsyncZod = async (app) => {
+  app.post(
+    '/patients',
     {
       schema: {
-        summary: 'Get All Students by Applicator ID',
+        summary: 'Create Patient',
         description:
-          'Retrieve all students associated with the current applicator user.',
-        tags: ['Students'],
+          'Create a new patient associated with the current applicator.',
+        tags: ['Patients'],
+        body: savePatientDto,
         response: {
-          200: getAllStudentsByApplicatorIdDto,
+          201: z.void(),
+          400: httpErrorSchema,
           401: httpErrorSchema,
           403: httpErrorSchema,
           500: httpErrorSchema,
@@ -30,14 +31,15 @@ export const getAllStudentsByApplicatorIdRoute: FastifyPluginAsyncZod = async (
     async (request, reply) => {
       await request.isApplicatorCurrentUser()
       const { sub: applicatorId } = await request.getCurrentUser()
+      const patientDto = request.body
 
-      const studentsService = new StudentsService(
+      const patientsService = new PatientsService(
         new DrizzleUsersRepository(),
-        new DrizzleStudentsRepository()
+        new DrizzlePatientsRepository()
       )
-      const students = await studentsService.getAllByApplicatorId(applicatorId)
+      await patientsService.save(patientDto, applicatorId)
 
-      return reply.status(200).send(students)
+      return reply.status(201).send()
     }
   )
 }

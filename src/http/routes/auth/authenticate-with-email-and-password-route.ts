@@ -45,18 +45,9 @@ export const authenticateWithEmailAndPasswordRoute: FastifyPluginAsyncZod =
           },
         })
 
-        return reply
-          .setCookie('token', token, {
-            httpOnly: true,
-            maxAge: tokenMaxAge,
-            path: '/',
-            signed: true,
-          })
-          .status(201)
-          .send({
-            token,
-            userRole: user.role,
-          })
+        return reply.status(201).send({
+          token,
+        })
       }
     )
   }

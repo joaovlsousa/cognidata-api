@@ -1,0 +1,1 @@
+ALTER TABLE "patients" RENAME COLUMN "date_od_birth" TO "date_of_birth";
