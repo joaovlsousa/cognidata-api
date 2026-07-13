@@ -1,8 +1,10 @@
-import { eq } from 'drizzle-orm'
+import { and, count, desc, eq, ilike } from 'drizzle-orm'
 import type {
+  PatientsPaginationOptions,
   PatientsRepository,
   SavePatientSchema,
   SelectPatientSchema,
+  SelectPatientWithMetadataSchema,
 } from '@/database/repositories/patients-repository'
 import { db } from '..'
 import { patientsTable } from '../schema'
@@ -18,15 +20,43 @@ export class DrizzlePatientsRepository implements PatientsRepository {
     return patient ?? null
   }
 
-  public async getAllByApplicatorId(
-    applicatorId: string
-  ): Promise<SelectPatientSchema[]> {
-    const patients = await db
-      .select()
-      .from(patientsTable)
-      .where(eq(patientsTable.applicatorId, applicatorId))
+  public async getByApplicatorId(
+    applicatorId: string,
+    options?: PatientsPaginationOptions
+  ): Promise<SelectPatientWithMetadataSchema> {
+    const page = options?.page ?? 1
+    const perPage = options?.perPage ?? 10
+    const offset = (page - 1) * perPage
 
-    return patients
+    const conditions = [eq(patientsTable.applicatorId, applicatorId)]
+
+    if (options?.name?.length) {
+      conditions.push(ilike(patientsTable.name, `%${options.name}%`))
+    }
+
+    const whereClause = and(...conditions)
+
+    const [patients, [{ total }]] = await Promise.all([
+      db
+        .select()
+        .from(patientsTable)
+        .where(whereClause)
+        .orderBy(desc(patientsTable.createdAt))
+        .limit(perPage)
+        .offset(offset),
+
+      db.select({ total: count() }).from(patientsTable).where(whereClause),
+    ])
+
+    return {
+      patients,
+      meta: {
+        page,
+        perPage,
+        total,
+        totalPages: Math.ceil(total / perPage),
+      },
+    }
   }
 
   public async save(patient: SavePatientSchema): Promise<SelectPatientSchema> {
