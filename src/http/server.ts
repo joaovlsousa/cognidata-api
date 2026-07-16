@@ -9,6 +9,7 @@ import {
   validatorCompiler,
   type ZodTypeProvider,
 } from 'fastify-type-provider-zod'
+import { origin } from '@/config/cors'
 import { env } from '@/config/env'
 import { errorHandler } from './error-handler'
 import { authenticateWithEmailAndPasswordRoute } from './routes/auth/authenticate-with-email-and-password-route'
@@ -45,7 +46,7 @@ server.register(fastifyJwt, {
 })
 
 server.register(fastifyCors, {
-  origin: ['http://localhost:5173'],
+  origin,
   methods: ['GET', 'PUT', 'POST', 'PATCH', 'DELETE', 'OPTIONS', 'HEAD'],
 })
 
