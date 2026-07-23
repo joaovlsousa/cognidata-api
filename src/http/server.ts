@@ -25,6 +25,7 @@ import { deletePatientByIdRoute } from './routes/patients/delete-patient-by-id-r
 import { editPatientRoute } from './routes/patients/edit-patient-route'
 import { getPatientsByApplicatorIdRoute } from './routes/patients/get-all-patients-by-applicator-id-route'
 import { getPatientByIdRoute } from './routes/patients/get-patient-by-id-route'
+import { getTotalOfPatientsByApplicatorIdRoute } from './routes/patients/get-total-of-patients-by-applicator-id-route'
 import { healthCheckRoute } from './routes/public/health-check-route'
 import { createSessionItemRoute } from './routes/session-items/create-session-item-route'
 import { createSessionRoute } from './routes/sessions/create-session-route'
@@ -95,6 +96,7 @@ server.register(updateApplicatorUserRoute)
 server.register(createPatientRoute)
 server.register(editPatientRoute)
 server.register(getPatientsByApplicatorIdRoute)
+server.register(getTotalOfPatientsByApplicatorIdRoute)
 server.register(getPatientByIdRoute)
 server.register(deletePatientByIdRoute)
 

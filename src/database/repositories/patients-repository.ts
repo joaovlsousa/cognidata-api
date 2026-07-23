@@ -26,6 +26,11 @@ export type SelectPatientWithMetadataSchema = {
   }
 }
 
+export type SelectTotalOfPatientsSchema = {
+  totalOfPatients: number
+  thisMonth: number
+}
+
 export interface PatientsRepository {
   save(patient: SavePatientSchema): Promise<SelectPatientSchema>
   getById(patientId: string): Promise<SelectPatientSchema | null>
@@ -33,5 +38,8 @@ export interface PatientsRepository {
     applicatorId: string,
     options?: PatientsPaginationOptions
   ): Promise<SelectPatientWithMetadataSchema>
+  getTotalByApplicatorId(
+    applicatorId: string
+  ): Promise<SelectTotalOfPatientsSchema>
   deleteById(patientId: string): Promise<void>
 }

@@ -1,10 +1,12 @@
-import { and, count, desc, eq, ilike } from 'drizzle-orm'
+import { startOfMonth } from 'date-fns'
+import { and, count, desc, eq, gte, ilike } from 'drizzle-orm'
 import type {
   PatientsPaginationOptions,
   PatientsRepository,
   SavePatientSchema,
   SelectPatientSchema,
   SelectPatientWithMetadataSchema,
+  SelectTotalOfPatientsSchema,
 } from '@/database/repositories/patients-repository'
 import { db } from '..'
 import { patientsTable } from '../schema'
@@ -56,6 +58,25 @@ export class DrizzlePatientsRepository implements PatientsRepository {
         total,
         totalPages: Math.ceil(total / perPage),
       },
+    }
+  }
+
+  public async getTotalByApplicatorId(
+    applicatorId: string
+  ): Promise<SelectTotalOfPatientsSchema> {
+    const startDateOfMonth = startOfMonth(new Date())
+
+    const [{ thisMonth, totalOfPatients }] = await db
+      .select({
+        totalOfPatients: count(),
+        thisMonth: count(gte(patientsTable.createdAt, startDateOfMonth)),
+      })
+      .from(patientsTable)
+      .where(eq(patientsTable.applicatorId, applicatorId))
+
+    return {
+      totalOfPatients,
+      thisMonth,
     }
   }
 

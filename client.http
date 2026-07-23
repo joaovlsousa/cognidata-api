@@ -11,7 +11,7 @@ POST {{baseUrl}}/auth
 Content-Type: application/json
 
 {
-  "email": "user.admin@servidor.uepb.edu.br",
+  "email": "user.applicator@servidor.uepb.edu.br",
   "password": "123456"
 }
 
@@ -131,6 +131,12 @@ Content-Type: application/json
   "gender": "male",
   "grade": "Portugês"
 }
+
+###
+
+# @name getTotalPatientsByApplicatorId
+GET {{baseUrl}}/patients/total
+Authorization: Bearer {{token}}
 
 ###
 
