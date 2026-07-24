@@ -12,7 +12,7 @@ export const savePatientDto = createInsertSchema(patientsTable, {
     .length(11)
     .refine((v) => v.replace(/(\D)/g, '').length === 11),
   schoolName: z.string().min(1),
-  schoolYear: z.int().min(1).max(6),
+  schoolYear: z.coerce.number().int().min(1).max(6),
   medicalChiefComplaint: z.string().min(1),
   medicalObservations: z.string().optional(),
 }).pick({

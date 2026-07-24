@@ -1,12 +1,17 @@
+import { BadRequestError } from '@/core/errors/bad-request-error'
 import { ForbiddenError } from '@/core/errors/forbidden-error'
 import { NotFoundError } from '@/core/errors/not-found-error'
+import { parseAndValidateCsv } from '@/core/functions/parse-and-validate-csv'
 import type { PatientsRepository } from '@/database/repositories/patients-repository'
 import type { UsersRepository } from '@/database/repositories/users-repository'
 import type { GetPatientByIdDto } from '@/dtos/patients/get-patient-by-id-dto'
 import type { GetPatientsByApplicatorIdRequestDto } from '@/dtos/patients/get-patients-by-applicator-id-request-dto'
 import type { GetPatientsByApplicatorIdResponseDto } from '@/dtos/patients/get-patients-by-applicator-id-response-dto'
 import type { GetTotalOfPatientsByApplicatorIdDto } from '@/dtos/patients/get-total-of-patients-by-applicator-id-dto'
-import type { SavePatientDto } from '@/dtos/patients/save-patient-dto'
+import {
+  type SavePatientDto,
+  savePatientDto,
+} from '@/dtos/patients/save-patient-dto'
 
 export class PatientsService {
   constructor(
@@ -50,6 +55,35 @@ export class PatientsService {
 
     return {
       patient,
+    }
+  }
+
+  public async createFromCsv(
+    csvContent: string,
+    applicatorId: string
+  ): Promise<void> {
+    const { data, invalidRows } = parseAndValidateCsv<SavePatientDto>(
+      csvContent,
+      savePatientDto
+    )
+
+    if (invalidRows.length) {
+      throw new BadRequestError(
+        `O arquivo possui as seguintes linhas inválidas: ${invalidRows.slice(0, 5)}`
+      )
+    }
+
+    const totalOfPatientsSaved = await this.patientsRepository.createMany(
+      data.map((row) => ({
+        applicatorId,
+        ...row,
+      }))
+    )
+
+    if (totalOfPatientsSaved !== data.length) {
+      throw new BadRequestError(
+        `Não foi possível salvar os pacientes. Tente novamente mais tarde.`
+      )
     }
   }
 

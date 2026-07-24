@@ -1,5 +1,6 @@
 import { fastifyCors } from '@fastify/cors'
 import { fastifyJwt } from '@fastify/jwt'
+import { fastifyMultipart } from '@fastify/multipart'
 import { fastifySwagger } from '@fastify/swagger'
 import ScalarApiReference from '@scalar/fastify-api-reference'
 import { fastify } from 'fastify'
@@ -21,6 +22,7 @@ import { createContactRoute } from './routes/contacts/create-contact-route'
 import { getContactByIdRoute } from './routes/contacts/get-contact-by-id-route'
 import { getContactsRoute } from './routes/contacts/get-contacts-route'
 import { createPatientRoute } from './routes/patients/create-patient-route'
+import { createPatientsFromCsvRoute } from './routes/patients/create-patients-from-csv-route'
 import { deletePatientByIdRoute } from './routes/patients/delete-patient-by-id-route'
 import { editPatientRoute } from './routes/patients/edit-patient-route'
 import { getPatientsByApplicatorIdRoute } from './routes/patients/get-all-patients-by-applicator-id-route'
@@ -50,6 +52,8 @@ server.register(fastifyCors, {
   origin,
   methods: ['GET', 'PUT', 'POST', 'PATCH', 'DELETE', 'OPTIONS', 'HEAD'],
 })
+
+server.register(fastifyMultipart)
 
 server.register(fastifySwagger, {
   openapi: {
@@ -94,6 +98,7 @@ server.register(updateApplicatorUserRoute)
 
 // Patient routes
 server.register(createPatientRoute)
+server.register(createPatientsFromCsvRoute)
 server.register(editPatientRoute)
 server.register(getPatientsByApplicatorIdRoute)
 server.register(getTotalOfPatientsByApplicatorIdRoute)

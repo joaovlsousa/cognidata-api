@@ -99,4 +99,10 @@ export class DrizzlePatientsRepository implements PatientsRepository {
   public async deleteById(patientId: string): Promise<void> {
     await db.delete(patientsTable).where(eq(patientsTable.id, patientId))
   }
+
+  public async createMany(patients: SavePatientSchema[]): Promise<number> {
+    await db.insert(patientsTable).values(patients)
+
+    return patients.length
+  }
 }

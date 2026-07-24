@@ -33,6 +33,7 @@ export type SelectTotalOfPatientsSchema = {
 
 export interface PatientsRepository {
   save(patient: SavePatientSchema): Promise<SelectPatientSchema>
+  createMany(patients: SavePatientSchema[]): Promise<number>
   getById(patientId: string): Promise<SelectPatientSchema | null>
   getByApplicatorId(
     applicatorId: string,
