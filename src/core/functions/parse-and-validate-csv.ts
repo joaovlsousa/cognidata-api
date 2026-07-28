@@ -1,9 +1,13 @@
 import Papa from 'papaparse'
 import type { z } from 'zod'
 import { BadRequestError } from '../errors/bad-request-error'
+import { remapCsvHeaders } from './remap-csv-headers'
+import { remapCsvValues } from './remap-csv-values'
 
 interface ParseAndValidateCsvOptions {
   maxRows?: number
+  csvHeadersMap?: Record<string, string>
+  csvValuesMap?: Record<string, Record<string, string>>
 }
 
 interface ParseAndValidateCsvResponse<T> {
@@ -16,7 +20,7 @@ export function parseAndValidateCsv<T>(
   schema: z.ZodType<T>,
   options: ParseAndValidateCsvOptions = {}
 ): ParseAndValidateCsvResponse<T> {
-  const { maxRows = 1000 } = options
+  const { maxRows = 1000, csvHeadersMap, csvValuesMap } = options
 
   const { data } = Papa.parse<Record<string, unknown>>(csvContent, {
     header: true,
@@ -29,17 +33,27 @@ export function parseAndValidateCsv<T>(
     )
   }
 
-  const valid: T[] = []
+  const validRows: T[] = []
   const invalidRows = new Set<number>()
 
-  data.forEach((row, index) => {
+  let rowsToValidate = csvHeadersMap
+    ? data.map((row) => remapCsvHeaders(row, csvHeadersMap))
+    : data
+
+  if (csvValuesMap) {
+    rowsToValidate = rowsToValidate.map((row) =>
+      remapCsvValues(row, csvValuesMap)
+    )
+  }
+
+  rowsToValidate.forEach((row, index) => {
     const result = schema.safeParse(row)
 
-    result.success ? valid.push(result.data) : invalidRows.add(index + 2)
+    result.success ? validRows.push(result.data) : invalidRows.add(index + 2)
   })
 
   return {
-    data: valid,
+    data: validRows,
     invalidRows: invalidRows.values().toArray(),
   }
 }

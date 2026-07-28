@@ -4,14 +4,17 @@ import { NotFoundError } from '@/core/errors/not-found-error'
 import { parseAndValidateCsv } from '@/core/functions/parse-and-validate-csv'
 import type { PatientsRepository } from '@/database/repositories/patients-repository'
 import type { UsersRepository } from '@/database/repositories/users-repository'
+import {
+  type CreatePatientsFromCsvDto,
+  createPatientsFromCsvDto,
+} from '@/dtos/patients/create-patients-from-csv-dto'
+import { createPatientsFromCsvHeadersMapDto } from '@/dtos/patients/create-patients-from-csv-headers-map-dto'
+import { createPatientsFromCsvValuesMapDto } from '@/dtos/patients/create-patients-from-csv-values-map-dto'
 import type { GetPatientByIdDto } from '@/dtos/patients/get-patient-by-id-dto'
 import type { GetPatientsByApplicatorIdRequestDto } from '@/dtos/patients/get-patients-by-applicator-id-request-dto'
 import type { GetPatientsByApplicatorIdResponseDto } from '@/dtos/patients/get-patients-by-applicator-id-response-dto'
 import type { GetTotalOfPatientsByApplicatorIdDto } from '@/dtos/patients/get-total-of-patients-by-applicator-id-dto'
-import {
-  type SavePatientDto,
-  savePatientDto,
-} from '@/dtos/patients/save-patient-dto'
+import type { SavePatientDto } from '@/dtos/patients/save-patient-dto'
 
 export class PatientsService {
   constructor(
@@ -62,9 +65,14 @@ export class PatientsService {
     csvContent: string,
     applicatorId: string
   ): Promise<void> {
-    const { data, invalidRows } = parseAndValidateCsv<SavePatientDto>(
+    const { data, invalidRows } = parseAndValidateCsv<CreatePatientsFromCsvDto>(
       csvContent,
-      savePatientDto
+      createPatientsFromCsvDto,
+      {
+        csvHeadersMap: createPatientsFromCsvHeadersMapDto,
+        csvValuesMap: createPatientsFromCsvValuesMapDto,
+        maxRows: 1000,
+      }
     )
 
     if (invalidRows.length) {

@@ -33,7 +33,12 @@ export const createPatientsFromCsvRoute: FastifyPluginAsyncZod = async (
       await request.isApplicatorCurrentUser()
       const { sub: applicatorId } = await request.getCurrentUser()
 
-      const file = await request.file()
+      const file = await request.file({
+        limits: {
+          files: 1,
+          fileSize: 5 * 1024 * 1024, // 5 MB
+        },
+      })
 
       if (!file || file.mimetype !== 'text/csv') {
         throw new BadRequestError('Arquivo CSV é obrigatório.')
