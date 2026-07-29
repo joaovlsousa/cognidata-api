@@ -1,5 +1,5 @@
 import { startOfMonth } from 'date-fns'
-import { and, count, desc, eq, gte, ilike } from 'drizzle-orm'
+import { and, count, desc, eq, gte, sql } from 'drizzle-orm'
 import type {
   PatientsPaginationOptions,
   PatientsRepository,
@@ -33,7 +33,9 @@ export class DrizzlePatientsRepository implements PatientsRepository {
     const conditions = [eq(patientsTable.applicatorId, applicatorId)]
 
     if (options?.name?.length) {
-      conditions.push(ilike(patientsTable.name, `%${options.name}%`))
+      conditions.push(
+        sql`to_tsvector('portuguese', ${patientsTable.name}) @@ plainto_tsquery('portuguese', ${options.name})`
+      )
     }
 
     const whereClause = and(...conditions)
