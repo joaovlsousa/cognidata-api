@@ -35,6 +35,11 @@ export interface PatientsRepository {
   save(patient: SavePatientSchema): Promise<SelectPatientSchema>
   createMany(patients: SavePatientSchema[]): Promise<number>
   getById(patientId: string): Promise<SelectPatientSchema | null>
+  getByCpfsHashList(cpfsHashList: string[]): Promise<SelectPatientSchema[]>
+  getByCpfHashAndApplicatorId(
+    cpfHash: string,
+    applicatorId: string
+  ): Promise<SelectPatientSchema | null>
   getByApplicatorId(
     applicatorId: string,
     options?: PatientsPaginationOptions

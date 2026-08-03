@@ -5,6 +5,8 @@ const envSchema = z.object({
   HOST: z.string(),
   NODE_ENV: z.enum(['dev', 'prod']),
   JWT_SECRET: z.string().min(1),
+  CLOAK_SECRET: z.string().min(1),
+  HMAC_SECRET: z.string().min(1),
   DATABASE_URL: z.url(),
   RESEND_API_KEY: z.string(),
   MAIL_DOMAIN: z.string(),

@@ -1,5 +1,5 @@
 import { startOfMonth } from 'date-fns'
-import { and, count, desc, eq, gte, sql } from 'drizzle-orm'
+import { and, count, desc, eq, gte, inArray, sql } from 'drizzle-orm'
 import type {
   PatientsPaginationOptions,
   PatientsRepository,
@@ -61,6 +61,35 @@ export class DrizzlePatientsRepository implements PatientsRepository {
         totalPages: Math.ceil(total / perPage),
       },
     }
+  }
+
+  public async getByCpfHashAndApplicatorId(
+    cpfHash: string,
+    applicatorId: string
+  ): Promise<SelectPatientSchema | null> {
+    const [patient] = await db
+      .select()
+      .from(patientsTable)
+      .where(
+        and(
+          eq(patientsTable.cpfHash, cpfHash),
+          eq(patientsTable.applicatorId, applicatorId)
+        )
+      )
+      .limit(1)
+
+    return patient ?? null
+  }
+
+  public async getByCpfsHashList(
+    cpfsHashList: string[]
+  ): Promise<SelectPatientSchema[]> {
+    const patients = await db
+      .select()
+      .from(patientsTable)
+      .where(inArray(patientsTable.cpfHash, cpfsHashList))
+
+    return patients
   }
 
   public async getTotalByApplicatorId(

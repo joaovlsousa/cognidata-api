@@ -3,7 +3,7 @@ import { z } from 'zod'
 import { httpErrorSchema } from '@/core/schemas/http-error-schema'
 import { DrizzlePatientsRepository } from '@/database/drizzle/repositories/drizzle-patients-repository'
 import { DrizzleUsersRepository } from '@/database/drizzle/repositories/drizzle-users-repository'
-import { savePatientDto } from '@/dtos/patients/save-patient-dto'
+import { editPatientDto } from '@/dtos/patients/edit-patient-dto'
 import { authMiddleware } from '@/http/middlewares/auth-middleware'
 import { authorizationMiddleware } from '@/http/middlewares/authorization-middleware'
 import { PatientsService } from '@/services/patients-service'
@@ -16,12 +16,12 @@ export const editPatientRoute: FastifyPluginAsyncZod = async (app) => {
         summary: 'Edit Patient',
         description: 'Edit a patient associated with the current applicator.',
         tags: ['Patients'],
-        body: savePatientDto,
+        body: editPatientDto,
         params: z.object({
           patientId: z.uuid(),
         }),
         response: {
-          201: z.void(),
+          204: z.void(),
           400: httpErrorSchema,
           401: httpErrorSchema,
           403: httpErrorSchema,
@@ -40,9 +40,9 @@ export const editPatientRoute: FastifyPluginAsyncZod = async (app) => {
         new DrizzleUsersRepository(),
         new DrizzlePatientsRepository()
       )
-      await patientsService.save(patientDto, applicatorId, patientId)
+      await patientsService.edit(patientDto, patientId, applicatorId)
 
-      return reply.status(201).send()
+      return reply.status(204).send()
     }
   )
 }

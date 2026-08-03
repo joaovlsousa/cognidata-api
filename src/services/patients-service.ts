@@ -2,19 +2,24 @@ import { BadRequestError } from '@/core/errors/bad-request-error'
 import { ForbiddenError } from '@/core/errors/forbidden-error'
 import { NotFoundError } from '@/core/errors/not-found-error'
 import { parseAndValidateCsv } from '@/core/functions/parse-and-validate-csv'
-import type { PatientsRepository } from '@/database/repositories/patients-repository'
+import { CpfHashService } from '@/core/services/cpf-hash-service'
+import type {
+  PatientsRepository,
+  SavePatientSchema,
+} from '@/database/repositories/patients-repository'
 import type { UsersRepository } from '@/database/repositories/users-repository'
+import type { CreatePatientDto } from '@/dtos/patients/create-patient-dto'
 import {
   type CreatePatientsFromCsvDto,
   createPatientsFromCsvDto,
 } from '@/dtos/patients/create-patients-from-csv-dto'
 import { createPatientsFromCsvHeadersMapDto } from '@/dtos/patients/create-patients-from-csv-headers-map-dto'
 import { createPatientsFromCsvValuesMapDto } from '@/dtos/patients/create-patients-from-csv-values-map-dto'
+import type { EditPatientDto } from '@/dtos/patients/edit-patient-dto'
 import type { GetPatientByIdDto } from '@/dtos/patients/get-patient-by-id-dto'
 import type { GetPatientsByApplicatorIdRequestDto } from '@/dtos/patients/get-patients-by-applicator-id-request-dto'
 import type { GetPatientsByApplicatorIdResponseDto } from '@/dtos/patients/get-patients-by-applicator-id-response-dto'
 import type { GetTotalOfPatientsByApplicatorIdDto } from '@/dtos/patients/get-total-of-patients-by-applicator-id-dto'
-import type { SavePatientDto } from '@/dtos/patients/save-patient-dto'
 
 export class PatientsService {
   constructor(
@@ -57,7 +62,10 @@ export class PatientsService {
     }
 
     return {
-      patient,
+      patient: {
+        ...patient,
+        cpf: await CpfHashService.decrypt(patient.cpf),
+      },
     }
   }
 
@@ -71,7 +79,7 @@ export class PatientsService {
       {
         csvHeadersMap: createPatientsFromCsvHeadersMapDto,
         csvValuesMap: createPatientsFromCsvValuesMapDto,
-        maxRows: 1000,
+        maxRows: 50,
       }
     )
 
@@ -81,24 +89,53 @@ export class PatientsService {
       )
     }
 
-    const totalOfPatientsSaved = await this.patientsRepository.createMany(
-      data.map((row) => ({
-        applicatorId,
+    const patientsToInsert = new Map<string, SavePatientSchema>()
+    data.forEach((row) => {
+      const cpfHash = CpfHashService.hash(row.cpf)
+
+      patientsToInsert.set(cpfHash, {
         ...row,
+        cpfHash,
+        applicatorId,
+      })
+    })
+
+    if (patientsToInsert.size !== data.length) {
+      throw new BadRequestError('O arquivo possui pacientes duplicados')
+    }
+
+    const cpfsHashList = patientsToInsert.keys().toArray()
+    const existingPatients =
+      await this.patientsRepository.getByCpfsHashList(cpfsHashList)
+
+    existingPatients.forEach((patient) => {
+      patientsToInsert.delete(patient.cpfHash)
+    })
+
+    if (patientsToInsert.size === 0) {
+      return
+    }
+
+    const encryptedPatients = await Promise.all(
+      Array.from(patientsToInsert.values()).map(async (patient) => ({
+        ...patient,
+        cpf: await CpfHashService.encrypt(patient.cpf),
       }))
     )
 
-    if (totalOfPatientsSaved !== data.length) {
+    const totalOfPatientsSaved =
+      await this.patientsRepository.createMany(encryptedPatients)
+
+    if (totalOfPatientsSaved !== encryptedPatients.length) {
       throw new BadRequestError(
         `Não foi possível salvar os pacientes. Tente novamente mais tarde.`
       )
     }
   }
 
-  public async save(
-    data: SavePatientDto,
-    applicatorId: string,
-    patientId?: string
+  public async create(
+    data: CreatePatientDto,
+    applicatorId: string
   ): Promise<void> {
     const applicator = await this.usersRepository.getById(applicatorId)
 
@@ -108,21 +145,57 @@ export class PatientsService {
       )
     }
 
+    const cpfHash = CpfHashService.hash(data.cpf)
+
+    const patient = await this.patientsRepository.getByCpfHashAndApplicatorId(
+      cpfHash,
+      applicatorId
+    )
+
+    if (patient) {
+      throw new BadRequestError('Este CPF já foi cadastrado.')
+    }
+
+    const cpf = await CpfHashService.encrypt(data.cpf)
+
     await this.patientsRepository.save({
+      ...data,
+      applicatorId,
+      cpf,
+      cpfHash,
+    })
+  }
+
+  public async edit(
+    data: EditPatientDto,
+    patientId: string,
+    applicatorId: string
+  ): Promise<void> {
+    const applicator = await this.usersRepository.getById(applicatorId)
+
+    if (!applicator || applicator.role !== 'applicator') {
+      throw new ForbiddenError(
+        'Você não tem permissão para realizar essa ação.'
+      )
+    }
+
+    const patient = await this.patientsRepository.getById(patientId)
+
+    if (!patient) {
+      throw new NotFoundError('Paciente não encontrado')
+    }
+
+    if (data.cpf) {
+      patient.cpf = await CpfHashService.encrypt(data.cpf)
+      patient.cpfHash = CpfHashService.hash(data.cpf)
+    }
+
+    await this.patientsRepository.save({
+      ...data,
+      cpf: patient.cpf,
+      cpfHash: patient.cpfHash,
       id: patientId,
       applicatorId,
-      name: data.name,
-      dateOfBirth: data.dateOfBirth,
-      gender: data.gender,
-      patientResponsibleName: data.patientResponsibleName,
-      patientResponsibleEmail: data.patientResponsibleEmail,
-      patientResponsibleKinship: data.patientResponsibleKinship,
-      patientResponsiblePhone: data.patientResponsiblePhone,
-      schoolName: data.schoolName,
-      schoolYear: data.schoolYear,
-      schoolSchedule: data.schoolSchedule,
-      medicalChiefComplaint: data.medicalChiefComplaint,
-      medicalObservations: data.medicalObservations,
     })
   }
 

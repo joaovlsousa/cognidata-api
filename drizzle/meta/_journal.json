@@ -43,6 +43,27 @@
       "when": 1785354275651,
       "tag": "0005_dashing_madrox",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1785769557625,
+      "tag": "0006_luxuriant_maginty",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1785781526504,
+      "tag": "0007_early_skullbuster",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1785783932567,
+      "tag": "0008_lonely_nicolaos",
+      "breakpoints": true
     }
   ]
 }

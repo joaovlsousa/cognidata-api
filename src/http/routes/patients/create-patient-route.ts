@@ -3,7 +3,7 @@ import { z } from 'zod'
 import { httpErrorSchema } from '@/core/schemas/http-error-schema'
 import { DrizzlePatientsRepository } from '@/database/drizzle/repositories/drizzle-patients-repository'
 import { DrizzleUsersRepository } from '@/database/drizzle/repositories/drizzle-users-repository'
-import { savePatientDto } from '@/dtos/patients/save-patient-dto'
+import { createPatientDto } from '@/dtos/patients/create-patient-dto'
 import { authMiddleware } from '@/http/middlewares/auth-middleware'
 import { authorizationMiddleware } from '@/http/middlewares/authorization-middleware'
 import { PatientsService } from '@/services/patients-service'
@@ -17,7 +17,7 @@ export const createPatientRoute: FastifyPluginAsyncZod = async (app) => {
         description:
           'Create a new patient associated with the current applicator.',
         tags: ['Patients'],
-        body: savePatientDto,
+        body: createPatientDto,
         response: {
           201: z.void(),
           400: httpErrorSchema,
@@ -37,7 +37,7 @@ export const createPatientRoute: FastifyPluginAsyncZod = async (app) => {
         new DrizzleUsersRepository(),
         new DrizzlePatientsRepository()
       )
-      await patientsService.save(patientDto, applicatorId)
+      await patientsService.create(patientDto, applicatorId)
 
       return reply.status(201).send()
     }

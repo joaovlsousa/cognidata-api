@@ -20,7 +20,7 @@ export function parseAndValidateCsv<T>(
   schema: z.ZodType<T>,
   options: ParseAndValidateCsvOptions = {}
 ): ParseAndValidateCsvResponse<T> {
-  const { maxRows = 1000, csvHeadersMap, csvValuesMap } = options
+  const { maxRows = 50, csvHeadersMap, csvValuesMap } = options
 
   const { data } = Papa.parse<Record<string, unknown>>(csvContent, {
     header: true,

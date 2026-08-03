@@ -8,6 +8,7 @@ import {
   pgTable,
   text,
   timestamp,
+  uniqueIndex,
   uuid,
   varchar,
 } from 'drizzle-orm/pg-core'
@@ -37,6 +38,8 @@ export const patientsTable = pgTable(
     name: varchar({ length: 200 }).notNull(),
     gender: varchar({ enum: ['male', 'female'] }).notNull(),
     dateOfBirth: date().notNull(),
+    cpf: varchar({ length: 255 }).notNull(),
+    cpfHash: varchar({ length: 64 }).notNull(),
     patientResponsibleName: varchar({ length: 255 }).notNull(),
     patientResponsibleKinship: varchar({
       enum: ['father/mother', 'grandfather/grandmother', 'uncle/aunt'],
@@ -50,13 +53,18 @@ export const patientsTable = pgTable(
     }).notNull(),
     medicalChiefComplaint: varchar({ length: 255 }).notNull(),
     medicalObservations: text(),
-    createdAt: timestamp().defaultNow(),
+    createdAt: timestamp().defaultNow().notNull(),
   },
   (table) => [
     index('name_search_idx').using(
       'gin',
       sql`to_tsvector('portuguese', ${table.name})`
     ),
+    uniqueIndex('cpf_hash_applicator_id_idx').on(
+      table.cpfHash,
+      table.applicatorId
+    ),
+    index('cpf_hash_idx').on(table.cpfHash),
   ]
 )
 
