@@ -185,11 +185,6 @@ export class PatientsService {
       throw new NotFoundError('Paciente não encontrado')
     }
 
-    if (data.cpf) {
-      patient.cpf = await CpfHashService.encrypt(data.cpf)
-      patient.cpfHash = CpfHashService.hash(data.cpf)
-    }
-
     await this.patientsRepository.save({
       ...data,
       cpf: patient.cpf,
