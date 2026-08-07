@@ -194,6 +194,10 @@ export class PatientsService {
     })
   }
 
+  public async deleteByIdList(patientsIds: string[]): Promise<void> {
+    await this.patientsRepository.deleteByIdList(patientsIds)
+  }
+
   public async deleteById(patientId: string): Promise<void> {
     const patient = await this.patientsRepository.getById(patientId)
 

@@ -24,6 +24,7 @@ import { getContactsRoute } from './routes/contacts/get-contacts-route'
 import { createPatientRoute } from './routes/patients/create-patient-route'
 import { createPatientsFromCsvRoute } from './routes/patients/create-patients-from-csv-route'
 import { deletePatientByIdRoute } from './routes/patients/delete-patient-by-id-route'
+import { deletePatientsByIdListRoute } from './routes/patients/delete-patients-by-id-list-route'
 import { editPatientRoute } from './routes/patients/edit-patient-route'
 import { getPatientsByApplicatorIdRoute } from './routes/patients/get-all-patients-by-applicator-id-route'
 import { getPatientByIdRoute } from './routes/patients/get-patient-by-id-route'
@@ -104,6 +105,7 @@ server.register(getPatientsByApplicatorIdRoute)
 server.register(getTotalOfPatientsByApplicatorIdRoute)
 server.register(getPatientByIdRoute)
 server.register(deletePatientByIdRoute)
+server.register(deletePatientsByIdListRoute)
 
 // Session routes
 server.register(createSessionRoute)

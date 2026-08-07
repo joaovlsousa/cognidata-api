@@ -47,5 +47,6 @@ export interface PatientsRepository {
   getTotalByApplicatorId(
     applicatorId: string
   ): Promise<SelectTotalOfPatientsSchema>
+  deleteByIdList(patientsIds: string[]): Promise<void>
   deleteById(patientId: string): Promise<void>
 }

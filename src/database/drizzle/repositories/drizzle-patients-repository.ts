@@ -127,6 +127,10 @@ export class DrizzlePatientsRepository implements PatientsRepository {
     return raw
   }
 
+  public async deleteByIdList(patientsIds: string[]): Promise<void> {
+    await db.delete(patientsTable).where(inArray(patientsTable.id, patientsIds))
+  }
+
   public async deleteById(patientId: string): Promise<void> {
     await db.delete(patientsTable).where(eq(patientsTable.id, patientId))
   }
