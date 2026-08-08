@@ -2,6 +2,7 @@ export const createPatientsFromCsvHeadersMapDto: Record<string, string> = {
   nome: 'name',
   'data de nascimento': 'dateOfBirth',
   gênero: 'gender',
+  cpf: 'cpf',
   'nome do responsável': 'patientResponsibleName',
   'email do responsável': 'patientResponsibleEmail',
   'parentesco do responsável': 'patientResponsibleKinship',
