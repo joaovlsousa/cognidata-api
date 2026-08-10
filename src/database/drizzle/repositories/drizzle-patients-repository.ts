@@ -1,5 +1,5 @@
 import { startOfMonth } from 'date-fns'
-import { and, count, desc, eq, gte, inArray, sql } from 'drizzle-orm'
+import { and, asc, count, desc, eq, gte, inArray, sql } from 'drizzle-orm'
 import type {
   PatientsPaginationOptions,
   PatientsRepository,
@@ -40,12 +40,19 @@ export class DrizzlePatientsRepository implements PatientsRepository {
 
     const whereClause = and(...conditions)
 
+    const orderBy = options?.orderBy
+      ? patientsTable[options.orderBy]
+      : patientsTable.name
+    const order = options?.order ?? 'asc'
+
+    const orderByClause = order === 'asc' ? asc(orderBy) : desc(orderBy)
+
     const [patients, [{ total }]] = await Promise.all([
       db
         .select()
         .from(patientsTable)
         .where(whereClause)
-        .orderBy(desc(patientsTable.createdAt))
+        .orderBy(orderByClause)
         .limit(perPage)
         .offset(offset),
 

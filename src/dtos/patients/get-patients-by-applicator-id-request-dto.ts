@@ -4,6 +4,8 @@ export const getPatientsByApplicatorIdRequestDto = z.object({
   page: z.coerce.number().nonnegative().optional(),
   perPage: z.coerce.number().nonnegative().optional(),
   status: z.enum(['active', 'alert', 'pending', 'all']).optional(),
+  orderBy: z.enum(['name', 'createdAt']).optional(),
+  order: z.enum(['asc', 'desc']).optional(),
   name: z.string().min(1).optional(),
 })
 

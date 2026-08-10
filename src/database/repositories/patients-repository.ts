@@ -13,6 +13,8 @@ export type PatientsPaginationOptions = {
   page?: number
   perPage?: number
   status?: 'active' | 'pending' | 'alert' | 'all'
+  order?: 'asc' | 'desc'
+  orderBy?: 'name' | 'createdAt'
   name?: string
 }
 
