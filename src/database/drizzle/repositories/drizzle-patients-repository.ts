@@ -1,10 +1,12 @@
-import { and, count, desc, eq, ilike } from 'drizzle-orm'
+import { startOfMonth } from 'date-fns'
+import { and, asc, count, desc, eq, gte, inArray, sql } from 'drizzle-orm'
 import type {
   PatientsPaginationOptions,
   PatientsRepository,
   SavePatientSchema,
   SelectPatientSchema,
   SelectPatientWithMetadataSchema,
+  SelectTotalOfPatientsSchema,
 } from '@/database/repositories/patients-repository'
 import { db } from '..'
 import { patientsTable } from '../schema'
@@ -31,17 +33,26 @@ export class DrizzlePatientsRepository implements PatientsRepository {
     const conditions = [eq(patientsTable.applicatorId, applicatorId)]
 
     if (options?.name?.length) {
-      conditions.push(ilike(patientsTable.name, `%${options.name}%`))
+      conditions.push(
+        sql`to_tsvector('portuguese', ${patientsTable.name}) @@ plainto_tsquery('portuguese', ${options.name})`
+      )
     }
 
     const whereClause = and(...conditions)
+
+    const orderBy = options?.orderBy
+      ? patientsTable[options.orderBy]
+      : patientsTable.name
+    const order = options?.order ?? 'asc'
+
+    const orderByClause = order === 'asc' ? asc(orderBy) : desc(orderBy)
 
     const [patients, [{ total }]] = await Promise.all([
       db
         .select()
         .from(patientsTable)
         .where(whereClause)
-        .orderBy(desc(patientsTable.createdAt))
+        .orderBy(orderByClause)
         .limit(perPage)
         .offset(offset),
 
@@ -56,6 +67,54 @@ export class DrizzlePatientsRepository implements PatientsRepository {
         total,
         totalPages: Math.ceil(total / perPage),
       },
+    }
+  }
+
+  public async getByCpfHashAndApplicatorId(
+    cpfHash: string,
+    applicatorId: string
+  ): Promise<SelectPatientSchema | null> {
+    const [patient] = await db
+      .select()
+      .from(patientsTable)
+      .where(
+        and(
+          eq(patientsTable.cpfHash, cpfHash),
+          eq(patientsTable.applicatorId, applicatorId)
+        )
+      )
+      .limit(1)
+
+    return patient ?? null
+  }
+
+  public async getByCpfsHashList(
+    cpfsHashList: string[]
+  ): Promise<SelectPatientSchema[]> {
+    const patients = await db
+      .select()
+      .from(patientsTable)
+      .where(inArray(patientsTable.cpfHash, cpfsHashList))
+
+    return patients
+  }
+
+  public async getTotalByApplicatorId(
+    applicatorId: string
+  ): Promise<SelectTotalOfPatientsSchema> {
+    const startDateOfMonth = startOfMonth(new Date())
+
+    const [{ thisMonth, totalOfPatients }] = await db
+      .select({
+        totalOfPatients: count(),
+        thisMonth: count(gte(patientsTable.createdAt, startDateOfMonth)),
+      })
+      .from(patientsTable)
+      .where(eq(patientsTable.applicatorId, applicatorId))
+
+    return {
+      totalOfPatients,
+      thisMonth,
     }
   }
 
@@ -75,7 +134,17 @@ export class DrizzlePatientsRepository implements PatientsRepository {
     return raw
   }
 
+  public async deleteByIdList(patientsIds: string[]): Promise<void> {
+    await db.delete(patientsTable).where(inArray(patientsTable.id, patientsIds))
+  }
+
   public async deleteById(patientId: string): Promise<void> {
     await db.delete(patientsTable).where(eq(patientsTable.id, patientId))
+  }
+
+  public async createMany(patients: SavePatientSchema[]): Promise<number> {
+    await db.insert(patientsTable).values(patients)
+
+    return patients.length
   }
 }

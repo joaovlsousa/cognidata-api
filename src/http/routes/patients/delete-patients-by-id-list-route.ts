@@ -3,26 +3,28 @@ import { z } from 'zod'
 import { httpErrorSchema } from '@/core/schemas/http-error-schema'
 import { DrizzlePatientsRepository } from '@/database/drizzle/repositories/drizzle-patients-repository'
 import { DrizzleUsersRepository } from '@/database/drizzle/repositories/drizzle-users-repository'
-import { createPatientDto } from '@/dtos/patients/create-patient-dto'
 import { authMiddleware } from '@/http/middlewares/auth-middleware'
 import { authorizationMiddleware } from '@/http/middlewares/authorization-middleware'
 import { PatientsService } from '@/services/patients-service'
 
-export const createPatientRoute: FastifyPluginAsyncZod = async (app) => {
-  app.post(
+export const deletePatientsByIdListRoute: FastifyPluginAsyncZod = async (
+  app
+) => {
+  app.delete(
     '/patients',
     {
       schema: {
-        summary: 'Create Patient',
-        description:
-          'Create a new patient associated with the current applicator.',
+        summary: 'Delete many patients by ID list',
+        description: 'Delete many patient by the provided ID list.',
         tags: ['Patients'],
-        body: createPatientDto,
+        body: z.object({
+          patientsIds: z.array(z.uuid()),
+        }),
         response: {
-          201: z.void(),
-          400: httpErrorSchema,
+          204: z.void(),
           401: httpErrorSchema,
           403: httpErrorSchema,
+          404: httpErrorSchema,
           500: httpErrorSchema,
         },
       },
@@ -30,16 +32,15 @@ export const createPatientRoute: FastifyPluginAsyncZod = async (app) => {
     },
     async (request, reply) => {
       await request.isApplicatorCurrentUser()
-      const { sub: applicatorId } = await request.getCurrentUser()
-      const patientDto = request.body
+      const { patientsIds } = request.body
 
       const patientsService = new PatientsService(
         new DrizzleUsersRepository(),
         new DrizzlePatientsRepository()
       )
-      await patientsService.create(patientDto, applicatorId)
+      await patientsService.deleteByIdList(patientsIds)
 
-      return reply.status(201).send()
+      return reply.status(204).send()
     }
   )
 }

@@ -11,7 +11,7 @@ POST {{baseUrl}}/auth
 Content-Type: application/json
 
 {
-  "email": "user.admin@servidor.uepb.edu.br",
+  "email": "user.applicator@servidor.uepb.edu.br",
   "password": "123456"
 }
 
@@ -126,11 +126,37 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "name": "Patient 3",
-  "dateOfBirth": "2025-10-10",
+  "name": "Patient",
+  "dateOfBirth": "2020-01-01",
   "gender": "male",
-  "grade": "Portugês"
+  "cpf": "12345678900",
+  "patientResponsibleName": "patientResponsibleName",
+  "patientResponsibleEmail": "mail@mail.com",
+  "patientResponsibleKinship": "father/mother",
+  "patientResponsiblePhone": "12345678900",
+  "schoolName": "schoolName",
+  "schoolYear": 1,
+  "schoolSchedule": "morning",
+  "medicalChiefComplaint": "medicalChiefComplaint"
 }
+
+###
+
+# @name getPatientsByApplicatorId
+GET {{baseUrl}}/patients?orderBy=name&order=asc
+Authorization: Bearer {{token}}
+
+###
+
+# @name getPatientById
+GET {{baseUrl}}/patients/5875f69d-8698-493c-887c-91e2c5ce462e
+Authorization: Bearer {{token}}
+
+###
+
+# @name getTotalPatientsByApplicatorId
+GET {{baseUrl}}/patients/total
+Authorization: Bearer {{token}}
 
 ###
 

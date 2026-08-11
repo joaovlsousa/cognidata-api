@@ -3,7 +3,12 @@ import { z } from 'zod'
 import { patientsTable } from '@/database/drizzle/schema'
 
 export const getPatientsByApplicatorIdResponseDto = z.object({
-  patients: z.array(createSelectSchema(patientsTable)),
+  patients: z.array(
+    createSelectSchema(patientsTable).omit({
+      cpf: true,
+      cpfHash: true,
+    })
+  ),
   meta: z.object({
     page: z.number().nonnegative(),
     perPage: z.number().nonnegative(),

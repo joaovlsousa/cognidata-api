@@ -1,0 +1,1 @@
+CREATE INDEX "cpf_hash_idx" ON "patients" USING btree ("cpf_hash");

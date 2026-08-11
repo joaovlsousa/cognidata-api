@@ -13,6 +13,8 @@ export type PatientsPaginationOptions = {
   page?: number
   perPage?: number
   status?: 'active' | 'pending' | 'alert' | 'all'
+  order?: 'asc' | 'desc'
+  orderBy?: 'name' | 'createdAt'
   name?: string
 }
 
@@ -26,12 +28,27 @@ export type SelectPatientWithMetadataSchema = {
   }
 }
 
+export type SelectTotalOfPatientsSchema = {
+  totalOfPatients: number
+  thisMonth: number
+}
+
 export interface PatientsRepository {
   save(patient: SavePatientSchema): Promise<SelectPatientSchema>
+  createMany(patients: SavePatientSchema[]): Promise<number>
   getById(patientId: string): Promise<SelectPatientSchema | null>
+  getByCpfsHashList(cpfsHashList: string[]): Promise<SelectPatientSchema[]>
+  getByCpfHashAndApplicatorId(
+    cpfHash: string,
+    applicatorId: string
+  ): Promise<SelectPatientSchema | null>
   getByApplicatorId(
     applicatorId: string,
     options?: PatientsPaginationOptions
   ): Promise<SelectPatientWithMetadataSchema>
+  getTotalByApplicatorId(
+    applicatorId: string
+  ): Promise<SelectTotalOfPatientsSchema>
+  deleteByIdList(patientsIds: string[]): Promise<void>
   deleteById(patientId: string): Promise<void>
 }

@@ -1,0 +1,1 @@
+CREATE INDEX "name_search_idx" ON "patients" USING gin (to_tsvector('portuguese', "name"));
