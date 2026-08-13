@@ -1,5 +1,5 @@
 {
-  "name": "psicho-hub-api",
+  "name": "cognidata-api",
   "version": "1.0.0",
   "description": "API para gerenciamento e análise de dados de pacientes psicológicos.",
   "main": "src/http/server.ts",

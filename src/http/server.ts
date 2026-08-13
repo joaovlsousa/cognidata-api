@@ -59,7 +59,7 @@ server.register(fastifyMultipart)
 server.register(fastifySwagger, {
   openapi: {
     info: {
-      title: 'Psico Hub API',
+      title: 'CogniData API',
       description:
         'API para gerenciamento e análise de dados psicológicos de pacientes e alunos.',
       version: '1.0.0',
