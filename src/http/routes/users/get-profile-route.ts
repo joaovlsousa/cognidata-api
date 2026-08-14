@@ -3,7 +3,7 @@ import { httpErrorSchema } from '@/core/schemas/http-error-schema'
 import { DrizzleUsersRepository } from '@/database/drizzle/repositories/drizzle-users-repository'
 import { getUserDto } from '@/dtos/users/get-user-dto'
 import { authMiddleware } from '@/http/middlewares/auth-middleware'
-import { UsersService } from '@/services/users-service'
+import { GetUserProfileUseCase } from '@/use-cases/users/get-user-profile-use-case'
 
 export const getProfileRoute: FastifyPluginAsyncZod = async (app) => {
   app.get(
@@ -25,8 +25,11 @@ export const getProfileRoute: FastifyPluginAsyncZod = async (app) => {
     async (request, reply) => {
       const { sub: userId } = await request.getCurrentUser()
 
-      const usersService = new UsersService(new DrizzleUsersRepository())
-      const { user } = await usersService.getProfile(userId)
+      const getUserProfileUseCase = new GetUserProfileUseCase(
+        new DrizzleUsersRepository()
+      )
+
+      const { user } = await getUserProfileUseCase.execute(userId)
 
       return reply.status(200).send({
         user,

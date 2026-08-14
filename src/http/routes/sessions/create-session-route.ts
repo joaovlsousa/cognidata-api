@@ -5,7 +5,7 @@ import { createSessionRequestDto } from '@/dtos/sessions/create-session-request-
 import { createSessionResponseDto } from '@/dtos/sessions/create-session-response-dto'
 import { authMiddleware } from '@/http/middlewares/auth-middleware'
 import { authorizationMiddleware } from '@/http/middlewares/authorization-middleware'
-import { SessionsService } from '@/services/sessions-service'
+import { CreateSessionUseCase } from '@/use-cases/sessions/create-session-use-case'
 
 export const createSessionRoute: FastifyPluginAsyncZod = async (app) => {
   app.post(
@@ -31,10 +31,14 @@ export const createSessionRoute: FastifyPluginAsyncZod = async (app) => {
       const { sub: applicatorId } = await request.getCurrentUser()
       const sessionDto = request.body
 
-      const sessionsService = new SessionsService(
+      const createSessionUseCase = new CreateSessionUseCase(
         new DrizzleSessionsRepository()
       )
-      const session = await sessionsService.create(applicatorId, sessionDto)
+
+      const session = await createSessionUseCase.execute(
+        applicatorId,
+        sessionDto
+      )
 
       return reply.status(201).send(session)
     }

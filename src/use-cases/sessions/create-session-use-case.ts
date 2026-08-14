@@ -2,10 +2,10 @@ import type { SessionsRepository } from '@/database/repositories/sessions-reposi
 import type { CreateSessionRequestDto } from '@/dtos/sessions/create-session-request-dto'
 import type { CreateSessionResponseDto } from '@/dtos/sessions/create-session-response-dto'
 
-export class SessionsService {
+export class CreateSessionUseCase {
   constructor(private readonly sessionsRepository: SessionsRepository) {}
 
-  public async create(
+  public async execute(
     applicatorId: string,
     sessionDto: CreateSessionRequestDto
   ): Promise<CreateSessionResponseDto> {

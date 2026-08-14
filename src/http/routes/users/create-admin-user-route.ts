@@ -5,7 +5,7 @@ import { DrizzleUsersRepository } from '@/database/drizzle/repositories/drizzle-
 import { createAdminUserDto } from '@/dtos/users/create-admin-user-dto'
 import { authMiddleware } from '@/http/middlewares/auth-middleware'
 import { authorizationMiddleware } from '@/http/middlewares/authorization-middleware'
-import { UsersService } from '@/services/users-service'
+import { CreateAdminUserUseCase } from '@/use-cases/users/create-admin-user-use-case'
 
 export const createAdminUserRoute: FastifyPluginAsyncZod = async (app) => {
   app.post(
@@ -30,8 +30,11 @@ export const createAdminUserRoute: FastifyPluginAsyncZod = async (app) => {
     async (request, reply) => {
       const userDto = request.body
 
-      const usersService = new UsersService(new DrizzleUsersRepository())
-      await usersService.createAdminUser(userDto)
+      const createAdminUserUseCase = new CreateAdminUserUseCase(
+        new DrizzleUsersRepository()
+      )
+
+      await createAdminUserUseCase.execute(userDto)
 
       return reply.status(201).send()
     }

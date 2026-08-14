@@ -6,7 +6,7 @@ import { DrizzleUsersRepository } from '@/database/drizzle/repositories/drizzle-
 import { createPatientDto } from '@/dtos/patients/create-patient-dto'
 import { authMiddleware } from '@/http/middlewares/auth-middleware'
 import { authorizationMiddleware } from '@/http/middlewares/authorization-middleware'
-import { PatientsService } from '@/services/patients-service'
+import { CreatePatientUseCase } from '@/use-cases/patients/create-patient-use-case'
 
 export const createPatientRoute: FastifyPluginAsyncZod = async (app) => {
   app.post(
@@ -33,11 +33,12 @@ export const createPatientRoute: FastifyPluginAsyncZod = async (app) => {
       const { sub: applicatorId } = await request.getCurrentUser()
       const patientDto = request.body
 
-      const patientsService = new PatientsService(
+      const createPatientUseCase = new CreatePatientUseCase(
         new DrizzleUsersRepository(),
         new DrizzlePatientsRepository()
       )
-      await patientsService.create(patientDto, applicatorId)
+
+      await createPatientUseCase.execute(patientDto, applicatorId)
 
       return reply.status(201).send()
     }

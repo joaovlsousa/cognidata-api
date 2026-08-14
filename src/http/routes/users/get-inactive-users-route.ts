@@ -4,7 +4,7 @@ import { DrizzleUsersRepository } from '@/database/drizzle/repositories/drizzle-
 import { getUsersDto } from '@/dtos/users/get-users-dto'
 import { authMiddleware } from '@/http/middlewares/auth-middleware'
 import { authorizationMiddleware } from '@/http/middlewares/authorization-middleware'
-import { UsersService } from '@/services/users-service'
+import { GetInactiveUsersUseCase } from '@/use-cases/users/get-inactive-users-use-case'
 
 export const getInactiveUsersRoute: FastifyPluginAsyncZod = async (app) => {
   app.get(
@@ -26,8 +26,11 @@ export const getInactiveUsersRoute: FastifyPluginAsyncZod = async (app) => {
     async (request, reply) => {
       await request.isAdminCurrentUser()
 
-      const usersService = new UsersService(new DrizzleUsersRepository())
-      const { users } = await usersService.getInactiveUsers()
+      const getInactiveUsersUseCase = new GetInactiveUsersUseCase(
+        new DrizzleUsersRepository()
+      )
+
+      const { users } = await getInactiveUsersUseCase.execute()
 
       return reply.status(200).send({
         users,

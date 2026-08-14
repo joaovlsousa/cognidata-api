@@ -5,7 +5,7 @@ import { DrizzleSessionItemsRepository } from '@/database/drizzle/repositories/d
 import { createSessionItemsDto } from '@/dtos/session-items/create-session-items-dto'
 import { authMiddleware } from '@/http/middlewares/auth-middleware'
 import { authorizationMiddleware } from '@/http/middlewares/authorization-middleware'
-import { SessionItemsService } from '@/services/session-items-service'
+import { CreateSessionItemsUseCase } from '@/use-cases/sessions-items/create-session-items-use-case'
 
 export const createSessionItemRoute: FastifyPluginAsyncZod = async (app) => {
   app.post(
@@ -34,10 +34,11 @@ export const createSessionItemRoute: FastifyPluginAsyncZod = async (app) => {
       const sessionDto = request.body
       const { sessionId } = request.params
 
-      const sessionsService = new SessionItemsService(
+      const createSessionItemsUseCase = new CreateSessionItemsUseCase(
         new DrizzleSessionItemsRepository()
       )
-      await sessionsService.create(sessionId, sessionDto)
+
+      await createSessionItemsUseCase.execute(sessionId, sessionDto)
 
       return reply.status(201).send()
     }

@@ -3,10 +3,9 @@ import { z } from 'zod'
 import { BadRequestError } from '@/core/errors/bad-request-error'
 import { httpErrorSchema } from '@/core/schemas/http-error-schema'
 import { DrizzlePatientsRepository } from '@/database/drizzle/repositories/drizzle-patients-repository'
-import { DrizzleUsersRepository } from '@/database/drizzle/repositories/drizzle-users-repository'
 import { authMiddleware } from '@/http/middlewares/auth-middleware'
 import { authorizationMiddleware } from '@/http/middlewares/authorization-middleware'
-import { PatientsService } from '@/services/patients-service'
+import { CreatePatientsFromCsvUseCase } from '@/use-cases/patients/create-patients-from-csv-use-case'
 
 export const createPatientsFromCsvRoute: FastifyPluginAsyncZod = async (
   app
@@ -47,11 +46,11 @@ export const createPatientsFromCsvRoute: FastifyPluginAsyncZod = async (
       const buffer = await file.toBuffer()
       const csvContent = buffer.toString('utf-8')
 
-      const patientsService = new PatientsService(
-        new DrizzleUsersRepository(),
+      const createPatientsFromCsvUseCase = new CreatePatientsFromCsvUseCase(
         new DrizzlePatientsRepository()
       )
-      await patientsService.createFromCsv(csvContent, applicatorId)
+
+      await createPatientsFromCsvUseCase.execute(csvContent, applicatorId)
 
       return reply.status(201).send()
     }

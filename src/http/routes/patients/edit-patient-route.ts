@@ -6,7 +6,7 @@ import { DrizzleUsersRepository } from '@/database/drizzle/repositories/drizzle-
 import { editPatientDto } from '@/dtos/patients/edit-patient-dto'
 import { authMiddleware } from '@/http/middlewares/auth-middleware'
 import { authorizationMiddleware } from '@/http/middlewares/authorization-middleware'
-import { PatientsService } from '@/services/patients-service'
+import { EditPatientUseCase } from '@/use-cases/patients/edit-patient-use-case'
 
 export const editPatientRoute: FastifyPluginAsyncZod = async (app) => {
   app.put(
@@ -36,11 +36,12 @@ export const editPatientRoute: FastifyPluginAsyncZod = async (app) => {
       const patientDto = request.body
       const { patientId } = request.params
 
-      const patientsService = new PatientsService(
+      const editPatientUseCase = new EditPatientUseCase(
         new DrizzleUsersRepository(),
         new DrizzlePatientsRepository()
       )
-      await patientsService.edit(patientDto, patientId, applicatorId)
+
+      await editPatientUseCase.execute(patientDto, patientId, applicatorId)
 
       return reply.status(204).send()
     }

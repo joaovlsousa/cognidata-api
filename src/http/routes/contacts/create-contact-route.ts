@@ -3,7 +3,7 @@ import { z } from 'zod'
 import { httpErrorSchema } from '@/core/schemas/http-error-schema'
 import { DrizzleContactsRepository } from '@/database/drizzle/repositories/drizzle-contacts-repository'
 import { createContactDto } from '@/dtos/contacts/create-contact-dto'
-import { ContactsService } from '@/services/contacts-service'
+import { CreateContactUseCase } from '@/use-cases/contacts/create-contact-use-case'
 
 export const createContactRoute: FastifyPluginAsyncZod = async (app) => {
   app.post(
@@ -24,10 +24,10 @@ export const createContactRoute: FastifyPluginAsyncZod = async (app) => {
     async (request, reply) => {
       const contactDto = request.body
 
-      const contactsService = new ContactsService(
+      const createContactUseCase = new CreateContactUseCase(
         new DrizzleContactsRepository()
       )
-      await contactsService.create(contactDto)
+      await createContactUseCase.execute(contactDto)
 
       return reply.status(201).send()
     }

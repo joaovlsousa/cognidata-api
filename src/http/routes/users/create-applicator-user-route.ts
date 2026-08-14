@@ -3,7 +3,7 @@ import { z } from 'zod'
 import { httpErrorSchema } from '@/core/schemas/http-error-schema'
 import { DrizzleUsersRepository } from '@/database/drizzle/repositories/drizzle-users-repository'
 import { createApplicatorUserDto } from '@/dtos/users/create-applicator-user-dto'
-import { UsersService } from '@/services/users-service'
+import { CreateApplicatorUserUseCase } from '@/use-cases/users/create-applicator-user-use-case'
 
 export const createApplicatorUserRoute: FastifyPluginAsyncZod = async (app) => {
   app.post(
@@ -27,8 +27,11 @@ export const createApplicatorUserRoute: FastifyPluginAsyncZod = async (app) => {
     async (request, reply) => {
       const userDto = request.body
 
-      const usersService = new UsersService(new DrizzleUsersRepository())
-      await usersService.createApplicatorUser(userDto)
+      const createApplicatorUserUseCase = new CreateApplicatorUserUseCase(
+        new DrizzleUsersRepository()
+      )
+
+      await createApplicatorUserUseCase.execute(userDto)
 
       return reply.status(201).send()
     }

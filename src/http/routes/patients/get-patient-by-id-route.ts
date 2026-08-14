@@ -2,11 +2,10 @@ import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
 import { z } from 'zod'
 import { httpErrorSchema } from '@/core/schemas/http-error-schema'
 import { DrizzlePatientsRepository } from '@/database/drizzle/repositories/drizzle-patients-repository'
-import { DrizzleUsersRepository } from '@/database/drizzle/repositories/drizzle-users-repository'
 import { getPatientByIdDto } from '@/dtos/patients/get-patient-by-id-dto'
 import { authMiddleware } from '@/http/middlewares/auth-middleware'
 import { authorizationMiddleware } from '@/http/middlewares/authorization-middleware'
-import { PatientsService } from '@/services/patients-service'
+import { GetPatientByIdUseCase } from '@/use-cases/patients/get-patient-by-id-use-case'
 
 export const getPatientByIdRoute: FastifyPluginAsyncZod = async (app) => {
   app.get(
@@ -33,11 +32,11 @@ export const getPatientByIdRoute: FastifyPluginAsyncZod = async (app) => {
       await request.isApplicatorCurrentUser()
       const { patientId } = request.params
 
-      const patientsService = new PatientsService(
-        new DrizzleUsersRepository(),
+      const getPatientByIdUseCase = new GetPatientByIdUseCase(
         new DrizzlePatientsRepository()
       )
-      const patient = await patientsService.getById(patientId)
+
+      const patient = await getPatientByIdUseCase.execute(patientId)
 
       return reply.status(200).send(patient)
     }
