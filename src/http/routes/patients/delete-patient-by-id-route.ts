@@ -2,10 +2,9 @@ import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
 import { z } from 'zod'
 import { httpErrorSchema } from '@/core/schemas/http-error-schema'
 import { DrizzlePatientsRepository } from '@/database/drizzle/repositories/drizzle-patients-repository'
-import { DrizzleUsersRepository } from '@/database/drizzle/repositories/drizzle-users-repository'
 import { authMiddleware } from '@/http/middlewares/auth-middleware'
 import { authorizationMiddleware } from '@/http/middlewares/authorization-middleware'
-import { PatientsService } from '@/services/patients-service'
+import { DeletePatientByIdUseCase } from '@/use-cases/patients/delete-patient-by-id-use-case'
 
 export const deletePatientByIdRoute: FastifyPluginAsyncZod = async (app) => {
   app.delete(
@@ -32,11 +31,11 @@ export const deletePatientByIdRoute: FastifyPluginAsyncZod = async (app) => {
       await request.isApplicatorCurrentUser()
       const { patientId } = request.params
 
-      const patientsService = new PatientsService(
-        new DrizzleUsersRepository(),
+      const deletePatientByIdUseCase = new DeletePatientByIdUseCase(
         new DrizzlePatientsRepository()
       )
-      await patientsService.deleteById(patientId)
+
+      await deletePatientByIdUseCase.execute(patientId)
 
       return reply.status(204).send()
     }

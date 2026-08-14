@@ -1,12 +1,12 @@
 import type { SessionItemsRepository } from '@/database/repositories/session-items-repository'
 import type { CreateSessionItemsDto } from '@/dtos/session-items/create-session-items-dto'
 
-export class SessionItemsService {
+export class CreateSessionItemsUseCase {
   constructor(
     private readonly sessionItemsRepository: SessionItemsRepository
   ) {}
 
-  public async create(
+  public async execute(
     sessionId: string,
     sessionItemsDto: CreateSessionItemsDto
   ): Promise<void> {

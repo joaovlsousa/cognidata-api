@@ -1,4 +1,4 @@
-# Psicho Hub API
+# CogniData API
 
 API backend para gerenciamento de usuários e controle de acesso em um sistema de atendimento psicológico. Fornece autenticação via e-mail/senha e criação de três tipos de usuários com regras de permissão por cargo.
 
@@ -67,7 +67,7 @@ Essa organização se aproxima de um padrão de arquitetura em camadas / clean a
    HOST=0.0.0.0
    JWT_SECRET=my-jwt-secret
    CLIENT_APP_URL=http://localhost:3000
-   DATABASE_URL=postgresql://docker:docker@localhost:5432/psichohub
+   DATABASE_URL=postgresql://docker:docker@localhost:5432/cognidata
    ```
 4. Suba um container com o Banco de Dados:
    ```bash

@@ -1,11 +1,10 @@
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
 import { httpErrorSchema } from '@/core/schemas/http-error-schema'
 import { tokenSchema } from '@/core/schemas/token-schema'
-import { DrizzleOtpCodesRepository } from '@/database/drizzle/repositories/drizzle-otp-codes-repository'
 import { DrizzleUsersRepository } from '@/database/drizzle/repositories/drizzle-users-repository'
 import { authRequestDto } from '@/dtos/auth/auth-request-dto'
 import { authResponseDto } from '@/dtos/auth/auth-response-dto'
-import { AuthService } from '@/services/auth-service'
+import { AuthenticateWithEmailAndPasswordUseCase } from '@/use-cases/auth/authenticate-with-email-and-password-use-case'
 
 export const authenticateWithEmailAndPasswordRoute: FastifyPluginAsyncZod =
   async (app) => {
@@ -28,13 +27,13 @@ export const authenticateWithEmailAndPasswordRoute: FastifyPluginAsyncZod =
       async (request, reply) => {
         const authDto = request.body
 
-        const authService = new AuthService(
-          new DrizzleUsersRepository(),
-          new DrizzleOtpCodesRepository()
-        )
+        const authenticateWithEmailAndPasswordUseCase =
+          new AuthenticateWithEmailAndPasswordUseCase(
+            new DrizzleUsersRepository()
+          )
 
         const { user } =
-          await authService.authenticateWithEmailAndPassword(authDto)
+          await authenticateWithEmailAndPasswordUseCase.execute(authDto)
 
         const tokenMaxAge = 60 * 60 * 24 * 7 //7 days
         const payload = tokenSchema.parse({ sub: user.id, role: user.role })

@@ -4,7 +4,7 @@ import { httpErrorSchema } from '@/core/schemas/http-error-schema'
 import { DrizzleContactsRepository } from '@/database/drizzle/repositories/drizzle-contacts-repository'
 import { authMiddleware } from '@/http/middlewares/auth-middleware'
 import { authorizationMiddleware } from '@/http/middlewares/authorization-middleware'
-import { ContactsService } from '@/services/contacts-service'
+import { CloseContactByIdUseCase } from '@/use-cases/contacts/close-contact-by-id-use-case'
 
 export const closeContactByIdRoute: FastifyPluginAsyncZod = async (app) => {
   app.patch(
@@ -29,13 +29,13 @@ export const closeContactByIdRoute: FastifyPluginAsyncZod = async (app) => {
       preHandler: [authMiddleware, authorizationMiddleware],
     },
     async (request, reply) => {
-      await request.isMasterCurrentUser()
+      await request.isAdminCurrentUser()
       const { id: contactId } = request.params
 
-      const contactsService = new ContactsService(
+      const closeContactByIdUseCase = new CloseContactByIdUseCase(
         new DrizzleContactsRepository()
       )
-      await contactsService.closeById(contactId)
+      await closeContactByIdUseCase.execute(contactId)
 
       return reply.status(200).send()
     }

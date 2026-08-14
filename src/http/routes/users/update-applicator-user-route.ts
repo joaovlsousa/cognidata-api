@@ -5,7 +5,7 @@ import { DrizzleUsersRepository } from '@/database/drizzle/repositories/drizzle-
 import { updateApplicatorUserDto } from '@/dtos/users/update-applicator-user-dto'
 import { authMiddleware } from '@/http/middlewares/auth-middleware'
 import { authorizationMiddleware } from '@/http/middlewares/authorization-middleware'
-import { UsersService } from '@/services/users-service'
+import { UpdateApplicatorUserUseCase } from '@/use-cases/users/update-applicator-user-use-case'
 
 export const updateApplicatorUserRoute: FastifyPluginAsyncZod = async (app) => {
   app.patch(
@@ -30,8 +30,11 @@ export const updateApplicatorUserRoute: FastifyPluginAsyncZod = async (app) => {
       const { sub: userId } = await request.getCurrentUser()
       const userDto = request.body
 
-      const usersService = new UsersService(new DrizzleUsersRepository())
-      await usersService.updateApplicatorUser(userId, userDto)
+      const updateApplicatorUserUseCase = new UpdateApplicatorUserUseCase(
+        new DrizzleUsersRepository()
+      )
+
+      await updateApplicatorUserUseCase.execute(userId, userDto)
 
       return reply.status(204).send()
     }

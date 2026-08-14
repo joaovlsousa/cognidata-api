@@ -4,7 +4,7 @@ import { httpErrorSchema } from '@/core/schemas/http-error-schema'
 import { DrizzleUsersRepository } from '@/database/drizzle/repositories/drizzle-users-repository'
 import { authMiddleware } from '@/http/middlewares/auth-middleware'
 import { authorizationMiddleware } from '@/http/middlewares/authorization-middleware'
-import { UsersService } from '@/services/users-service'
+import { ActivateUserUseCase } from '@/use-cases/users/activate-user-use-case'
 
 export const activateUserRoute: FastifyPluginAsyncZod = async (app) => {
   app.patch(
@@ -30,8 +30,11 @@ export const activateUserRoute: FastifyPluginAsyncZod = async (app) => {
       await request.isAdminCurrentUser()
       const { userId } = request.params
 
-      const usersService = new UsersService(new DrizzleUsersRepository())
-      await usersService.activateUser(userId)
+      const activateUserUseCase = new ActivateUserUseCase(
+        new DrizzleUsersRepository()
+      )
+
+      await activateUserUseCase.execute(userId)
 
       return reply.status(204).send()
     }

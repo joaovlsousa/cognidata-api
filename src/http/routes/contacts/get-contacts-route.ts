@@ -5,7 +5,7 @@ import { filtersContactsDto } from '@/dtos/contacts/filters-contacts-dto'
 import { getContactsDto } from '@/dtos/contacts/get-contacts-dto'
 import { authMiddleware } from '@/http/middlewares/auth-middleware'
 import { authorizationMiddleware } from '@/http/middlewares/authorization-middleware'
-import { ContactsService } from '@/services/contacts-service'
+import { GetContactsUseCase } from '@/use-cases/contacts/get-contacts-use-case'
 
 export const getContactsRoute: FastifyPluginAsyncZod = async (app) => {
   app.get(
@@ -27,13 +27,14 @@ export const getContactsRoute: FastifyPluginAsyncZod = async (app) => {
       preHandler: [authMiddleware, authorizationMiddleware],
     },
     async (request, reply) => {
-      await request.isMasterCurrentUser()
+      await request.isAdminCurrentUser()
       const filters = request.query
 
-      const contactsService = new ContactsService(
+      const getContactsUseCase = new GetContactsUseCase(
         new DrizzleContactsRepository()
       )
-      const { contacts } = await contactsService.getAll(filters)
+
+      const { contacts } = await getContactsUseCase.execute(filters)
 
       return reply.status(200).send({
         contacts,

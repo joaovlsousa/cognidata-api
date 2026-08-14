@@ -26,8 +26,8 @@ import { createPatientsFromCsvRoute } from './routes/patients/create-patients-fr
 import { deletePatientByIdRoute } from './routes/patients/delete-patient-by-id-route'
 import { deletePatientsByIdListRoute } from './routes/patients/delete-patients-by-id-list-route'
 import { editPatientRoute } from './routes/patients/edit-patient-route'
-import { getPatientsByApplicatorIdRoute } from './routes/patients/get-all-patients-by-applicator-id-route'
 import { getPatientByIdRoute } from './routes/patients/get-patient-by-id-route'
+import { getPatientsByApplicatorIdRoute } from './routes/patients/get-patients-by-applicator-id-route'
 import { getTotalOfPatientsByApplicatorIdRoute } from './routes/patients/get-total-of-patients-by-applicator-id-route'
 import { healthCheckRoute } from './routes/public/health-check-route'
 import { createSessionItemRoute } from './routes/session-items/create-session-item-route'
@@ -59,7 +59,7 @@ server.register(fastifyMultipart)
 server.register(fastifySwagger, {
   openapi: {
     info: {
-      title: 'Psico Hub API',
+      title: 'CogniData API',
       description:
         'API para gerenciamento e análise de dados psicológicos de pacientes e alunos.',
       version: '1.0.0',

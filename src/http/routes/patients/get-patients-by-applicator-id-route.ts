@@ -1,12 +1,11 @@
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
 import { httpErrorSchema } from '@/core/schemas/http-error-schema'
 import { DrizzlePatientsRepository } from '@/database/drizzle/repositories/drizzle-patients-repository'
-import { DrizzleUsersRepository } from '@/database/drizzle/repositories/drizzle-users-repository'
 import { getPatientsByApplicatorIdRequestDto } from '@/dtos/patients/get-patients-by-applicator-id-request-dto'
 import { getPatientsByApplicatorIdResponseDto } from '@/dtos/patients/get-patients-by-applicator-id-response-dto'
 import { authMiddleware } from '@/http/middlewares/auth-middleware'
 import { authorizationMiddleware } from '@/http/middlewares/authorization-middleware'
-import { PatientsService } from '@/services/patients-service'
+import { GetPatientsByApplicatorIdUseCase } from '@/use-cases/patients/get-patients-by-applicator-id-use-case'
 
 export const getPatientsByApplicatorIdRoute: FastifyPluginAsyncZod = async (
   app
@@ -34,11 +33,10 @@ export const getPatientsByApplicatorIdRoute: FastifyPluginAsyncZod = async (
       const { sub: applicatorId } = await request.getCurrentUser()
       const options = request.query
 
-      const patientsService = new PatientsService(
-        new DrizzleUsersRepository(),
-        new DrizzlePatientsRepository()
-      )
-      const response = await patientsService.getByApplicatorId(
+      const getPatientsByApplicatorIdUseCase =
+        new GetPatientsByApplicatorIdUseCase(new DrizzlePatientsRepository())
+
+      const response = await getPatientsByApplicatorIdUseCase.execute(
         applicatorId,
         options
       )

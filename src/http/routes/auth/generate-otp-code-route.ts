@@ -1,10 +1,10 @@
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
-import z from 'zod'
+import { z } from 'zod'
 import { httpErrorSchema } from '@/core/schemas/http-error-schema'
 import { DrizzleOtpCodesRepository } from '@/database/drizzle/repositories/drizzle-otp-codes-repository'
 import { DrizzleUsersRepository } from '@/database/drizzle/repositories/drizzle-users-repository'
 import { generateOtpCodeDto } from '@/dtos/auth/generate-otp-code-dto'
-import { AuthService } from '@/services/auth-service'
+import { GenerateOtpCodeUseCase } from '@/use-cases/auth/generate-otp-code-use-case'
 
 export const generateOtpCodeRoute: FastifyPluginAsyncZod = async (app) => {
   app.post(
@@ -26,12 +26,12 @@ export const generateOtpCodeRoute: FastifyPluginAsyncZod = async (app) => {
     async (request, reply) => {
       const authDto = request.body
 
-      const authService = new AuthService(
+      const generateOtpCodeUseCase = new GenerateOtpCodeUseCase(
         new DrizzleUsersRepository(),
         new DrizzleOtpCodesRepository()
       )
 
-      await authService.generateOtpCode(authDto)
+      await generateOtpCodeUseCase.execute(authDto)
 
       return reply.status(201).send()
     }
