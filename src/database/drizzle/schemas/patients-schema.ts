@@ -26,6 +26,9 @@ export const patientsTable = pgTable(
     dateOfBirth: date().notNull(),
     cpf: varchar({ length: 255 }).notNull(),
     cpfHash: varchar({ length: 64 }).notNull(),
+    status: varchar({ enum: ['active', 'pending', 'alert'] })
+      .notNull()
+      .default('pending'),
     patientResponsibleName: varchar({ length: 255 }).notNull(),
     patientResponsibleKinship: varchar({
       enum: ['father/mother', 'grandfather/grandmother', 'uncle/aunt'],
