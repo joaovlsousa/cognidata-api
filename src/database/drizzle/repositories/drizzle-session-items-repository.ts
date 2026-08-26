@@ -5,7 +5,7 @@ import type {
   SessionItemsRepository,
 } from '@/database/repositories/session-items-repository'
 import { db } from '..'
-import { sessionItemsTable } from '../schema'
+import { sessionItemsTable } from '../schemas'
 
 export class DrizzleSessionItemsRepository implements SessionItemsRepository {
   public async save(

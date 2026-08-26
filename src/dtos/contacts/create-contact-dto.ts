@@ -1,6 +1,6 @@
 import { createInsertSchema } from 'drizzle-zod'
 import { z } from 'zod'
-import { contactsTable } from '@/database/drizzle/schema'
+import { contactsTable } from '@/database/drizzle/schemas'
 
 export const createContactDto = createInsertSchema(contactsTable, {
   name: z.string().min(1),

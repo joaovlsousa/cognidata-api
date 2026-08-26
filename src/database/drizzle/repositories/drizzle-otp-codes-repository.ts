@@ -5,7 +5,7 @@ import type {
   SelectOtpCodeSchema,
 } from '@/database/repositories/opt-codes-repository'
 import { db } from '..'
-import { otpCodesTable } from '../schema'
+import { otpCodesTable } from '../schemas'
 
 export class DrizzleOtpCodesRepository implements OtpCodesRepository {
   public async getByEmail(email: string): Promise<SelectOtpCodeSchema | null> {

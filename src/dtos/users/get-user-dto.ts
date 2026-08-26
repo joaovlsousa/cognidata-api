@@ -1,6 +1,6 @@
 import { createSelectSchema } from 'drizzle-zod'
 import { z } from 'zod'
-import { usersTable } from '@/database/drizzle/schema'
+import { usersTable } from '@/database/drizzle/schemas'
 
 export const getUserDto = z.object({
   user: createSelectSchema(usersTable).omit({

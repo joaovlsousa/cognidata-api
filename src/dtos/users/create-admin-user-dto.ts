@@ -1,6 +1,6 @@
 import { createInsertSchema } from 'drizzle-zod'
 import { z } from 'zod'
-import { usersTable } from '@/database/drizzle/schema'
+import { usersTable } from '@/database/drizzle/schemas'
 
 export const createAdminUserDto = createInsertSchema(usersTable, {
   name: z.string().min(1),
