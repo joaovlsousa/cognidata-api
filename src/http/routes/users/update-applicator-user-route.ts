@@ -12,9 +12,10 @@ export const updateApplicatorUserRoute: FastifyPluginAsyncZod = async (app) => {
     '/users/applicator',
     {
       schema: {
-        summary: 'Update Applicator User',
-        description: 'Update the current applicator user information.',
-        tags: ['Users'],
+        summary: 'Atualizar usuário aplicador',
+        description: 'Atualiza os dados do usuário aplicador autenticado.',
+        tags: ['Usuários'],
+        security: [{ bearerAuth: [] }],
         body: updateApplicatorUserDto,
         response: {
           204: z.void(),

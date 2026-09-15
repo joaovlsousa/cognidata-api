@@ -10,15 +10,13 @@ export const createApplicatorUserRoute: FastifyPluginAsyncZod = async (app) => {
     '/users/applicator',
     {
       schema: {
-        summary: 'Create Applicator User',
-        description: 'Create an applicator user.',
-        tags: ['Users'],
+        summary: 'Criar usuário aplicador',
+        description: 'Cria um usuário com perfil de aplicador.',
+        tags: ['Usuários'],
         body: createApplicatorUserDto,
         response: {
           201: z.void(),
           400: httpErrorSchema,
-          401: httpErrorSchema,
-          403: httpErrorSchema,
           409: httpErrorSchema,
           500: httpErrorSchema,
         },

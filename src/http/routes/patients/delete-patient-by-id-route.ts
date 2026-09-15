@@ -11,9 +11,10 @@ export const deletePatientByIdRoute: FastifyPluginAsyncZod = async (app) => {
     '/patients/:patientId',
     {
       schema: {
-        summary: 'Delete patient by ID',
-        description: 'Delete a patient by the provided ID.',
-        tags: ['Patients'],
+        summary: 'Excluir paciente por ID',
+        description: 'Exclui um paciente pelo ID informado.',
+        tags: ['Pacientes'],
+        security: [{ bearerAuth: [] }],
         params: z.object({
           patientId: z.uuid(),
         }),

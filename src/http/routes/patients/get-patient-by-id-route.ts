@@ -12,9 +12,10 @@ export const getPatientByIdRoute: FastifyPluginAsyncZod = async (app) => {
     '/patients/:patientId',
     {
       schema: {
-        summary: 'Get patient by ID',
-        description: 'Retrieves a patient by the provided ID.',
-        tags: ['Patients'],
+        summary: 'Consultar paciente por ID',
+        description: 'Consulta um paciente pelo ID informado.',
+        tags: ['Pacientes'],
+        security: [{ bearerAuth: [] }],
         params: z.object({
           patientId: z.uuid(),
         }),

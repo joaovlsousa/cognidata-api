@@ -12,10 +12,11 @@ export const getTotalOfPatientsByApplicatorIdRoute: FastifyPluginAsyncZod =
       '/patients/total',
       {
         schema: {
-          summary: 'Get total patients by applicator ID',
+          summary: 'Consultar totais de pacientes',
           description:
-            'Returns the total number of patients associated with the authenticated applicator.',
-          tags: ['Patients'],
+            'Retorna o total de pacientes associados ao aplicador autenticado e o total cadastrado no mês atual.',
+          tags: ['Pacientes'],
+          security: [{ bearerAuth: [] }],
           response: {
             200: getTotalOfPatientsByApplicatorIdDto,
             401: httpErrorSchema,

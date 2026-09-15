@@ -10,9 +10,10 @@ export const getProfileRoute: FastifyPluginAsyncZod = async (app) => {
     '/users/profile',
     {
       schema: {
-        summary: 'Get Profile Data',
-        description: 'Retrieve the current user profile data.',
-        tags: ['Users'],
+        summary: 'Consultar perfil',
+        description: 'Consulta os dados do perfil do usuário autenticado.',
+        tags: ['Usuários'],
+        security: [{ bearerAuth: [] }],
         response: {
           200: getUserDto,
           401: httpErrorSchema,

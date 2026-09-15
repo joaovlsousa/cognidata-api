@@ -12,9 +12,10 @@ export const createSessionItemRoute: FastifyPluginAsyncZod = async (app) => {
     '/sessions/:sessionId/items',
     {
       schema: {
-        summary: 'Create Session Item',
-        description: 'Save the items of game session',
-        tags: ['Sessions'],
+        summary: 'Criar item de sessão',
+        description: 'Salva um item da sessão do jogo.',
+        tags: ['Sessões'],
+        security: [{ bearerAuth: [] }],
         body: createSessionItemsDto,
         params: z.object({
           sessionId: z.uuid(),

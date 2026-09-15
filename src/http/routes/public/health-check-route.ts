@@ -6,8 +6,9 @@ export const healthCheckRoute: FastifyPluginAsyncZod = async (app) => {
     '/public/health',
     {
       schema: {
-        summary: 'Get API Status',
-        tags: ['Public'],
+        summary: 'Consultar status da API',
+        description: 'Verifica se a API está pronta para receber requisições.',
+        tags: ['Público'],
         response: {
           200: z.object({
             status: z.literal('ready'),

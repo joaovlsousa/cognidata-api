@@ -10,9 +10,9 @@ export const createContactRoute: FastifyPluginAsyncZod = async (app) => {
     '/contacts',
     {
       schema: {
-        summary: 'Create Contact',
-        description: 'Create a new contact entry.',
-        tags: ['Contacts'],
+        summary: 'Criar contato',
+        description: 'Cria uma nova mensagem de contato.',
+        tags: ['Contatos'],
         body: createContactDto,
         response: {
           201: z.void(),

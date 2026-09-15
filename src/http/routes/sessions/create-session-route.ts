@@ -12,9 +12,10 @@ export const createSessionRoute: FastifyPluginAsyncZod = async (app) => {
     '/sessions',
     {
       schema: {
-        summary: 'Create Session',
-        description: 'Create a new game session',
-        tags: ['Sessions'],
+        summary: 'Criar sessão',
+        description: 'Cria uma nova sessão do jogo.',
+        tags: ['Sessões'],
+        security: [{ bearerAuth: [] }],
         body: createSessionRequestDto,
         response: {
           201: createSessionResponseDto,

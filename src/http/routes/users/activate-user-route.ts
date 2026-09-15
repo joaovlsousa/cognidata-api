@@ -11,9 +11,11 @@ export const activateUserRoute: FastifyPluginAsyncZod = async (app) => {
     '/users/:userId/activate',
     {
       schema: {
-        summary: 'Activate User',
-        description: 'Activate a user by ID (admin only).',
-        tags: ['Users'],
+        summary: 'Ativar usuário',
+        description:
+          'Ativa um usuário pelo ID. Requer perfil de administrador.',
+        tags: ['Usuários'],
+        security: [{ bearerAuth: [] }],
         params: z.object({
           userId: z.uuid(),
         }),
@@ -21,6 +23,7 @@ export const activateUserRoute: FastifyPluginAsyncZod = async (app) => {
           204: z.void(),
           400: httpErrorSchema,
           401: httpErrorSchema,
+          403: httpErrorSchema,
           500: httpErrorSchema,
         },
       },
