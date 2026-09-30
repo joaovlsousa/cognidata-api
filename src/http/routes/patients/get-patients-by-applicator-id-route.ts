@@ -14,10 +14,11 @@ export const getPatientsByApplicatorIdRoute: FastifyPluginAsyncZod = async (
     '/patients',
     {
       schema: {
-        summary: 'Get Patients by Applicator ID',
+        summary: 'Listar pacientes do aplicador',
         description:
-          'Retrieve patients associated with the current applicator user.',
-        tags: ['Patients'],
+          'Lista os pacientes associados ao aplicador autenticado, com paginação e filtros opcionais.',
+        tags: ['Pacientes'],
+        security: [{ bearerAuth: [] }],
         querystring: getPatientsByApplicatorIdRequestDto,
         response: {
           200: getPatientsByApplicatorIdResponseDto,

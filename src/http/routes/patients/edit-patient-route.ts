@@ -13,9 +13,10 @@ export const editPatientRoute: FastifyPluginAsyncZod = async (app) => {
     '/patients/:patientId',
     {
       schema: {
-        summary: 'Edit Patient',
-        description: 'Edit a patient associated with the current applicator.',
-        tags: ['Patients'],
+        summary: 'Editar paciente',
+        description: 'Edita um paciente associado ao aplicador autenticado.',
+        tags: ['Pacientes'],
+        security: [{ bearerAuth: [] }],
         body: editPatientDto,
         params: z.object({
           patientId: z.uuid(),

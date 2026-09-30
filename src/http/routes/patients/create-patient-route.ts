@@ -13,10 +13,11 @@ export const createPatientRoute: FastifyPluginAsyncZod = async (app) => {
     '/patients',
     {
       schema: {
-        summary: 'Create Patient',
+        summary: 'Criar paciente',
         description:
-          'Create a new patient associated with the current applicator.',
-        tags: ['Patients'],
+          'Cria um novo paciente associado ao aplicador autenticado.',
+        tags: ['Pacientes'],
+        security: [{ bearerAuth: [] }],
         body: createPatientDto,
         response: {
           201: z.void(),

@@ -1,6 +1,6 @@
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod'
 import type { z } from 'zod'
-import { patientsTable } from '../drizzle/schema'
+import { patientsTable } from '../drizzle/schemas'
 
 const savePatientSchema = createInsertSchema(patientsTable)
 

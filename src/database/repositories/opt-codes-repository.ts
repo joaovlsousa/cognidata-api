@@ -1,6 +1,6 @@
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod'
 import type { z } from 'zod'
-import { otpCodesTable } from '../drizzle/schema'
+import { otpCodesTable } from '../drizzle/schemas'
 
 const saveOtpCodeSchema = createInsertSchema(otpCodesTable)
 

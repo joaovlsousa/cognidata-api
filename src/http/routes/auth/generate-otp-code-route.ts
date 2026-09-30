@@ -11,9 +11,9 @@ export const generateOtpCodeRoute: FastifyPluginAsyncZod = async (app) => {
     '/auth/otp-code/generate',
     {
       schema: {
-        summary: 'Generate OTP Code',
-        description: 'Generate a one-time password code for user verification.',
-        tags: ['Auth'],
+        summary: 'Gerar código OTP',
+        description: 'Gera um código de uso único para verificação do usuário.',
+        tags: ['Autenticação'],
         body: generateOtpCodeDto,
         response: {
           201: z.void(),

@@ -1,6 +1,6 @@
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod'
 import type { z } from 'zod'
-import { sessionItemsTable } from '../drizzle/schema'
+import { sessionItemsTable } from '../drizzle/schemas'
 
 const saveSessionItemsSchema = createInsertSchema(sessionItemsTable, {
   id: (schema) => schema.optional(),

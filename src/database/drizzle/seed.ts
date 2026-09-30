@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs'
 import { eq } from 'drizzle-orm'
 import { db } from '.'
-import { usersTable } from './schema'
+import { usersTable } from './schemas'
 
 async function seed() {
   try {

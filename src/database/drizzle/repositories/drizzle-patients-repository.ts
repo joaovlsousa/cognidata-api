@@ -9,7 +9,7 @@ import type {
   SelectTotalOfPatientsSchema,
 } from '@/database/repositories/patients-repository'
 import { db } from '..'
-import { patientsTable } from '../schema'
+import { patientsTable } from '../schemas'
 
 export class DrizzlePatientsRepository implements PatientsRepository {
   public async getById(patientId: string): Promise<SelectPatientSchema | null> {

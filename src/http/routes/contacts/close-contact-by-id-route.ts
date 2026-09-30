@@ -11,9 +11,10 @@ export const closeContactByIdRoute: FastifyPluginAsyncZod = async (app) => {
     '/contacts/:id/close',
     {
       schema: {
-        summary: 'Close Contact By Id',
-        description: 'Close a contact by ID, marking it as resolved.',
-        tags: ['Contacts'],
+        summary: 'Encerrar contato por ID',
+        description: 'Encerra um contato pelo ID, marcando-o como resolvido.',
+        tags: ['Contatos'],
+        security: [{ bearerAuth: [] }],
         params: z.object({
           id: z.uuid(),
         }),

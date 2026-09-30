@@ -12,9 +12,11 @@ export const getContactsRoute: FastifyPluginAsyncZod = async (app) => {
     '/contacts',
     {
       schema: {
-        summary: 'Get All Contacts',
-        description: 'Retrieve all contacts with optional filtering.',
-        tags: ['Contacts'],
+        summary: 'Listar contatos',
+        description:
+          'Lista todos os contatos, com filtragem opcional por status.',
+        tags: ['Contatos'],
+        security: [{ bearerAuth: [] }],
         querystring: filtersContactsDto,
         response: {
           200: getContactsDto,

@@ -1,6 +1,6 @@
 import { createInsertSchema } from 'drizzle-zod'
 import { z } from 'zod'
-import { patientsTable } from '@/database/drizzle/schema'
+import { patientsTable } from '@/database/drizzle/schemas'
 
 export const createPatientDto = createInsertSchema(patientsTable, {
   name: z.string().min(1),

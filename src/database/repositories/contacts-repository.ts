@@ -1,6 +1,6 @@
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod'
 import type { z } from 'zod'
-import { contactsTable } from '../drizzle/schema'
+import { contactsTable } from '../drizzle/schemas'
 
 const saveContactSchema = createInsertSchema(contactsTable, {
   id: (schema) => schema.optional(),

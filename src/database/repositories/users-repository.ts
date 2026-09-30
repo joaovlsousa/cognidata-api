@@ -1,6 +1,6 @@
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod'
 import type { z } from 'zod'
-import { usersTable } from '../drizzle/schema'
+import { usersTable } from '../drizzle/schemas'
 
 const saveUserSchema = createInsertSchema(usersTable, {
   id: (schema) => schema.optional(),

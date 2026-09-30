@@ -5,7 +5,7 @@ import type {
   UsersRepository,
 } from '@/database/repositories/users-repository'
 import { db } from '..'
-import { usersTable } from '../schema'
+import { usersTable } from '../schemas'
 
 export class DrizzleUsersRepository implements UsersRepository {
   public async getById(userId: string): Promise<SelectUserSchema | null> {

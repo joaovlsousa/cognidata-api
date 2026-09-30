@@ -5,7 +5,7 @@ import type {
   SessionsRepository,
 } from '@/database/repositories/sessions-repository'
 import { db } from '..'
-import { sessionsTable } from '../schema'
+import { sessionsTable } from '../schemas'
 
 export class DrizzleSessionsRepository implements SessionsRepository {
   public async getById(sessionId: string): Promise<SelectSessionSchema | null> {

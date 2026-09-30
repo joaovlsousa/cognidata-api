@@ -12,9 +12,10 @@ export const getContactByIdRoute: FastifyPluginAsyncZod = async (app) => {
     '/contacts/:id',
     {
       schema: {
-        summary: 'Get Contacts By Id',
-        description: 'Retrieve a specific contact by ID.',
-        tags: ['Contacts'],
+        summary: 'Consultar contato por ID',
+        description: 'Consulta um contato específico pelo ID.',
+        tags: ['Contatos'],
+        security: [{ bearerAuth: [] }],
         params: z.object({
           id: z.uuid(),
         }),

@@ -1,6 +1,6 @@
 import { createSelectSchema } from 'drizzle-zod'
 import { z } from 'zod'
-import { contactsTable } from '@/database/drizzle/schema'
+import { contactsTable } from '@/database/drizzle/schemas'
 
 export const getContactByIdDto = z.object({
   contact: createSelectSchema(contactsTable),

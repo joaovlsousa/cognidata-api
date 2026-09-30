@@ -6,7 +6,7 @@ import type {
   SelectContactSchema,
 } from '@/database/repositories/contacts-repository'
 import { db } from '..'
-import { contactsTable } from '../schema'
+import { contactsTable } from '../schemas'
 
 export class DrizzleContactsRepository implements ContactsRepository {
   public async getById(contactId: string): Promise<SelectContactSchema | null> {
