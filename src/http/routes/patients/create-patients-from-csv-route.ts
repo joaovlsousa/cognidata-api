@@ -20,11 +20,16 @@ export const createPatientsFromCsvRoute: FastifyPluginAsyncZod = async (
         tags: ['Pacientes'],
         security: [{ bearerAuth: [] }],
         consumes: ['multipart/form-data'],
-        body: z.object({
-          file: z.string().meta({
-            format: 'binary',
-            description: 'Arquivo CSV contendo os dados dos pacientes.',
-          }),
+        body: z.any().meta({
+          type: 'object',
+          required: ['file'],
+          properties: {
+            file: {
+              type: 'string',
+              format: 'binary',
+              description: 'Arquivo CSV contendo os dados dos pacientes.',
+            },
+          },
         }),
         response: {
           201: z.void(),
