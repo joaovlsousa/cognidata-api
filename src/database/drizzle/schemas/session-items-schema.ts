@@ -19,7 +19,15 @@ export const sessionItemsTable = pgTable('session_items', {
   questionNumber: integer().notNull(),
   itemIndex: integer().notNull(),
   responseTimeInSeconds: integer().notNull(),
-  skill: varchar({ length: 255 }).notNull(),
+  skill: varchar({
+    enum: [
+      'alliteration',
+      'segmentation',
+      'visualMemory',
+      'rhyme',
+      'visualMotorCoordination',
+    ],
+  }).notNull(),
   stimulusName: varchar({ length: 255 }).notNull(),
   correctAnswer: varchar({ length: 255 }).notNull(),
   playerAnswer: varchar({ length: 255 }).notNull(),
