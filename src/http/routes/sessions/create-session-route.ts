@@ -1,5 +1,6 @@
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
 import { httpErrorSchema } from '@/core/schemas/http-error-schema'
+import { DrizzlePatientsRepository } from '@/database/drizzle/repositories/drizzle-patients-repository'
 import { DrizzleSessionsRepository } from '@/database/drizzle/repositories/drizzle-sessions-repository'
 import { createSessionRequestDto } from '@/dtos/sessions/create-session-request-dto'
 import { createSessionResponseDto } from '@/dtos/sessions/create-session-response-dto'
@@ -33,7 +34,8 @@ export const createSessionRoute: FastifyPluginAsyncZod = async (app) => {
       const sessionDto = request.body
 
       const createSessionUseCase = new CreateSessionUseCase(
-        new DrizzleSessionsRepository()
+        new DrizzleSessionsRepository(),
+        new DrizzlePatientsRepository()
       )
 
       const session = await createSessionUseCase.execute(
