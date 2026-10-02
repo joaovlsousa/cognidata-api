@@ -23,7 +23,15 @@ export const sessionsTable = pgTable('sessions', {
     }),
   durationInSeconds: doublePrecision().notNull(),
   countQuestion: integer().notNull(),
-  skill: varchar({ length: 255 }).notNull(),
+  skill: varchar({
+    enum: [
+      'alliteration',
+      'segmentation',
+      'visualMemory',
+      'rhyme',
+      'visualMotorCoordination',
+    ],
+  }).notNull(),
   score: integer().notNull(),
   percentage: integer().notNull(),
   thetaFinal: doublePrecision().notNull(),
