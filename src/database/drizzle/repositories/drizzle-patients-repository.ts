@@ -131,6 +131,35 @@ export class DrizzlePatientsRepository implements PatientsRepository {
     }
   }
 
+  public async getTotalWithAlertByApplicatorId(
+    applicatorId: string
+  ): Promise<SelectTotalOfPatientsSchema> {
+    const startDateOfMonth = startOfMonth(new Date())
+
+    const [{ thisMonth, totalOfPatients }] = await db
+      .select({
+        totalOfPatients: count(),
+        thisMonth: count(
+          sql`CASE WHEN ${gte(
+            patientsTable.createdAt,
+            startDateOfMonth
+          )} THEN 1 END`
+        ),
+      })
+      .from(patientsTable)
+      .where(
+        and(
+          eq(patientsTable.applicatorId, applicatorId),
+          eq(patientsTable.status, 'alert')
+        )
+      )
+
+    return {
+      totalOfPatients,
+      thisMonth,
+    }
+  }
+
   public async save(patient: SavePatientSchema): Promise<SelectPatientSchema> {
     if (patient.id) {
       const [raw] = await db

@@ -29,6 +29,7 @@ import { editPatientRoute } from './routes/patients/edit-patient-route'
 import { getPatientByIdRoute } from './routes/patients/get-patient-by-id-route'
 import { getPatientsByApplicatorIdRoute } from './routes/patients/get-patients-by-applicator-id-route'
 import { getTotalOfPatientsByApplicatorIdRoute } from './routes/patients/get-total-of-patients-by-applicator-id-route'
+import { getTotalOfPatientsWithAlertByApplicatorIdRoute } from './routes/patients/get-total-of-patients-with-alert-by-applicator-id-route'
 import { healthCheckRoute } from './routes/public/health-check-route'
 import { createSessionItemRoute } from './routes/session-items/create-session-item-route'
 import { createSessionRoute } from './routes/sessions/create-session-route'
@@ -104,6 +105,7 @@ server.register(createPatientsFromCsvRoute)
 server.register(editPatientRoute)
 server.register(getPatientsByApplicatorIdRoute)
 server.register(getTotalOfPatientsByApplicatorIdRoute)
+server.register(getTotalOfPatientsWithAlertByApplicatorIdRoute)
 server.register(getPatientByIdRoute)
 server.register(deletePatientByIdRoute)
 server.register(deletePatientsByIdListRoute)
