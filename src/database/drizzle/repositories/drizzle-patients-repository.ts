@@ -115,7 +115,12 @@ export class DrizzlePatientsRepository implements PatientsRepository {
     const [{ thisMonth, totalOfPatients }] = await db
       .select({
         totalOfPatients: count(),
-        thisMonth: count(gte(patientsTable.createdAt, startDateOfMonth)),
+        thisMonth: count(
+          sql`CASE WHEN ${gte(
+            patientsTable.createdAt,
+            startDateOfMonth
+          )} THEN 1 END`
+        ),
       })
       .from(patientsTable)
       .where(eq(patientsTable.applicatorId, applicatorId))

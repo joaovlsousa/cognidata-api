@@ -1,7 +1,9 @@
-import { eq } from 'drizzle-orm'
+import { startOfMonth } from 'date-fns'
+import { count, eq, gte, sql } from 'drizzle-orm'
 import type {
   SaveSessionSchema,
   SelectSessionSchema,
+  SelectTotalOfSessionsSchema,
   SessionsRepository,
 } from '@/database/repositories/sessions-repository'
 import { db } from '..'
@@ -16,6 +18,30 @@ export class DrizzleSessionsRepository implements SessionsRepository {
       .limit(1)
 
     return session ?? null
+  }
+
+  public async getTotalByApplicatorId(
+    applicatorId: string
+  ): Promise<SelectTotalOfSessionsSchema> {
+    const startDateOfMonth = startOfMonth(new Date())
+
+    const [{ thisMonth, totalOfSessions }] = await db
+      .select({
+        totalOfSessions: count(),
+        thisMonth: count(
+          sql`CASE WHEN ${gte(
+            sessionsTable.createdAt,
+            startDateOfMonth
+          )} THEN 1 END`
+        ),
+      })
+      .from(sessionsTable)
+      .where(eq(sessionsTable.applicatorId, applicatorId))
+
+    return {
+      totalOfSessions,
+      thisMonth,
+    }
   }
 
   public async save(session: SaveSessionSchema): Promise<SelectSessionSchema> {
