@@ -32,7 +32,15 @@ export class DrizzlePatientsRepository implements PatientsRepository {
 
     const conditions = [eq(patientsTable.applicatorId, applicatorId)]
 
+    if (options?.status && options.status !== 'all') {
+      conditions.push(eq(patientsTable.status, options.status))
+    }
+
     if (options?.name?.length) {
+      if (conditions.length > 1) {
+        conditions.pop()
+      }
+
       conditions.push(
         sql`to_tsvector('portuguese', ${patientsTable.name}) @@ plainto_tsquery('portuguese', ${options.name})`
       )
