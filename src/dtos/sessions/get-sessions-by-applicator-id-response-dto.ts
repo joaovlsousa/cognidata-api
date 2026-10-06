@@ -4,7 +4,14 @@ import { sessionsTable } from '@/database/drizzle/schemas'
 
 export const getSessionsByApplicatorIdResponseDto = z.object({
   sessions: z.array(
-    createSelectSchema(sessionsTable)
+    createSelectSchema(sessionsTable, {
+      countQuestion: z.number().min(5).max(11),
+      durationInSeconds: z.number().nonnegative(),
+      percentage: z.number().nonnegative().max(100),
+      score: z.number().nonnegative(),
+      thetaError: z.number().min(-3).max(3),
+      thetaFinal: z.number().min(-3).max(3),
+    })
       .extend({
         patientName: z.string(),
       })
