@@ -33,6 +33,7 @@ import { getTotalOfPatientsWithAlertByApplicatorIdRoute } from './routes/patient
 import { healthCheckRoute } from './routes/public/health-check-route'
 import { createSessionItemRoute } from './routes/session-items/create-session-item-route'
 import { createSessionRoute } from './routes/sessions/create-session-route'
+import { getAverageByApplicatorIdRoute } from './routes/sessions/get-average-by-applicator-id-route'
 import { getSessionsByApplicatorIdRoute } from './routes/sessions/get-sessions-by-applicator-id-route'
 import { getTotalOfSessionsByApplicatorIdRoute } from './routes/sessions/get-total-of-sessions-by-applicator-id-route'
 import { activateUserRoute } from './routes/users/activate-user-route'
@@ -115,6 +116,7 @@ server.register(deletePatientsByIdListRoute)
 server.register(createSessionRoute)
 server.register(getSessionsByApplicatorIdRoute)
 server.register(getTotalOfSessionsByApplicatorIdRoute)
+server.register(getAverageByApplicatorIdRoute)
 server.register(createSessionItemRoute)
 
 // Contact routes

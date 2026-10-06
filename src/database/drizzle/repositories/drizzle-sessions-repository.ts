@@ -2,6 +2,7 @@ import { startOfMonth } from 'date-fns'
 import { and, count, desc, eq, getTableColumns, gte, sql } from 'drizzle-orm'
 import type {
   SaveSessionSchema,
+  SelectAverageByApplicatorIdSchema,
   SelectSessionSchema,
   SelectSessionWithMetadataSchema,
   SelectTotalOfSessionsSchema,
@@ -92,6 +93,33 @@ export class DrizzleSessionsRepository implements SessionsRepository {
     return {
       totalOfSessions,
       thisMonth,
+    }
+  }
+
+  public async getAverageByApplicatorId(
+    applicatorId: string
+  ): Promise<SelectAverageByApplicatorIdSchema> {
+    const rows = await db
+      .select({
+        skill: sessionsTable.skill,
+        average: sql<number>`avg(${sessionsTable.thetaFinal})`.mapWith(Number),
+      })
+      .from(sessionsTable)
+      .where(eq(sessionsTable.applicatorId, applicatorId))
+      .groupBy(sessionsTable.skill)
+
+    const bySkill = new Map(rows.map((r) => [r.skill, r.average]))
+
+    console.log({
+      rows,
+      bySkill,
+    })
+
+    return {
+      alliteration: bySkill.get('alliteration') ?? null,
+      segmentation: bySkill.get('segmentation') ?? null,
+      visualMemory: bySkill.get('visualMemory') ?? null,
+      rhyme: bySkill.get('rhyme') ?? null,
     }
   }
 

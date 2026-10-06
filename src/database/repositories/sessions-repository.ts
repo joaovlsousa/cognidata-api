@@ -37,6 +37,13 @@ export type SelectTotalOfSessionsSchema = {
   thisMonth: number
 }
 
+export type SelectAverageByApplicatorIdSchema = {
+  alliteration: number | null
+  segmentation: number | null
+  visualMemory: number | null
+  rhyme: number | null
+}
+
 export interface SessionsRepository {
   save(session: SaveSessionSchema): Promise<SelectSessionSchema>
   getById(sessionId: string): Promise<SelectSessionSchema | null>
@@ -47,4 +54,7 @@ export interface SessionsRepository {
   getTotalByApplicatorId(
     applicatorId: string
   ): Promise<SelectTotalOfSessionsSchema>
+  getAverageByApplicatorId(
+    applicatorId: string
+  ): Promise<SelectAverageByApplicatorIdSchema>
 }
