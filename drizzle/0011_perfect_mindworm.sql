@@ -1,0 +1,1 @@
+ALTER TABLE "sessions" ALTER COLUMN "percentage" SET DATA TYPE double precision;

@@ -1,13 +1,15 @@
 import { startOfMonth } from 'date-fns'
-import { count, eq, gte, sql } from 'drizzle-orm'
+import { and, count, desc, eq, getTableColumns, gte, sql } from 'drizzle-orm'
 import type {
   SaveSessionSchema,
   SelectSessionSchema,
+  SelectSessionWithMetadataSchema,
   SelectTotalOfSessionsSchema,
+  SessionsPaginationOptions,
   SessionsRepository,
 } from '@/database/repositories/sessions-repository'
 import { db } from '..'
-import { sessionsTable } from '../schemas'
+import { patientsTable, sessionsTable } from '../schemas'
 
 export class DrizzleSessionsRepository implements SessionsRepository {
   public async getById(sessionId: string): Promise<SelectSessionSchema | null> {
@@ -18,6 +20,55 @@ export class DrizzleSessionsRepository implements SessionsRepository {
       .limit(1)
 
     return session ?? null
+  }
+
+  public async getByApplicatorId(
+    applicatorId: string,
+    options?: SessionsPaginationOptions
+  ): Promise<SelectSessionWithMetadataSchema> {
+    const page = options?.page ?? 1
+    const perPage = options?.perPage ?? 10
+    const offset = (page - 1) * perPage
+
+    const conditions = [eq(sessionsTable.applicatorId, applicatorId)]
+
+    if (options?.name?.length) {
+      conditions.push(
+        sql`to_tsvector('portuguese', ${patientsTable.name}) @@ plainto_tsquery('portuguese', ${options.name})`
+      )
+    }
+
+    const whereClause = and(...conditions)
+
+    const [sessions, [{ total }]] = await Promise.all([
+      db
+        .select({
+          ...getTableColumns(sessionsTable),
+          patientName: patientsTable.name,
+        })
+        .from(sessionsTable)
+        .innerJoin(patientsTable, eq(sessionsTable.patientId, patientsTable.id))
+        .where(whereClause)
+        .orderBy(desc(sessionsTable.createdAt))
+        .limit(perPage)
+        .offset(offset),
+
+      db
+        .select({ total: count() })
+        .from(sessionsTable)
+        .innerJoin(patientsTable, eq(sessionsTable.patientId, patientsTable.id))
+        .where(whereClause),
+    ])
+
+    return {
+      sessions,
+      meta: {
+        page,
+        perPage,
+        total,
+        totalPages: Math.ceil(total / perPage),
+      },
+    }
   }
 
   public async getTotalByApplicatorId(

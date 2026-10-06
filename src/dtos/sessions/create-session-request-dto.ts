@@ -4,6 +4,12 @@ import { sessionsTable } from '@/database/drizzle/schemas'
 
 export const createSessionRequestDto = createInsertSchema(sessionsTable, {
   id: (schema) => schema.optional(),
+  countQuestion: z.number().min(5).max(11),
+  durationInSeconds: z.number().nonnegative(),
+  percentage: z.number().nonnegative().max(100),
+  score: z.number().nonnegative(),
+  thetaError: z.number().min(-3).max(3),
+  thetaFinal: z.number().min(-3).max(3),
   startTime: z.coerce.date(),
   endTime: z.coerce.date(),
   createdAt: (schema) => schema.optional(),

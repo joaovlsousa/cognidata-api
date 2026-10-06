@@ -33,7 +33,7 @@ export const sessionsTable = pgTable('sessions', {
     ],
   }).notNull(),
   score: integer().notNull(),
-  percentage: integer().notNull(),
+  percentage: doublePrecision().notNull(),
   thetaFinal: doublePrecision().notNull(),
   thetaError: doublePrecision().notNull(),
   startTime: timestamp().notNull(),
