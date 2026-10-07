@@ -44,6 +44,13 @@ export type SelectAverageByApplicatorIdSchema = {
   rhyme: number | null
 }
 
+export type SelectLatestByPatientIdSchema = {
+  alliteration: SelectSessionSchema | null
+  segmentation: SelectSessionSchema | null
+  visualMemory: SelectSessionSchema | null
+  rhyme: SelectSessionSchema | null
+}
+
 export interface SessionsRepository {
   save(session: SaveSessionSchema): Promise<SelectSessionSchema>
   getById(sessionId: string): Promise<SelectSessionSchema | null>
@@ -57,4 +64,8 @@ export interface SessionsRepository {
   getAverageByApplicatorId(
     applicatorId: string
   ): Promise<SelectAverageByApplicatorIdSchema>
+  getLatestByPatientId(
+    patientId: string,
+    applicatorId: string
+  ): Promise<SelectLatestByPatientIdSchema>
 }

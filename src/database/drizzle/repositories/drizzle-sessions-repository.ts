@@ -3,6 +3,7 @@ import { and, count, desc, eq, getTableColumns, gte, sql } from 'drizzle-orm'
 import type {
   SaveSessionSchema,
   SelectAverageByApplicatorIdSchema,
+  SelectLatestByPatientIdSchema,
   SelectSessionSchema,
   SelectSessionWithMetadataSchema,
   SelectTotalOfSessionsSchema,
@@ -120,6 +121,37 @@ export class DrizzleSessionsRepository implements SessionsRepository {
       segmentation: bySkill.get('segmentation') ?? null,
       visualMemory: bySkill.get('visualMemory') ?? null,
       rhyme: bySkill.get('rhyme') ?? null,
+    }
+  }
+
+  public async getLatestByPatientId(
+    patientId: string,
+    applicatorId: string
+  ): Promise<SelectLatestByPatientIdSchema> {
+    const rows = await db
+      .select()
+      .from(sessionsTable)
+      .where(
+        and(
+          eq(sessionsTable.patientId, patientId),
+          eq(sessionsTable.applicatorId, applicatorId)
+        )
+      )
+      .orderBy(desc(sessionsTable.createdAt))
+
+    const latestBySkill = new Map<string, SelectSessionSchema>()
+
+    for (const session of rows) {
+      if (!latestBySkill.has(session.skill)) {
+        latestBySkill.set(session.skill, session)
+      }
+    }
+
+    return {
+      alliteration: latestBySkill.get('alliteration') ?? null,
+      segmentation: latestBySkill.get('segmentation') ?? null,
+      visualMemory: latestBySkill.get('visualMemory') ?? null,
+      rhyme: latestBySkill.get('rhyme') ?? null,
     }
   }
 
