@@ -99,7 +99,6 @@ export class DrizzleSessionsRepository implements SessionsRepository {
       })
       .from(sessionsTable)
       .where(eq(sessionsTable.applicatorId, applicatorId))
-      .orderBy(desc(sessionsTable.createdAt))
 
     return {
       totalOfSessions,
