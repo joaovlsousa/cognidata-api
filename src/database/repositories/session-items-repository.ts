@@ -12,6 +12,19 @@ const selectSessionItemsSchema = createSelectSchema(sessionItemsTable)
 export type SaveSessionItemsSchema = z.infer<typeof saveSessionItemsSchema>
 export type SelectSessionItemsSchema = z.infer<typeof selectSessionItemsSchema>
 
+export type SessionItemSkill =
+  (typeof sessionItemsTable.skill.enumValues)[number]
+
+export type SelectAverageBySkillSchema = {
+  itemIndex: number
+  averageTheta: number
+  difficulty: number
+}
+
 export interface SessionItemsRepository {
   save(sessionItems: SaveSessionItemsSchema): Promise<SelectSessionItemsSchema>
+  getAverageBySkill(
+    skill: SessionItemSkill,
+    applicatorId: string
+  ): Promise<SelectAverageBySkillSchema[]>
 }
