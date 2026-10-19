@@ -34,7 +34,8 @@ import { healthCheckRoute } from './routes/public/health-check-route'
 import { createSessionItemRoute } from './routes/session-items/create-session-item-route'
 import { createSessionRoute } from './routes/sessions/create-session-route'
 import { getAverageByApplicatorIdRoute } from './routes/sessions/get-average-by-applicator-id-route'
-import { getLatestSessionByPatientIdRoute } from './routes/sessions/get-latest-session-by-patient-id-route'
+import { getSessionByIdRoute } from './routes/sessions/get-session-by-id-route'
+import { getSessionsByPatientIdRoute } from './routes/sessions/get-sessions-by-patient-id-route'
 import { getSessionsByApplicatorIdRoute } from './routes/sessions/get-sessions-by-applicator-id-route'
 import { getTotalOfSessionsByApplicatorIdRoute } from './routes/sessions/get-total-of-sessions-by-applicator-id-route'
 import { activateUserRoute } from './routes/users/activate-user-route'
@@ -118,7 +119,8 @@ server.register(createSessionRoute)
 server.register(getSessionsByApplicatorIdRoute)
 server.register(getTotalOfSessionsByApplicatorIdRoute)
 server.register(getAverageByApplicatorIdRoute)
-server.register(getLatestSessionByPatientIdRoute)
+server.register(getSessionsByPatientIdRoute)
+server.register(getSessionByIdRoute)
 server.register(createSessionItemRoute)
 
 // Contact routes

@@ -1,16 +1,18 @@
 import type { SessionsRepository } from '@/database/repositories/sessions-repository'
-import type { GetLatestSessionByPatientIdDto } from '@/dtos/sessions/get-latest-session-by-patient-id-dto'
+import type { GetSessionsByPatientIdDto } from '@/dtos/sessions/get-sessions-by-patient-id-dto'
 
-export class GetLatestSessionByPatientIdUseCase {
+export class GetSessionsByPatientIdUseCase {
   constructor(private readonly sessionsRepository: SessionsRepository) {}
 
   public async execute(
     patientId: string,
     applicatorId: string
-  ): Promise<GetLatestSessionByPatientIdDto> {
-    return this.sessionsRepository.getLatestByPatientId(
+  ): Promise<GetSessionsByPatientIdDto> {
+    const sessions = await this.sessionsRepository.getByPatientId(
       patientId,
       applicatorId
     )
+
+    return { sessions }
   }
 }

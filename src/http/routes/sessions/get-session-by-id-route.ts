@@ -2,30 +2,28 @@ import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
 import { z } from 'zod'
 import { httpErrorSchema } from '@/core/schemas/http-error-schema'
 import { DrizzleSessionsRepository } from '@/database/drizzle/repositories/drizzle-sessions-repository'
-import { getLatestSessionByPatientIdDto } from '@/dtos/sessions/get-latest-session-by-patient-id-dto'
+import { getSessionByIdDto } from '@/dtos/sessions/get-session-by-id-dto'
 import { authMiddleware } from '@/http/middlewares/auth-middleware'
 import { authorizationMiddleware } from '@/http/middlewares/authorization-middleware'
-import { GetLatestSessionByPatientIdUseCase } from '@/use-cases/sessions/get-latest-session-by-patient-id-use-case'
+import { GetSessionByIdUseCase } from '@/use-cases/sessions/get-session-by-id-use-case'
 
-export const getLatestSessionByPatientIdRoute: FastifyPluginAsyncZod = async (
-  app
-) => {
+export const getSessionByIdRoute: FastifyPluginAsyncZod = async (app) => {
   app.get(
-    '/patients/:patientId/sessions/latest',
+    '/sessions/:sessionId',
     {
       schema: {
-        summary: 'Consultar últimas sessões do paciente por habilidade',
-        description:
-          'Retorna a última sessão de cada habilidade do paciente informado.',
+        summary: 'Consultar dados da sessão',
+        description: 'Retorna os dados brutos de uma sessão pelo ID.',
         tags: ['Sessões'],
         security: [{ bearerAuth: [] }],
         params: z.object({
-          patientId: z.uuid(),
+          sessionId: z.uuid(),
         }),
         response: {
-          200: getLatestSessionByPatientIdDto,
+          200: getSessionByIdDto,
           401: httpErrorSchema,
           403: httpErrorSchema,
+          404: httpErrorSchema,
           500: httpErrorSchema,
         },
       },
@@ -34,17 +32,17 @@ export const getLatestSessionByPatientIdRoute: FastifyPluginAsyncZod = async (
     async (request, reply) => {
       await request.isApplicatorCurrentUser()
       const { sub: applicatorId } = await request.getCurrentUser()
-      const { patientId } = request.params
+      const { sessionId } = request.params
 
-      const getLatestSessionByPatientIdUseCase =
-        new GetLatestSessionByPatientIdUseCase(new DrizzleSessionsRepository())
-
-      const response = await getLatestSessionByPatientIdUseCase.execute(
-        patientId,
+      const getSessionByIdUseCase = new GetSessionByIdUseCase(
+        new DrizzleSessionsRepository()
+      )
+      const session = await getSessionByIdUseCase.execute(
+        sessionId,
         applicatorId
       )
 
-      return reply.status(200).send(response)
+      return reply.status(200).send(session)
     }
   )
 }

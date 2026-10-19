@@ -12,7 +12,6 @@ import {
 import type {
   SaveSessionSchema,
   SelectAverageByApplicatorIdSchema,
-  SelectLatestByPatientIdSchema,
   SelectSessionSchema,
   SelectSessionWithMetadataSchema,
   SelectTotalOfSessionsSchema,
@@ -23,14 +22,38 @@ import { db } from '..'
 import { patientsTable, sessionsTable } from '../schemas'
 
 export class DrizzleSessionsRepository implements SessionsRepository {
-  public async getById(sessionId: string): Promise<SelectSessionSchema | null> {
+  public async getById(
+    sessionId: string,
+    applicatorId: string
+  ): Promise<SelectSessionSchema | null> {
     const [session] = await db
       .select()
       .from(sessionsTable)
-      .where(eq(sessionsTable.id, sessionId))
+      .where(
+        and(
+          eq(sessionsTable.id, sessionId),
+          eq(sessionsTable.applicatorId, applicatorId)
+        )
+      )
       .limit(1)
 
     return session ?? null
+  }
+
+  public async getByPatientId(
+    patientId: string,
+    applicatorId: string
+  ): Promise<SelectSessionSchema[]> {
+    return db
+      .select()
+      .from(sessionsTable)
+      .where(
+        and(
+          eq(sessionsTable.patientId, patientId),
+          eq(sessionsTable.applicatorId, applicatorId)
+        )
+      )
+      .orderBy(desc(sessionsTable.createdAt))
   }
 
   public async getByApplicatorId(
@@ -125,37 +148,6 @@ export class DrizzleSessionsRepository implements SessionsRepository {
       segmentation: bySkill.get('segmentation') ?? null,
       visualMemory: bySkill.get('visualMemory') ?? null,
       rhyme: bySkill.get('rhyme') ?? null,
-    }
-  }
-
-  public async getLatestByPatientId(
-    patientId: string,
-    applicatorId: string
-  ): Promise<SelectLatestByPatientIdSchema> {
-    const rows = await db
-      .select()
-      .from(sessionsTable)
-      .where(
-        and(
-          eq(sessionsTable.patientId, patientId),
-          eq(sessionsTable.applicatorId, applicatorId)
-        )
-      )
-      .orderBy(desc(sessionsTable.createdAt))
-
-    const latestBySkill = new Map<string, SelectSessionSchema>()
-
-    for (const session of rows) {
-      if (!latestBySkill.has(session.skill)) {
-        latestBySkill.set(session.skill, session)
-      }
-    }
-
-    return {
-      alliteration: latestBySkill.get('alliteration') ?? null,
-      segmentation: latestBySkill.get('segmentation') ?? null,
-      visualMemory: latestBySkill.get('visualMemory') ?? null,
-      rhyme: latestBySkill.get('rhyme') ?? null,
     }
   }
 
