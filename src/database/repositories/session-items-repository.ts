@@ -21,10 +21,21 @@ export type SelectAverageBySkillSchema = {
   difficulty: number
 }
 
+export type SelectThetaEvolutionBySkillSchema = {
+  itemIndex: number
+  theta: number
+  difficulty: number
+}
+
 export interface SessionItemsRepository {
   save(sessionItems: SaveSessionItemsSchema): Promise<SelectSessionItemsSchema>
   getAverageBySkill(
     skill: SessionItemSkill,
     applicatorId: string
   ): Promise<SelectAverageBySkillSchema[]>
+  getThetaEvolutionBySkill(
+    skill: SessionItemSkill,
+    sessionId: string,
+    applicatorId: string
+  ): Promise<SelectThetaEvolutionBySkillSchema[]>
 }

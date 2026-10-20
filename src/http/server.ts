@@ -33,6 +33,7 @@ import { getTotalOfPatientsWithAlertByApplicatorIdRoute } from './routes/patient
 import { healthCheckRoute } from './routes/public/health-check-route'
 import { createSessionItemRoute } from './routes/session-items/create-session-item-route'
 import { getAverageBySkillRoute } from './routes/session-items/get-average-by-skill-route'
+import { getThetaEvolutionBySkillRoute } from './routes/session-items/get-theta-evolution-by-skill-route'
 import { createSessionRoute } from './routes/sessions/create-session-route'
 import { getAverageByApplicatorIdRoute } from './routes/sessions/get-average-by-applicator-id-route'
 import { getSessionByIdRoute } from './routes/sessions/get-session-by-id-route'
@@ -123,6 +124,7 @@ server.register(getAverageByApplicatorIdRoute)
 server.register(getSessionsByPatientIdRoute)
 server.register(getSessionByIdRoute)
 server.register(getAverageBySkillRoute)
+server.register(getThetaEvolutionBySkillRoute)
 server.register(createSessionItemRoute)
 
 // Contact routes

@@ -3,6 +3,7 @@ import type {
   SaveSessionItemsSchema,
   SelectAverageBySkillSchema,
   SelectSessionItemsSchema,
+  SelectThetaEvolutionBySkillSchema,
   SessionItemSkill,
   SessionItemsRepository,
 } from '@/database/repositories/session-items-repository'
@@ -60,5 +61,33 @@ export class DrizzleSessionItemsRepository implements SessionItemsRepository {
       averageTheta: Number(row.averageTheta),
       difficulty: Number(row.difficulty),
     }))
+  }
+
+  public async getThetaEvolutionBySkill(
+    skill: SessionItemSkill,
+    sessionId: string,
+    applicatorId: string
+  ): Promise<SelectThetaEvolutionBySkillSchema[]> {
+    const rows = await db
+      .select({
+        itemIndex: sessionItemsTable.itemIndex,
+        theta: sessionItemsTable.thetaAfter,
+        difficulty: sessionItemsTable.difficulty,
+      })
+      .from(sessionItemsTable)
+      .innerJoin(
+        sessionsTable,
+        eq(sessionItemsTable.sessionId, sessionsTable.id)
+      )
+      .where(
+        and(
+          eq(sessionItemsTable.skill, skill),
+          eq(sessionItemsTable.sessionId, sessionId),
+          eq(sessionsTable.applicatorId, applicatorId)
+        )
+      )
+      .orderBy(asc(sessionItemsTable.itemIndex))
+
+    return rows
   }
 }
